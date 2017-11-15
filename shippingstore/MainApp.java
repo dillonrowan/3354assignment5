@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.Box;
+
 /**
 * Main access point
 */
@@ -32,59 +33,50 @@ public class MainApp {
 
      /** Create an empty, labeled panel and display it */
         JFrame frame = new JFrame("Shipping Store Database");
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.WEST;
-        c.insets = new Insets(0,0,10,10);
+        JLabel label = new JLabel("Welcome! Please choose menu option.");
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+
+        panel.add(Box.createRigidArea(new Dimension(0,10)));
         JButton button1 = new JButton ("Show all existing packages in the database.");
-        c.gridx = 0;
-        c.gridy = 0;
-        panel.add(button1, c);
+        panel.add(button1);
+        panel.add(Box.createRigidArea(new Dimension(0,10)));
         JButton button2 = new JButton ("Add a new package to the database.");
-        c.gridx = 0;
-        c.gridy = 1;
-        panel.add(button2, c);
+        panel.add(button2);
+        panel.add(Box.createRigidArea(new Dimension(0,10)));
         JButton button3 = new JButton ("Delete a package from a database (given its tracking number).");
-        c.gridx = 0;
-        c.gridy = 2;
-        panel.add(button3, c);
+        panel.add(button3);
+        panel.add(Box.createRigidArea(new Dimension(0,10)));
         JButton button4 = new JButton ("Search for a package (given its tracking number).");
-        c.gridx = 0;
-        c.gridy = 3;
-        panel.add(button4, c);
+        panel.add(button4);
+        panel.add(Box.createRigidArea(new Dimension(0,10)));
         JButton button5 = new JButton ("Show list of users.");
-        c.gridx = 0;
-        c.gridy = 4;
-        panel.add(button5, c);
+        panel.add(button5);
+        panel.add(Box.createRigidArea(new Dimension(0,10)));
         JButton button6 = new JButton ("Add a new user to the database.");
-        c.gridx = 0;
-        c.gridy = 5;
-        panel.add(button6, c);
+        panel.add(button6);
+        panel.add(Box.createRigidArea(new Dimension(0,10)));
         JButton button7 = new JButton ("Update user info (given their id).");
-        c.gridx = 0;
-        c.gridy = 6;
-        panel.add(button7, c);
+        panel.add(button7);
+        panel.add(Box.createRigidArea(new Dimension(0,10)));
         JButton button8 = new JButton ("Deliver a package.");
-        c.gridx = 0;
-        c.gridy = 7;
-        panel.add(button8, c);
+        panel.add(button8);
+        panel.add(Box.createRigidArea(new Dimension(0,10)));
         JButton button9 = new JButton ("Show a list of transactions.");
-        c.gridx = 0;
-        c.gridy = 8;
-        panel.add(button9, c);
-        c.gridx = 0;
-        c.gridy = 9;
+        panel.add(button9);
+        panel.add(Box.createRigidArea(new Dimension(0,10)));
         JButton button10 = new JButton ("Exit program.");
-        panel.add(button10, c);
+        panel.add(button10);
 
         button1.addActionListener(new showAllPackages());
         button2.addActionListener(new addNewPackage());
 
-        panel.setPreferredSize(new Dimension(400,450));
-        JLabel label = new JLabel("Welcome! Please choose menu option.");
+        //panel.setPreferredSize(new Dimension(400,450));
+
         label.setHorizontalAlignment(SwingConstants.CENTER);
-        frame.getContentPane().add(panel,BorderLayout.WEST);
         frame.add(label,BorderLayout.NORTH);
+        frame.getContentPane().add(panel);
+
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -146,24 +138,25 @@ public class MainApp {
          JFrame frame = new JFrame("Add a new package");
          frame.setVisible(true);
          frame.setSize(900, 600);
+
+         //Text and Tab panel
+          JPanel panel2 = new JPanel();
+          JLabel trackingNumber = new JLabel("Enter packing number");
+          JTextField tf = new JTextField(5);
+          panel2.add(tf);
+          //JTabbedPane jtp = new JTabbedPane();
+
+         //Radio Button panel
          JPanel panel1 = new JPanel();
          panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
-
-
          JRadioButton envelope = new JRadioButton("Envelope");
          JRadioButton box = new JRadioButton("Box");
          JRadioButton crate = new JRadioButton("Crate");
          JRadioButton drum = new JRadioButton("Drum");
-         // Box b = Box.createVerticalBox();
-         // panel1.setLayout(new GridLayout(1,1));
 
 
-         ButtonGroup pType = new ButtonGroup();
-         pType.add(envelope);
-         pType.add(box);
-         pType.add(crate);
-         pType.add(drum);
 
+         //Add space between radio buttons and add to panel1
          panel1.add(envelope);
          panel1.add(Box.createRigidArea(new Dimension(0,20)));
          panel1.add(box);
@@ -172,11 +165,16 @@ public class MainApp {
          panel1.add(Box.createRigidArea(new Dimension(0,20)));
          panel1.add(drum);
 
-         // panel1.setBackground(Color.red);
+
+          //panel2.setBackground(Color.red);
          // panel1.setLayout(new GridBagLayout());
          // panel1.pack();
+
+
+
+         //Add panels
          frame.getContentPane().add(panel1,BorderLayout.WEST);
-         //panel.add(label);
+         frame.getContentPane().add(panel2);
        }
       // public void addNewPackage(ActionEvent e) throws BadInputException {
       //     System.out.println("Select package type:\n"
