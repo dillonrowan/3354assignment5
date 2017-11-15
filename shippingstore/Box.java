@@ -76,7 +76,7 @@ public class Box extends Package {
      */
     @Override
     public String getFormattedText() {
-        return String.format("| %12s | %12s | %13s | %13s | Dimension: %10d, Volume: %10d    | %n",
+        return String.format("| %12s | %12s | %13s | %13s | Dimension: %10d, Volume: %10d    |%n",
                 "Box", ptn, specification, mailingClass, dimension, volume);
     }
 
