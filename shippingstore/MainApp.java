@@ -34,81 +34,54 @@ public class MainApp {
      /** Create an empty, labeled panel and display it */
         JFrame frame = new JFrame("Shipping Store Database");
         JLabel label = new JLabel("Welcome! Please choose menu option.");
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        JPanel panel = new JPanel(new GridLayout(10,1));
 
-        panel.add(Box.createRigidArea(new Dimension(0,10)));
         JButton button1 = new JButton ("Show all existing packages in the database.");
         panel.add(button1);
-        panel.add(Box.createRigidArea(new Dimension(0,10)));
+
         JButton button2 = new JButton ("Add a new package to the database.");
         panel.add(button2);
-        panel.add(Box.createRigidArea(new Dimension(0,10)));
+
         JButton button3 = new JButton ("Delete a package from a database (given its tracking number).");
         panel.add(button3);
-        panel.add(Box.createRigidArea(new Dimension(0,10)));
+
         JButton button4 = new JButton ("Search for a package (given its tracking number).");
         panel.add(button4);
-        panel.add(Box.createRigidArea(new Dimension(0,10)));
+
         JButton button5 = new JButton ("Show list of users.");
         panel.add(button5);
-        panel.add(Box.createRigidArea(new Dimension(0,10)));
+
         JButton button6 = new JButton ("Add a new user to the database.");
         panel.add(button6);
-        panel.add(Box.createRigidArea(new Dimension(0,10)));
+
         JButton button7 = new JButton ("Update user info (given their id).");
         panel.add(button7);
-        panel.add(Box.createRigidArea(new Dimension(0,10)));
+
         JButton button8 = new JButton ("Deliver a package.");
         panel.add(button8);
-        panel.add(Box.createRigidArea(new Dimension(0,10)));
+
         JButton button9 = new JButton ("Show a list of transactions.");
         panel.add(button9);
-        panel.add(Box.createRigidArea(new Dimension(0,10)));
+
         JButton button10 = new JButton ("Exit program.");
         panel.add(button10);
 
         button1.addActionListener(new showAllPackages());
         button2.addActionListener(new addNewPackage());
-
-        //panel.setPreferredSize(new Dimension(400,450));
-
+        button10.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent event)
+          {
+            System.exit(0);
+          }
+        });
+        
         label.setHorizontalAlignment(SwingConstants.CENTER);
         frame.add(label,BorderLayout.NORTH);
-        frame.getContentPane().add(panel);
+        frame.add(panel);
 
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-       // int choice = 0;
-       // boolean exitProgram = false;
-       // do {
-       //     printMenu();
-       //     try {
-       //         choice = sc.nextInt();
-       //
-       //         switch (choice) {
-       //             case 1: showAllPackages(); break;
-       //             case 2: addNewPackage(); break;
-       //             case 3: deletePackage(); break;
-       //             case 4: searchPackage(); break;
-       //             case 5: showAllUsers(); break;
-       //             case 6: addNewUser(); break;
-       //             case 7: updateUser(); break;
-       //             case 8: deliverPackage(); break;
-       //             case 9: showAllTransactions(); break;
-       //             case 10: ss.writeDatabase(); exitProgram = true; break;
-       //             default: System.err.println("Please select a number between 1 and 10.");
-       //         }
-       //     } catch (InputMismatchException ex) {
-       //         System.err.println("Input missmatch. Please Try again.");
-       //         continue;
-       //     } catch (BadInputException ex) {
-       //         System.err.println("Bad input. "+ex.getMessage());
-       //         System.err.println("Please try again.");
-       //         continue;
-       //     }
-       // } while (!exitProgram);
    }
 
    /**
@@ -129,11 +102,30 @@ public class MainApp {
    }
 
    /**
+    * This method prints out all the package currently in the inventory, in a
+    * formatted manner.
+    */
+
+    private class showAllPackages extends MainApp implements ActionListener {
+      public void actionPerformed(ActionEvent e) {
+         // ss.addBox("Test1", "Fragile", "Retail", 3, 9);
+         JFrame frame = new JFrame("All Packages");
+         frame.setVisible(true);
+         frame.setSize(900, 600);
+         String text = ss.getAllPackagesFormatted();
+         JLabel label = new JLabel(text, SwingConstants.CENTER);
+         JPanel panel = new JPanel();
+         frame.add(panel);
+         panel.add(label);
+       }
+    }
+
+   /**
      * This method allows the user to enter a new package to the list
      * database.
      * @throws shippingstore.BadInputException bad input
      */
-    static class addNewPackage extends MainApp implements ActionListener {
+    private class addNewPackage extends MainApp implements ActionListener {
       public void actionPerformed(ActionEvent e) {
          JFrame frame = new JFrame("Add a new package");
          frame.setVisible(true);
@@ -176,175 +168,11 @@ public class MainApp {
          frame.getContentPane().add(panel1,BorderLayout.WEST);
          frame.getContentPane().add(panel2);
        }
-      // public void addNewPackage(ActionEvent e) throws BadInputException {
-      //     System.out.println("Select package type:\n"
-      //             + "1. Envelope\n"
-      //             + "2. Box\n"
-      //             + "3. Crate\n"
-      //             + "4. Drum");
-      //     int packageType = sc.nextInt();
-      //     if (packageType < 1 || packageType > 4) {
-      //         throw new BadInputException("Legal package type values: 1-4.");
-      //     }
-      //     sc.nextLine();
-      //
-      //     System.out.println("\nEnter tracking number (string): ");
-      //     String ptn = sc.nextLine();
-      //     if (ptn.length() > 5) {
-      //         throw new BadInputException("Tracking number should not be more that 5 characters long.");
-      //     }
-      //
-      //     if (ss.packageExists(ptn)) {
-      //         System.out.println("\nPackage with the same tracking number exists, try again");
-      //         return;
-      //     }
-      //
-      //     System.out.println("\nEnter Specification: Fragile, Books, Catalogs, Do-not-bend, or N/A");
-      //     String specification = sc.nextLine();
-      //     boolean correct = false;
-      //
-      //     correct = specification.equalsIgnoreCase("Fragile") || specification.equalsIgnoreCase("Books") || specification.equalsIgnoreCase("Catalogs");
-      //     correct = correct || specification.equalsIgnoreCase("Do-not-bend") || specification.equalsIgnoreCase("N/A");
-      //
-      //     if (!(correct)) {
-      //         throw new BadInputException("Specifications can only be one of the following: Fragile, Books, Catalogs, Do-not-bend, or N/A");
-      //     }
-      //
-      //     System.out.println("\nEnter mailing class can be First-Class, Priority, Retail, Ground, or Metro.");
-      //     String mailingClass = sc.nextLine();
-      //
-      //     correct = mailingClass.equalsIgnoreCase("First-Class") || mailingClass.equalsIgnoreCase("Priority") || mailingClass.equalsIgnoreCase("Retail");
-      //     correct = correct || mailingClass.equalsIgnoreCase("Ground") || mailingClass.equalsIgnoreCase("Metro");
-      //     if (!(correct)) {
-      //         throw new BadInputException("Specifications can only be one of the following: Fragile, Books, Catalogs, Do-not-bend, or N/A");
-      //     }
-      //
-      //     if (packageType == 1) {
-      //         System.out.println("\nEnter height (inch), (int): ");
-      //         int height = 0;
-      //         if (sc.hasNextInt()) {
-      //             height = sc.nextInt();
-      //             sc.nextLine();
-      //             if (height < 0) {
-      //                 throw new BadInputException("Height of Envelope cannot be negative.");
-      //             }
-      //         } else {
-      //             sc.nextLine();
-      //             throw new BadInputException("Height of Envelope is integer.");
-      //         }
-      //
-      //         int width = 0;
-      //         System.out.println("\nEnter width (inch), (int): ");
-      //         if (sc.hasNextInt()) {
-      //             width = sc.nextInt();
-      //             sc.nextLine();
-      //             if (width < 0) {
-      //                 throw new BadInputException("Width of Envelope cannot be negative.");
-      //             }
-      //         } else {
-      //             sc.nextLine();
-      //             throw new BadInputException("Width of Envelope is integer.");
-      //         }
-      //
-      //         ss.addEnvelope(ptn, specification, mailingClass, height, width);
-      //
-      //     } else if (packageType == 2) {
-      //         System.out.println("\nEnter largest dimension (inch), (int): ");
-      //
-      //         int dimension = 0;
-      //         if (sc.hasNextInt()) {
-      //             dimension = sc.nextInt();
-      //             sc.nextLine();
-      //             if (dimension < 0) {
-      //                 throw new BadInputException("Largest dimension of Box cannot be negative.");
-      //             }
-      //         } else {
-      //             sc.nextLine();
-      //             throw new BadInputException("Dimension should be integer.");
-      //         }
-      //
-      //         System.out.println("\nEnter volume (inch^3), (int): ");
-      //
-      //         int volume = 0;
-      //         if (sc.hasNextInt()) {
-      //             volume = sc.nextInt();
-      //             sc.nextLine();
-      //             if (volume < 0) {
-      //                 throw new BadInputException("Volume of Box cannot be negative.");
-      //             }
-      //         } else {
-      //             sc.nextLine();
-      //             throw new BadInputException("Volume should be integer.");
-      //         }
-      //
-      //         ss.addBox(ptn, specification, mailingClass, dimension, volume);
-      //
-      //     } else if (packageType == 3) {
-      //         System.out.println("\nEnter maximum load weight (lb), (float): ");
-      //
-      //         float weight = 0.0f;
-      //         if (sc.hasNextFloat()) {
-      //             weight = sc.nextFloat();
-      //             sc.nextLine();
-      //             if (weight < 0.0f) {
-      //                 throw new BadInputException("Maximum load weight of Crate cannot be negative.");
-      //             }
-      //         } else {
-      //             sc.nextLine();
-      //             throw new BadInputException("Max load should be float");
-      //         }
-      //
-      //         System.out.println("\nEnter content (string): ");
-      //         String content = sc.nextLine();
-      //
-      //         ss.addCrate(ptn, specification, mailingClass, weight, content);
-      //
-      //     } else if (packageType == 4) {
-      //
-      //         System.out.println("\nEnter material (Plastic / Fiber): ");
-      //         String material = sc.nextLine();
-      //         if (!(material.equalsIgnoreCase("Plastic") || material.equalsIgnoreCase("Fiber"))) {
-      //             throw new BadInputException("Material of Drum can only be plastic or fiber.");
-      //         }
-      //
-      //         float diameter = 0.0f;
-      //         System.out.println("\nEnter diameter (float): ");
-      //         if (sc.hasNextFloat()) {
-      //             diameter = sc.nextFloat();
-      //             sc.nextLine();
-      //             if (diameter < 0.0f) {
-      //                 throw new BadInputException("Diameter of Drum cannot be negative.");
-      //             }
-      //         } else {
-      //             sc.nextLine();
-      //             throw new BadInputException("Diameter should be float");
-      //         }
-      //
-      //         ss.addDrum(ptn, specification, mailingClass, material, diameter);
-      //
-      //     } else {
-      //         System.out.println("Unknown package type entered. Please try again.");
-      //     }
-      // }
   }
-    /**
-     * This method prints out all the package currently in the inventory, in a
-     * formatted manner.
-     */
 
-     static class showAllPackages extends MainApp implements ActionListener {
-       public void actionPerformed(ActionEvent e) {
-          // ss.addBox("Test1", "Fragile", "Retail", 3, 9);
-          JFrame frame = new JFrame("All Packages");
-          frame.setVisible(true);
-          frame.setSize(900, 600);
-          String text = ss.getAllPackagesFormatted();
-          JLabel label = new JLabel(text, SwingConstants.CENTER);
-          JPanel panel = new JPanel();
-          frame.add(panel);
-          panel.add(label);
-        }
-     }
+  /**
+    * This method closes the window and exits the program.
+    */
 
 
     /**
@@ -361,6 +189,7 @@ public class MainApp {
         else
             System.out.println("Package with given tracking number not found in the database.");
     }
+
 
     /**
      * This method allows the users to search for a package given its tracking number
