@@ -262,11 +262,12 @@ public class MainApp {
     panel3.add(metro, c);
 
     //trackingNumber panel
-    JPanel panel4 = new JPanel(new GridBagLayout());
+    JPanel panel4 = new JPanel();
+    panel4.setLayout(new GridBagLayout());
     GridBagConstraints tgc = new GridBagConstraints();
     JTextField tn = new JTextField(5);
 
-    JLabel trackNo = new JLabel("Enter Tracking Number");
+    JLabel trackNo = new JLabel("Enter Tracking Number:");
     //trackNo.setFont(new Font("Serif", Font.BOLD, 13));
     JLabel entered = new JLabel();
 
@@ -286,31 +287,34 @@ public class MainApp {
     //   }
     // });
 
-    tgc.gridx = 0;
-    tgc.gridy = 0;
-    panel4.add(trackNo, tgc);
-    tgc.gridy = 10;
-    panel4.add(tn, tgc);
-    tgc.gridy = 20;
-    panel4.add(entered,tgc);
+    // tgc.gridx = 0;
+    // tgc.gridy = 0;
+    //panel4.add(trackNo);
+    //tgc.gridy = 10;
+    //panel4.add(tn);
+    //tgc.gridy = 20;
+    //panel4.add(entered);
 
 
-    //special attributes panel
+    //special attributes
     JPanel panel5 = new JPanel();
     JPanel panel6 = new JPanel(); //OK button panel
-    panel5.setLayout(new FlowLayout());
-    GridBagConstraints sgc = new GridBagConstraints();
+    JButton okButton = new JButton("OK");
+
+    String[] drumStrings = {"Plastic", "Fiber"};
+    JComboBox <String> drumAttributes = new JComboBox<>(drumStrings);
+    drumAttributes.setPreferredSize(new Dimension(100, 25));
+
+
+    JLabel drumText = new JLabel();
     JLabel p5Label1 = new JLabel();
     JLabel p5Label2 = new JLabel();
 
-    JButton okButton = new JButton("OK");
-    //okButton.addActionListener(this);
+    drumAttributes.setVisible(false);
+    panel5.add(drumText);
+    panel5.add(drumAttributes);
+    drumAttributes.setSelectedItem(null);
 
-    JLabel dummy1 = new JLabel(" ");
-    JLabel dummy2 = new JLabel(" ");
-    JLabel dummy3 = new JLabel(" ");
-    JLabel dummy4 = new JLabel(" ");
-    JLabel dummy5 = new JLabel(" ");
     JTextField p5textField1 = new JTextField(5);
     JTextField p5textField2 = new JTextField(5);
 
@@ -323,24 +327,48 @@ public class MainApp {
     okButton.setVisible(false);
 
     panel6.add(okButton);
-    panel5.add(p5Label1);
-    panel5.add(p5textField1);
-    panel5.add(dummy1);
-    panel5.add(dummy2);
-    panel5.add(dummy3);
-    panel5.add(dummy4);
-    panel5.add(dummy5);
-    panel5.add(p5Label2);
-    panel5.add(p5textField2);
+
+    c.fill = GridBagConstraints.HORIZONTAL;
+
+    c.gridx = 0;
+    c.gridy = 0;
+    panel4.add(trackNo, c);
+
+    c.insets = new Insets(0,0,20,0);
+    c.gridx = 0;
+    c.gridy = 1;
+    panel4.add(tn, c);
+
+    c.insets = new Insets(0,0,0,0);
+    c.gridx = 0;
+    c.gridy = 2;
+    panel4.add(p5Label1, c);
+
+    c.insets = new Insets(0,0,20,0);
+    c.gridx = 0;
+    c.gridy = 3;
+    panel4.add(p5textField1, c);
+
+    c.insets = new Insets(0,0,0,0);
+    c.gridx = 0;
+    c.gridy = 4;
+    panel4.add(p5Label2, c);
+
+    c.gridx = 0;
+    c.gridy = 5;
+    panel4.add(p5textField2, c);
+
 
     envelope.addActionListener(new ActionListener () {
       public void actionPerformed(ActionEvent e) {
         p5Label1.setText("Height:");
-        p5Label2.setText("Width: ");
+        p5Label2.setText("Width:");
         p5Label1.setVisible(true);
         p5Label2.setVisible(true);
         p5textField1.setVisible(true);
         p5textField2.setVisible(true);
+        drumText.setVisible(false);
+        drumAttributes.setVisible(false);
         okButton.setVisible(true);
       }
     });
@@ -353,35 +381,52 @@ public class MainApp {
         p5Label2.setVisible(true);
         p5textField1.setVisible(true);
         p5textField2.setVisible(true);
+        drumText.setVisible(false);
+        drumAttributes.setVisible(false);
         okButton.setVisible(true);
       }
     });
 
     crate.addActionListener(new ActionListener () {
       public void actionPerformed(ActionEvent e) {
-        p5Label1.setText("Weight: ");
-        p5Label2.setText("Content: ");
+        p5Label1.setText("Weight:");
+        p5Label2.setText("Content:");
         p5Label1.setVisible(true);
         p5Label2.setVisible(true);
         p5textField1.setVisible(true);
         p5textField2.setVisible(true);
+        drumText.setVisible(false);
+        drumAttributes.setVisible(false);
         okButton.setVisible(true);
       }
     });
 
     drum.addActionListener(new ActionListener () {
       public void actionPerformed(ActionEvent e) {
-        p5Label1.setText("Material: ");
         p5Label2.setText("Diameter: ");
-        p5Label1.setVisible(true);
+        p5Label1.setVisible(false);
         p5Label2.setVisible(true);
-        p5textField1.setVisible(true);
+        p5textField1.setVisible(false);
         p5textField2.setVisible(true);
+        drumText.setVisible(true);
+        drumAttributes.setVisible(true);
         okButton.setVisible(true);
       }
     });
 
-    //okButton.setActionCommand(getText(p5TextField1));
+    drumAttributes.addActionListener(new ActionListener () {
+      public void actionPerformed(ActionEvent e) {
+        JComboBox cb = (JComboBox)e.getSource();
+        String msg = (String)cb.getSelectedItem();
+        switch(msg) {
+          case "Plastic": drumText.setText("You selected Plastic.");
+            break;
+          case "Fiber": drumText.setText("You selected Fiber");
+            break;
+          default: drumText.setText("There is an error.");
+        }
+      }
+    });
 
     okButton.addActionListener(new ActionListener()
     {
@@ -391,7 +436,12 @@ public class MainApp {
         String getAtt2 = p5textField2.getText();
         String getTn = tn.getText();
 
-        if(getTn.isEmpty() || getAtt1.isEmpty() || getAtt2.isEmpty()) {
+        if(drum.isSelected() && getAtt2.isEmpty()) {
+          JOptionPane.showMessageDialog(null, "Please fill in all fields", "Empty Field Error",
+           JOptionPane.ERROR_MESSAGE);
+        }
+
+        if((getTn.isEmpty() || getAtt1.isEmpty() || getAtt2.isEmpty()) && !drum.isSelected()) {
           JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Empty Field Error",
            JOptionPane.ERROR_MESSAGE);
         }
@@ -403,15 +453,8 @@ public class MainApp {
         }
 
         if(envelope.isSelected()){
-          
+
         }
-
-
-         // if(envelope.isSelected()) {
-         //
-         // }
-    	   // int messageType = JOptionPane.PLAIN_MESSAGE;
-    	   // JOptionPane.showMessageDialog(null, getTxt, "Java Programming Forums!!", messageType);
       }
     });
 
