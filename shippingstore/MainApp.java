@@ -256,37 +256,35 @@ public class MainApp {
     //trackingNumber panel
     JPanel panel4 = new JPanel(new GridBagLayout());
     GridBagConstraints tgc = new GridBagConstraints();
-    JTextField tf = new JTextField(5);
+    JTextField tn = new JTextField(5);
 
     JLabel trackNo = new JLabel("Enter Tracking Number");
     //trackNo.setFont(new Font("Serif", Font.BOLD, 13));
     JLabel entered = new JLabel();
 
-    tf.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        if(tf.getText().length() == 5) {
-          String input = tf.getText();
-          entered.setText("Tracking Number: " + input);
-          tf.setText("");
-
-        }else{
-          JOptionPane.showMessageDialog(frame,"Tracking number must be 5 characters.", "Character Limit Error", JOptionPane.ERROR_MESSAGE);
-          tf.setText("");
-        }
-      }
-    });
+    // tn.addActionListener(new ActionListener()
+    // {
+    //   public void actionPerformed(ActionEvent e)
+    //   {
+    //     if(tn.getText().length() == 5) {
+    //       String input = tn.getText();
+    //       entered.setText("Tracking Number: " + input);
+    //       tn.setText("");
+    //
+    //     }else{
+    //       JOptionPane.showMessageDialog(frame,"Tracking number must be 5 characters.", "Character Limit Error", JOptionPane.ERROR_MESSAGE);
+    //       tf.setText("");
+    //     }
+    //   }
+    // });
 
     tgc.gridx = 0;
     tgc.gridy = 0;
     panel4.add(trackNo, tgc);
     tgc.gridy = 10;
-    panel4.add(tf, tgc);
+    panel4.add(tn, tgc);
     tgc.gridy = 20;
     panel4.add(entered,tgc);
-
-
 
 
     //special attributes panel
@@ -296,7 +294,10 @@ public class MainApp {
     GridBagConstraints sgc = new GridBagConstraints();
     JLabel p5Label1 = new JLabel();
     JLabel p5Label2 = new JLabel();
+
     JButton okButton = new JButton("OK");
+    //okButton.addActionListener(this);
+
     JLabel dummy1 = new JLabel(" ");
     JLabel dummy2 = new JLabel(" ");
     JLabel dummy3 = new JLabel(" ");
@@ -305,16 +306,9 @@ public class MainApp {
     JTextField p5textField1 = new JTextField(5);
     JTextField p5textField2 = new JTextField(5);
 
-
     Font f=new Font("Arial", Font.BOLD,13);
     p5Label1.setFont(f);
     p5Label2.setFont(f);
-
-
-    // p5Label1.setBounds(100,50,100,40);
-    // p5Label2.setBounds(100,140,100,40);
-    // p5textField1.setBounds(250,50,200,40);
-    // p5textField2.setBounds(250,140,200,40);
 
     p5textField1.setVisible(false);
     p5textField2.setVisible(false);
@@ -330,6 +324,7 @@ public class MainApp {
     panel5.add(dummy5);
     panel5.add(p5Label2);
     panel5.add(p5textField2);
+
     envelope.addActionListener(new ActionListener () {
       public void actionPerformed(ActionEvent e) {
         p5Label1.setText("Height:");
@@ -384,22 +379,35 @@ public class MainApp {
     {
       public void actionPerformed(ActionEvent e)
       {
-         String getTxt = p5textField1.getText();
-    	   int messageType = JOptionPane.PLAIN_MESSAGE;
-    	   JOptionPane.showMessageDialog(null, getTxt, "Java Programming Forums!!", messageType);
+        String getAtt1 = p5textField1.getText();
+        String getAtt2 = p5textField2.getText();
+        String getTn = tn.getText();
+
+        if(getTn.isEmpty() || getAtt1.isEmpty() || getAtt2.isEmpty()) {
+          JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Empty Field Error",
+           JOptionPane.ERROR_MESSAGE);
+        }
+
+        if(getTn.length() > 5) {
+          JOptionPane.showMessageDialog(frame,"Tracking number must be 5 characters or less.",
+           "Character Limit Error", JOptionPane.ERROR_MESSAGE);
+          tn.setText("");
+        }
+
+        if(envelope.isSelected()){
+          
+        }
+
+
+         // if(envelope.isSelected()) {
+         //
+         // }
+    	   // int messageType = JOptionPane.PLAIN_MESSAGE;
+    	   // JOptionPane.showMessageDialog(null, getTxt, "Java Programming Forums!!", messageType);
       }
     });
 
     //Add panels
-    //first row
-    // mc.gridx = 0;
-    // mc.gridy = 0;
-    // mc.weightx = 0.5;
-    // mc.weighty = 0.5;
-    // mc.gridheight = 200;
-    // mc.gridwidth = 133;
-    //mc.fill = GridBagConstraints.VERTICAL;
-    //mc.fill = GridBagConstraints.VERTICAL;;
     masterPanel.add(panel1);
     masterPanel.add(panel2);
     masterPanel.add(panel3);
