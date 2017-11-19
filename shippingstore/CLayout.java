@@ -307,74 +307,71 @@ public void addNewPackage(JPanel masterPanel) {
 
       //special attributes panel
       JPanel panel5 = new JPanel();
-      panel5.setLayout(null);
+      JPanel panel6 = new JPanel(); //OK button panel
+      panel5.setLayout(new FlowLayout());
       GridBagConstraints sgc = new GridBagConstraints();
       JLabel p5Label1 = new JLabel();
       JLabel p5Label2 = new JLabel();
-      JTextField p5textField1 = new JTextField(10);
-      JTextField p5textField2 = new JTextField(10);
+      JButton okButton = new JButton("OK");
+      JLabel dummy1 = new JLabel(" ");
+      JLabel dummy2 = new JLabel(" ");
+      JLabel dummy3 = new JLabel(" ");
+      JLabel dummy4 = new JLabel(" ");
+      JLabel dummy5 = new JLabel(" ");
+      JTextField p5textField1 = new JTextField(5);
+      JTextField p5textField2 = new JTextField(5);
 
-      Font f=new Font("Arial", Font.BOLD,8);
+
+      Font f=new Font("Arial", Font.BOLD,13);
       p5Label1.setFont(f);
       p5Label2.setFont(f);
 
-      p5Label1.setBounds(100,50,100,40);
-      p5Label2.setBounds(100,140,100,40);
-      p5textField1.setBounds(250,50,200,40);
-      p5textField2.setBounds(250,140,200,40);
+
+      // p5Label1.setBounds(100,50,100,40);
+      // p5Label2.setBounds(100,140,100,40);
+      // p5textField1.setBounds(250,50,200,40);
+      // p5textField2.setBounds(250,140,200,40);
 
       p5textField1.setVisible(false);
       p5textField2.setVisible(false);
+      okButton.setVisible(false);
 
-      // panel5.add(p5Label1);
-      // panel5.add(p5textField1);
-      // panel5.add(p5Label2);
-      // panel5.add(p5textField2);
+      panel6.add(okButton);
+      panel5.add(p5Label1);
+      panel5.add(p5textField1);
+      panel5.add(dummy1);
+      panel5.add(dummy2);
+      panel5.add(dummy3);
+      panel5.add(dummy4);
+      panel5.add(dummy5);
+      panel5.add(p5Label2);
+      panel5.add(p5textField2);
 
 
-      // //sgc.fill = GridBagConstraints.HORIZONTAL;
-      sgc.gridx = 0;
-      sgc.gridy = 0;
-      panel5.add(p5Label1, sgc);
-      //
-
-      sgc.gridx = 0;
-      sgc.gridy = 1;
-      panel5.add(p5Label2, sgc);
-
-      // //sgc.fill = GridBagConstraints.HORIZONTAL;
-      sgc.gridx = 1;
-      sgc.gridy = 0;
-      panel5.add(p5textField1, sgc);
-      //
-      // //sgc.fill = GridBagConstraints.HORIZONTAL;
-
-      //
-      // //sgc.fill = GridBagConstraints.HORIZONTAL;
-      sgc.gridx = 1;
-      sgc.gridy = 1;
-      panel5.add(p5textField2, sgc);
 
 
 
       envelope.addActionListener(new ActionListener () {
         public void actionPerformed(ActionEvent e) {
-          p5Label1.setText("Height: ");
+          p5Label1.setText("Height:");
           p5Label2.setText("Width: ");
           p5Label1.setVisible(true);
           p5Label2.setVisible(true);
           p5textField1.setVisible(true);
           p5textField2.setVisible(true);
-          panel5.revalidate();
+          okButton.setVisible(true);
         }
       });
 
       box.addActionListener(new ActionListener () {
         public void actionPerformed(ActionEvent e) {
-          p5Label1.setText("Dimension: ");
-          p5Label2.setText("Volume: ");
+          p5Label1.setText("Dimension:");
+          p5Label2.setText("Volume:");
           p5Label1.setVisible(true);
           p5Label2.setVisible(true);
+          p5textField1.setVisible(true);
+          p5textField2.setVisible(true);
+          okButton.setVisible(true);
         }
       });
 
@@ -384,6 +381,9 @@ public void addNewPackage(JPanel masterPanel) {
           p5Label2.setText("Content: ");
           p5Label1.setVisible(true);
           p5Label2.setVisible(true);
+          p5textField1.setVisible(true);
+          p5textField2.setVisible(true);
+          okButton.setVisible(true);
         }
       });
 
@@ -393,12 +393,24 @@ public void addNewPackage(JPanel masterPanel) {
           p5Label2.setText("Diameter: ");
           p5Label1.setVisible(true);
           p5Label2.setVisible(true);
+          p5textField1.setVisible(true);
+          p5textField2.setVisible(true);
+          okButton.setVisible(true);
         }
       });
 
+      //okButton.setActionCommand(getText(p5TextField1));
 
-      //extra panel
-      JPanel panel6 = new JPanel();
+      okButton.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+           String getTxt = p5textField1.getText();
+				   int messageType = JOptionPane.PLAIN_MESSAGE;
+				   JOptionPane.showMessageDialog(null, getTxt, "Java Programming Forums!!", messageType);
+        }
+      });
+
 
 
 
