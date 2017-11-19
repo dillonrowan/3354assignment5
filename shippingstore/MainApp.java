@@ -7,6 +7,10 @@ import java.awt.Color;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.Box;
+import javax.swing.BorderFactory;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.Border;
+import javax.swing.BoxLayout;
 
 /**
 * Main access point
@@ -34,39 +38,40 @@ public class MainApp {
     JLabel label = new JLabel("Welcome! Please choose menu option.");
     JPanel panel = new JPanel(new GridLayout(10, 1, 1, 1));
 
+    // Create menu buttons
     JButton button1 = new JButton ("Show all existing packages in the database.");
-    panel.add(button1);
-
     JButton button2 = new JButton ("Add a new package to the database.");
-    panel.add(button2);
-
     JButton button3 = new JButton ("Delete a package from a database (given its tracking number).");
-    panel.add(button3);
-
     JButton button4 = new JButton ("Search for a package (given its tracking number).");
-    panel.add(button4);
-
     JButton button5 = new JButton ("Show list of users.");
-    panel.add(button5);
-
     JButton button6 = new JButton ("Add a new user to the database.");
-    panel.add(button6);
-
     JButton button7 = new JButton ("Update user info (given their id).");
-    panel.add(button7);
-
     JButton button8 = new JButton ("Deliver a package.");
-    panel.add(button8);
-
     JButton button9 = new JButton ("Show a list of transactions.");
-    panel.add(button9);
-
     JButton button10 = new JButton ("Exit program.");
+
+    // Add buttons to panel
+    panel.add(button1);
+    panel.add(button2);
+    panel.add(button3);
+    panel.add(button4);
+    panel.add(button5);
+    panel.add(button6);
+    panel.add(button7);
+    panel.add(button8);
+    panel.add(button9);
     panel.add(button10);
 
+    // Assign listener to buttons
     button1.addActionListener(new showAllPackages());
     button2.addActionListener(new addNewPackage());
     //button3.addActionListener(new removePackage());
+    //button4.addActionListener(new removePackage());
+    //button5.addActionListener(new removePackage());
+    //button6.addActionListener(new removePackage());
+    //button7.addActionListener(new removePackage());
+    //button8.addActionListener(new removePackage());
+    //button9.addActionListener(new removePackage());
     button10.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent event){
         System.exit(0);
@@ -82,16 +87,13 @@ public class MainApp {
     frame.setVisible(true);
     }
 
-
-
    /**
     * This method prints out all the package currently in the inventory, in a
     * formatted manner.
     */
-
     private class showAllPackages extends MainApp implements ActionListener {
       public void actionPerformed(ActionEvent e) {
-         // ss.addBox("Test1", "Fragile", "Retail", 3, 9);
+
          JFrame frame = new JFrame("All Packages");
          frame.setVisible(true);
          frame.setSize(900, 600);
@@ -110,59 +112,126 @@ public class MainApp {
      */
     private class addNewPackage extends MainApp implements ActionListener {
       public void actionPerformed(ActionEvent e) {
-         JFrame frame = new JFrame("Add a new package");
-         frame.setVisible(true);
-         frame.setSize(900, 600);
+        JFrame frame = new JFrame("Add a new package");
+        frame.setVisible(true);
+        frame.setSize(900, 600);
+        frame.setLayout(new GridLayout(1,5));
 
-         //Text and Tab panel
-          JPanel panel2 = new JPanel();
-          JLabel trackingNumber = new JLabel("Enter packing number");
-          JTextField tf = new JTextField(5);
-          panel2.add(tf);
-          //JTabbedPane jtp = new JTabbedPane();
+        // Type panel
+        JPanel tPanel = new JPanel();
+        tPanel.setBorder(BorderFactory.createTitledBorder("Type"));
+        tPanel.setLayout(new BoxLayout(tPanel, BoxLayout.Y_AXIS));
 
-         //Radio Button panel
-         JPanel panel1 = new JPanel();
-         panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
-         JRadioButton envelope = new JRadioButton("Envelope");
-         JRadioButton box = new JRadioButton("Box");
-         JRadioButton crate = new JRadioButton("Crate");
-         JRadioButton drum = new JRadioButton("Drum");
-         ButtonGroup group = new ButtonGroup();
-         group.add(envelope);
-         group.add(box);
-         group.add(crate);
-         group.add(drum);
+        // Type radio buttons
+        JRadioButton envelope = new JRadioButton("Envelope");
+        JRadioButton box = new JRadioButton("Box");
+        JRadioButton crate = new JRadioButton("Crate");
+        JRadioButton drum = new JRadioButton("Drum");
+        ButtonGroup typeGroup = new ButtonGroup();
 
+        // Type radio group
+        typeGroup.add(envelope);
+        typeGroup.add(box);
+        typeGroup.add(crate);
+        typeGroup.add(drum);
 
+        // Add type radio buttons to panel
+        tPanel.add(envelope);
+        tPanel.add(box);
+        tPanel.add(crate);
+        tPanel.add(drum);
 
-         //Add space between radio buttons and add to panel1
-         panel1.add(envelope);
-         //panel1.add(Box.createRigidArea(new Dimension(0,20)));
-         panel1.add(box);
-         //panel1.add(Box.createRigidArea(new Dimension(0,20)));
-         panel1.add(crate);
-         //panel1.add(Box.createRigidArea(new Dimension(0,20)));
-         panel1.add(drum);
+        // Mailing Class panel
+        JPanel mClassPanel = new JPanel();
+        mClassPanel.setBorder(BorderFactory.createTitledBorder("Mailing Class"));
+        mClassPanel.setLayout(new BoxLayout(mClassPanel, BoxLayout.Y_AXIS));
 
+        // Mailing Class radio buttons
+        JRadioButton fClass = new JRadioButton("First-Class");
+        JRadioButton priority = new JRadioButton("Priority");
+        JRadioButton retail = new JRadioButton("Retail");
+        JRadioButton ground = new JRadioButton("Ground");
+        JRadioButton metro = new JRadioButton("Metro");
+        ButtonGroup mClassGroup = new ButtonGroup();
 
-          //panel2.setBackground(Color.red);
-         // panel1.setLayout(new GridBagLayout());
-         // panel1.pack();
+        // Mailing Class radio group
+        mClassGroup.add(fClass);
+        mClassGroup.add(priority);
+        mClassGroup.add(retail);
+        mClassGroup.add(ground);
+        mClassGroup.add(metro);
 
+        // Add Mailing Class radio buttons to panel
+        mClassPanel.add(fClass);
+        mClassPanel.add(priority);
+        mClassPanel.add(retail);
+        mClassPanel.add(ground);
+        mClassPanel.add(metro);
 
+        // Specification panel
+        JPanel specPanel = new JPanel();
+        specPanel.setBorder(BorderFactory.createTitledBorder("Specification"));
+        specPanel.setLayout(new BoxLayout(specPanel, BoxLayout.Y_AXIS));
 
-         //Add panels
-         frame.getContentPane().add(panel1,BorderLayout.WEST);
-         frame.getContentPane().add(panel2);
+        // Specification radio buttons
+        JRadioButton fragile = new JRadioButton("Fragile");
+        JRadioButton books = new JRadioButton("Books");
+        JRadioButton catalogs = new JRadioButton("Catalogs");
+        JRadioButton noBend = new JRadioButton("Do-Not-bend");
+        JRadioButton na = new JRadioButton("N/A");
+        ButtonGroup specGroup = new ButtonGroup();
+
+        // Specification radio group
+        specGroup.add(fragile);
+        specGroup.add(books);
+        specGroup.add(catalogs);
+        specGroup.add(noBend);
+        specGroup.add(na);
+
+        // Add Specification radio buttons to panel
+        specPanel.add(fragile);
+        specPanel.add(books);
+        specPanel.add(catalogs);
+        specPanel.add(noBend);
+        specPanel.add(na);
+
+        // Material panel
+        JPanel materialPanel = new JPanel();
+        materialPanel.setBorder(BorderFactory.createTitledBorder("Material"));
+        materialPanel.setLayout(new BoxLayout(materialPanel, BoxLayout.Y_AXIS));
+
+        // Material radio buttons
+        JRadioButton plastic = new JRadioButton("Plastic");
+        JRadioButton fiber = new JRadioButton("Fiber");
+        ButtonGroup materialGroup = new ButtonGroup();
+
+        // Material radio group
+        materialGroup.add(plastic);
+        materialGroup.add(fiber);
+
+        // Add Material radio buttons to panel
+        materialPanel.add(plastic);
+        materialPanel.add(fiber);
+
+        frame.add(tPanel);
+        frame.add(mClassPanel);
+        frame.add(specPanel);
+        //frame.getContentPane().add(mClassPanel,BorderLayout.WEST);
        }
   }
 
+
   /**
-    * This method closes the window and exits the program.
+    * This method allows the user to enter a new package to the list
+    * database.
+    * @throws shippingstore.BadInputException bad input
     */
-
-
+    /*
+   private class removePackage extends MainApp implements ActionListener {
+     public void actionPerformed(ActionEvent e) {
+      }
+ }
+*/
     /**
      * This method allows the user to delete a package from the inventory
      * database.
