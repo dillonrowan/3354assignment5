@@ -23,8 +23,9 @@ public class MainApp {
   JPanel panelSecond = new JPanel();
   JPanel panelThird = new JPanel();
 
-  JButton buttonBack = new JButton("Back");
   CardLayout cl = new CardLayout();
+
+  JButton buttonBack = new JButton("Back");
 
   public MainApp() {
     ShippingStore ss;
@@ -98,7 +99,6 @@ public class MainApp {
       }
     });
 
-  //action for back button
     buttonBack.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent arg0) {
@@ -135,11 +135,16 @@ public class MainApp {
     JRadioButton crate = new JRadioButton("Crate");
     JRadioButton drum = new JRadioButton("Drum");
 
-    ButtonGroup tbg = new ButtonGroup();
-    tbg.add(envelope);
-    tbg.add(box);
-    tbg.add(crate);
-    tbg.add(drum);
+    envelope.setActionCommand("Envelope");
+    box.setActionCommand("Box");
+    crate.setActionCommand("Crate");
+    drum.setActionCommand("Drum");
+
+    ButtonGroup typeGroup = new ButtonGroup();
+    typeGroup.add(envelope);
+    typeGroup.add(box);
+    typeGroup.add(crate);
+    typeGroup.add(drum);
 
     c.weightx = 0.1;
     c.weighty = 0.1;
@@ -176,12 +181,18 @@ public class MainApp {
     JRadioButton dnb = new JRadioButton("Do-not-bend");
     JRadioButton na = new JRadioButton("N/A");
 
-    ButtonGroup sbg = new ButtonGroup();
-    sbg.add(fragile);
-    sbg.add(books);
-    sbg.add(catalogs);
-    sbg.add(dnb);
-    sbg.add(na);
+    fragile.setActionCommand("Fragile");
+    books.setActionCommand("Books");
+    catalogs.setActionCommand("Catalogs");
+    dnb.setActionCommand("Do-not-bend");
+    na.setActionCommand("N/A");
+
+    ButtonGroup specGroup = new ButtonGroup();
+    specGroup.add(fragile);
+    specGroup.add(books);
+    specGroup.add(catalogs);
+    specGroup.add(dnb);
+    specGroup.add(na);
 
     c.weightx = 0.1;
     c.weighty = 0.1;
@@ -220,16 +231,22 @@ public class MainApp {
 
     JRadioButton firstClass = new JRadioButton("First-Class");
     JRadioButton priority = new JRadioButton("Priority");
-    JRadioButton retial = new JRadioButton("Retail");
+    JRadioButton retail = new JRadioButton("Retail");
     JRadioButton ground = new JRadioButton("Ground");
     JRadioButton metro = new JRadioButton("Metro");
 
-    ButtonGroup mbg = new ButtonGroup();
-    mbg.add(firstClass);
-    mbg.add(priority);
-    mbg.add(retial);
-    mbg.add(ground);
-    mbg.add(metro);
+    firstClass.setActionCommand("First-Class");
+    priority.setActionCommand("Priority");
+    retail.setActionCommand("Retail");
+    ground.setActionCommand("Ground");
+    metro.setActionCommand("Metro");
+
+    ButtonGroup mClassGroup = new ButtonGroup();
+    mClassGroup.add(firstClass);
+    mClassGroup.add(priority);
+    mClassGroup.add(retail);
+    mClassGroup.add(ground);
+    mClassGroup.add(metro);
 
     c.weightx = 0.1;
     c.weighty = 0.1;
@@ -247,7 +264,7 @@ public class MainApp {
     c.weighty = 0.1;
     c.gridx = 0;
     c.gridy = 3;
-    panel3.add(retial, c);
+    panel3.add(retail, c);
 
     c.weightx = 0.1;
     c.weighty = 0.1;
@@ -320,9 +337,11 @@ public class MainApp {
 
     p5textField1.setVisible(false);
     p5textField2.setVisible(false);
-    okButton.setVisible(false);
+    okButton.setVisible(true);
+    buttonBack.setVisible(true);
 
     panel6.add(okButton);
+    panel6.add(buttonBack);
     panel5.add(p5Label1);
     panel5.add(p5textField1);
     panel5.add(dummy1);
@@ -341,7 +360,6 @@ public class MainApp {
         p5Label2.setVisible(true);
         p5textField1.setVisible(true);
         p5textField2.setVisible(true);
-        okButton.setVisible(true);
       }
     });
 
@@ -353,7 +371,6 @@ public class MainApp {
         p5Label2.setVisible(true);
         p5textField1.setVisible(true);
         p5textField2.setVisible(true);
-        okButton.setVisible(true);
       }
     });
 
@@ -365,7 +382,6 @@ public class MainApp {
         p5Label2.setVisible(true);
         p5textField1.setVisible(true);
         p5textField2.setVisible(true);
-        okButton.setVisible(true);
       }
     });
 
@@ -377,7 +393,6 @@ public class MainApp {
         p5Label2.setVisible(true);
         p5textField1.setVisible(true);
         p5textField2.setVisible(true);
-        okButton.setVisible(true);
       }
     });
 
@@ -388,22 +403,22 @@ public class MainApp {
       public void actionPerformed(ActionEvent e)
       {
         String getAtt1 = p5textField1.getText();
-        String getAtt2 = p5textField2.getText();
         String getTn = tn.getText();
 
-        if(getTn.isEmpty() || getAtt1.isEmpty() || getAtt2.isEmpty()) {
+        if(getTn.isEmpty() || getAtt1.isEmpty() ||
+            typeGroup.getSelection() == null ||
+            specGroup.getSelection() == null ||
+            mClassGroup.getSelection() == null) {
           JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Empty Field Error",
            JOptionPane.ERROR_MESSAGE);
-        }
-
-        if(getTn.length() > 5) {
-          JOptionPane.showMessageDialog(frame,"Tracking number must be 5 characters or less.",
+        } else if(getTn.length() != 5) {
+          JOptionPane.showMessageDialog(frame,"Tracking number must be 5 characters.",
            "Character Limit Error", JOptionPane.ERROR_MESSAGE);
           tn.setText("");
         }
 
         if(envelope.isSelected()){
-          
+
         }
 
 
