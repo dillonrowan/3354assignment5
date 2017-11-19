@@ -12,94 +12,77 @@ import javax.swing.Box;
 * Main access point
 */
 public class MainApp {
+  ShippingStore ss;
+  public final Scanner sc= new Scanner(System.in); // Used to read from System's standard input
 
-    ShippingStore ss;
-    public final Scanner sc= new Scanner(System.in); // Used to read from System's standard input
+  /**
+   * Constructor
+   */
+  public MainApp() {
+    ss = ShippingStore.readDatabase();
+    //this.sc = new Scanner(System.in);
+  }
 
-    /**
-     * Constructor
-     */
-    public MainApp() {
-        ss = ShippingStore.readDatabase();
-        //this.sc = new Scanner(System.in);
+  /**
+  * This method servers as the main interface between the program and the user.
+  * The method interacts with the user by printing out a set of options, and
+  * asking the user to select one.
+  */
+  public void runSoftware() {
+    /** Create an empty, labeled panel and display it */
+    JFrame frame = new JFrame("Shipping Store Database");
+    JLabel label = new JLabel("Welcome! Please choose menu option.");
+    JPanel panel = new JPanel(new GridLayout(10, 1, 1, 1));
+
+    JButton button1 = new JButton ("Show all existing packages in the database.");
+    panel.add(button1);
+
+    JButton button2 = new JButton ("Add a new package to the database.");
+    panel.add(button2);
+
+    JButton button3 = new JButton ("Delete a package from a database (given its tracking number).");
+    panel.add(button3);
+
+    JButton button4 = new JButton ("Search for a package (given its tracking number).");
+    panel.add(button4);
+
+    JButton button5 = new JButton ("Show list of users.");
+    panel.add(button5);
+
+    JButton button6 = new JButton ("Add a new user to the database.");
+    panel.add(button6);
+
+    JButton button7 = new JButton ("Update user info (given their id).");
+    panel.add(button7);
+
+    JButton button8 = new JButton ("Deliver a package.");
+    panel.add(button8);
+
+    JButton button9 = new JButton ("Show a list of transactions.");
+    panel.add(button9);
+
+    JButton button10 = new JButton ("Exit program.");
+    panel.add(button10);
+
+    button1.addActionListener(new showAllPackages());
+    button2.addActionListener(new addNewPackage());
+    //button3.addActionListener(new removePackage());
+    button10.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent event){
+        System.exit(0);
+      }
+    });
+
+    label.setHorizontalAlignment(SwingConstants.CENTER);
+    frame.add(label,BorderLayout.NORTH);
+    frame.add(panel);
+
+    frame.pack();
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setVisible(true);
     }
 
-    /**
-    * This method servers as the main interface between the program and the user.
-    * The method interacts with the user by printing out a set of options, and
-    * asking the user to select one.
-    */
-   public void runSoftware() {
 
-     /** Create an empty, labeled panel and display it */
-        JFrame frame = new JFrame("Shipping Store Database");
-        JLabel label = new JLabel("Welcome! Please choose menu option.");
-        JPanel panel = new JPanel(new GridLayout(10,1));
-
-        JButton button1 = new JButton ("Show all existing packages in the database.");
-        panel.add(button1);
-
-        JButton button2 = new JButton ("Add a new package to the database.");
-        panel.add(button2);
-
-        JButton button3 = new JButton ("Delete a package from a database (given its tracking number).");
-        panel.add(button3);
-
-        JButton button4 = new JButton ("Search for a package (given its tracking number).");
-        panel.add(button4);
-
-        JButton button5 = new JButton ("Show list of users.");
-        panel.add(button5);
-
-        JButton button6 = new JButton ("Add a new user to the database.");
-        panel.add(button6);
-
-        JButton button7 = new JButton ("Update user info (given their id).");
-        panel.add(button7);
-
-        JButton button8 = new JButton ("Deliver a package.");
-        panel.add(button8);
-
-        JButton button9 = new JButton ("Show a list of transactions.");
-        panel.add(button9);
-
-        JButton button10 = new JButton ("Exit program.");
-        panel.add(button10);
-
-        button1.addActionListener(new showAllPackages());
-        button2.addActionListener(new addNewPackage());
-        button10.addActionListener(new ActionListener(){
-          public void actionPerformed(ActionEvent event)
-          {
-            System.exit(0);
-          }
-        });
-        
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        frame.add(label,BorderLayout.NORTH);
-        frame.add(panel);
-
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-   }
-
-   /**
-    * Auxiliary method that prints out the operations menu.
-    */
-   private static void printMenu() {
-       System.out.println(
-               "\n 1. Show all existing packages in the database.\n" +
-               " 2. Add a new package to the database. \n" +
-               " 3. Delete a package from a database (given its tracking number).\n" +
-               " 4. Search for a package (given its tracking number).\n" +
-               " 5. Show list of users.\n" +
-               " 6. Add a new user to the database.\n" +
-               " 7. Update user info (given their id).\n" +
-               " 8. Deliver a package.\n" +
-               " 9. Show a list of transactions.\n" +
-               "10. Exit program.\n");
-   }
 
    /**
     * This method prints out all the package currently in the inventory, in a
@@ -145,16 +128,21 @@ public class MainApp {
          JRadioButton box = new JRadioButton("Box");
          JRadioButton crate = new JRadioButton("Crate");
          JRadioButton drum = new JRadioButton("Drum");
+         ButtonGroup group = new ButtonGroup();
+         group.add(envelope);
+         group.add(box);
+         group.add(crate);
+         group.add(drum);
 
 
 
          //Add space between radio buttons and add to panel1
          panel1.add(envelope);
-         panel1.add(Box.createRigidArea(new Dimension(0,20)));
+         //panel1.add(Box.createRigidArea(new Dimension(0,20)));
          panel1.add(box);
-         panel1.add(Box.createRigidArea(new Dimension(0,20)));
+         //panel1.add(Box.createRigidArea(new Dimension(0,20)));
          panel1.add(crate);
-         panel1.add(Box.createRigidArea(new Dimension(0,20)));
+         //panel1.add(Box.createRigidArea(new Dimension(0,20)));
          panel1.add(drum);
 
 
