@@ -90,6 +90,14 @@ public class MainApp {
       }
     });
 
+    //action to exit
+    button10.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent arg0) {
+        System.exit(0);
+      }
+    });
+
   //action for back button
     buttonBack.addActionListener(new ActionListener() {
       @Override
