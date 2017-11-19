@@ -1,5 +1,6 @@
 package shippingstore;
 
+import shippingstore.Validate;
 import java.util.*;
 import java.awt.*;
 import java.awt.CardLayout;
@@ -128,7 +129,6 @@ public class MainApp {
     panel1.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     panel1.setBorder(BorderFactory.createTitledBorder("Type"));
-    c.fill = GridBagConstraints.HORIZONTAL;
 
     JRadioButton envelope = new JRadioButton("Envelope");
     JRadioButton box = new JRadioButton("Box");
@@ -141,26 +141,21 @@ public class MainApp {
     tbg.add(crate);
     tbg.add(drum);
 
+    c.fill = GridBagConstraints.HORIZONTAL;
     c.weightx = 0.1;
     c.weighty = 0.1;
     c.gridx = 0;
     c.gridy = 1;
     panel1.add(envelope, c);
 
-    c.weightx = 0.1;
-    c.weighty = 0.1;
     c.gridx = 0;
     c.gridy = 2;
     panel1.add(box, c);
 
-    c.weightx = 0.1;
-    c.weighty = 0.1;
     c.gridx = 0;
     c.gridy = 3;
     panel1.add(crate, c);
 
-    c.weightx = 0.1;
-    c.weighty = 0.1;
     c.gridx = 0;
     c.gridy = 4;
     panel1.add(drum, c);
@@ -189,26 +184,18 @@ public class MainApp {
     c.gridy = 1;
     panel2.add(fragile, c);
 
-    c.weightx = 0.1;
-    c.weighty = 0.1;
     c.gridx = 0;
     c.gridy = 2;
     panel2.add(books, c);
 
-    c.weightx = 0.1;
-    c.weighty = 0.1;
     c.gridx = 0;
     c.gridy = 3;
     panel2.add(catalogs, c);
 
-    c.weightx = 0.1;
-    c.weighty = 0.1;
     c.gridx = 0;
     c.gridy = 4;
     panel2.add(dnb, c);
 
-    c.weightx = 0.1;
-    c.weighty = 0.1;
     c.gridx = 0;
     c.gridy = 5;
     panel2.add(na, c);
@@ -237,74 +224,42 @@ public class MainApp {
     c.gridy = 1;
     panel3.add(firstClass, c);
 
-    c.weightx = 0.1;
-    c.weighty = 0.1;
     c.gridx = 0;
     c.gridy = 2;
     panel3.add(priority, c);
 
-    c.weightx = 0.1;
-    c.weighty = 0.1;
     c.gridx = 0;
     c.gridy = 3;
     panel3.add(retial, c);
 
-    c.weightx = 0.1;
-    c.weighty = 0.1;
     c.gridx = 0;
     c.gridy = 4;
     panel3.add(ground, c);
 
-    c.weightx = 0.1;
-    c.weighty = 0.1;
     c.gridx = 0;
     c.gridy = 5;
     panel3.add(metro, c);
 
-    //trackingNumber panel
+    //trackingNumber
     JPanel panel4 = new JPanel();
     panel4.setLayout(new GridBagLayout());
-    GridBagConstraints tgc = new GridBagConstraints();
     JTextField tn = new JTextField(5);
 
     JLabel trackNo = new JLabel("Enter Tracking Number:");
-    //trackNo.setFont(new Font("Serif", Font.BOLD, 13));
+    trackNo.setFont(new Font("Serif", Font.BOLD, 13));
     JLabel entered = new JLabel();
-
-    // tn.addActionListener(new ActionListener()
-    // {
-    //   public void actionPerformed(ActionEvent e)
-    //   {
-    //     if(tn.getText().length() == 5) {
-    //       String input = tn.getText();
-    //       entered.setText("Tracking Number: " + input);
-    //       tn.setText("");
-    //
-    //     }else{
-    //       JOptionPane.showMessageDialog(frame,"Tracking number must be 5 characters.", "Character Limit Error", JOptionPane.ERROR_MESSAGE);
-    //       tf.setText("");
-    //     }
-    //   }
-    // });
-
-    // tgc.gridx = 0;
-    // tgc.gridy = 0;
-    //panel4.add(trackNo);
-    //tgc.gridy = 10;
-    //panel4.add(tn);
-    //tgc.gridy = 20;
-    //panel4.add(entered);
-
 
     //special attributes
     JPanel panel5 = new JPanel();
     JPanel panel6 = new JPanel(); //OK button panel
+    panel6.setLayout(new BoxLayout(panel6, BoxLayout.PAGE_AXIS));
+    panel6.add(Box.createVerticalGlue());
     JButton okButton = new JButton("OK");
+
 
     String[] drumStrings = {"Plastic", "Fiber"};
     JComboBox <String> drumAttributes = new JComboBox<>(drumStrings);
     drumAttributes.setPreferredSize(new Dimension(100, 25));
-
 
     JLabel drumText = new JLabel();
     JLabel p5Label1 = new JLabel();
@@ -324,12 +279,10 @@ public class MainApp {
 
     p5textField1.setVisible(false);
     p5textField2.setVisible(false);
-    okButton.setVisible(false);
+    panel6.add(okButton);  //put OK button in panel6
 
-    panel6.add(okButton);
 
     c.fill = GridBagConstraints.HORIZONTAL;
-
     c.gridx = 0;
     c.gridy = 0;
     panel4.add(trackNo, c);
@@ -358,7 +311,7 @@ public class MainApp {
     c.gridy = 5;
     panel4.add(p5textField2, c);
 
-
+    //manage appearance based on what radio button is selected
     envelope.addActionListener(new ActionListener () {
       public void actionPerformed(ActionEvent e) {
         p5Label1.setText("Height:");
@@ -410,7 +363,7 @@ public class MainApp {
         p5textField2.setVisible(true);
         drumText.setVisible(true);
         drumAttributes.setVisible(true);
-        okButton.setVisible(true);
+
       }
     });
 
@@ -428,6 +381,7 @@ public class MainApp {
       }
     });
 
+    //OK button listener, validates before adding
     okButton.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -435,6 +389,13 @@ public class MainApp {
         String getAtt1 = p5textField1.getText();
         String getAtt2 = p5textField2.getText();
         String getTn = tn.getText();
+
+        //check at least one thing in each buttongroup is selected
+        if(tbg.getSelection() == null || mbg.getSelection() == null ||
+         sbg.getSelection() == null) {
+           JOptionPane.showMessageDialog(null, "Please specify all package properties.", "Package Property Error",
+            JOptionPane.ERROR_MESSAGE);
+         }
 
         if(drum.isSelected() && getAtt2.isEmpty()) {
           JOptionPane.showMessageDialog(null, "Please fill in all fields", "Empty Field Error",
@@ -453,8 +414,38 @@ public class MainApp {
         }
 
         if(envelope.isSelected()){
-
+          if(!Validate.isPosInt(getAtt1) || !Validate.isPosInt(getAtt2)) {
+            JOptionPane.showMessageDialog(frame,"Height and Widtht must be a positive integer.",
+             "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+          }
+          //It has passed, add it and return to cl.show(panelCont, "1")
         }
+
+        if(box.isSelected()) {
+          if(!Validate.isPosInt(getAtt1) || !Validate.isPosInt(getAtt2)) {
+            JOptionPane.showMessageDialog(frame,"Dimension and Volume must be a positive integer.",
+             "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+          }
+          //It has passed, add it and return to cl.show(panelCont, "1")
+        }
+
+        if(crate.isSelected()) {
+          if(!Validate.isPositive(getAtt1)) {
+            JOptionPane.showMessageDialog(frame,"Weight must be a positive Number.",
+             "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+          }
+          //It has passed, add it and return to cl.show(panelCont, "1")
+        }
+
+        if(drum.isSelected()) {
+          if(!Validate.isPositive(getAtt2)) { //THIS VALIDATION IS NOT WORKING
+            JOptionPane.showMessageDialog(frame,"Weight must be a positive integer.",
+             "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+          }
+          //It has passed, add it and return to cl.show(panelCont, "1")
+        }
+
+
       }
     });
 
