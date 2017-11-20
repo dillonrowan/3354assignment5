@@ -76,7 +76,7 @@ public class Drum extends Package {
      */
     @Override
     public String getFormattedText() {
-        return String.format("| %12s | %12s | %13s | %13s | Material: %10s, Diamether: %10f  | %n",
+        return String.format("| %12s | %12s | %13s | %13s | Material: %10s, Diameter: %10f   | %n",
                 "Drum", ptn, specification, mailingClass, material, diameter);
     }
 

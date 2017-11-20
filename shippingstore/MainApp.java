@@ -87,10 +87,16 @@ public class MainApp {
     button1.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent arg0) {
+        panelSecond.removeAll();
         cl.show(panelCont, "2");
         String text = ss.getAllPackagesFormatted();
-        JLabel gapLabel = new JLabel(text, SwingConstants.CENTER);
-        panelSecond.add(gapLabel);
+        JTextArea textArea = new JTextArea();
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        textArea.setEditable(false);
+        textArea.append(text);
+        panelSecond.add(textArea);
+        panelSecond.add(buttonBack);
       }
     });
 
@@ -108,6 +114,7 @@ public class MainApp {
     button3.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent arg0) {
+        panelFourth.removeAll();
         cl.show(panelCont, "4");
         deletePackage(panelFourth);
       }
@@ -117,6 +124,7 @@ public class MainApp {
     button4.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent arg0) {
+        panelFifth.removeAll();
         cl.show(panelCont, "5");
         searchPackage(panelFifth);
       }
@@ -126,8 +134,9 @@ public class MainApp {
     button5.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent arg0) {
+        panelSixth.removeAll();
         cl.show(panelCont, "6");
-        String text = ss.getFormattedUserList();
+        String text = ss.getAllUsersFormatted();
         JLabel gapLabel = new JLabel(text);
         panelSixth.add(gapLabel);
       }
@@ -136,11 +145,10 @@ public class MainApp {
     button6.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent arg0) {
+        panelSeventh.removeAll();
         cl.show(panelCont, "7");
       }
     });
-
-
 
     //action to exit
     button10.addActionListener(new ActionListener() {
@@ -318,7 +326,7 @@ public class MainApp {
   }
 
   public void addNewPackage(JPanel masterPanel) {
-    masterPanel.removeAll();
+    //masterPanel.removeAll();
     masterPanel.setLayout(new GridLayout(0,3));
     JPanel panel1 = new JPanel();
     panel1.setLayout(new GridBagLayout());
@@ -440,13 +448,16 @@ public class MainApp {
     panel4.setLayout(new GridBagLayout());
     JTextField tn = new JTextField(5);
 
-    JLabel trackNo = new JLabel("Enter Tracking Number:");
+    JLabel trackNo = new JLabel("Tracking Number:");
     trackNo.setFont(new Font("Serif", Font.BOLD, 13));
     JLabel entered = new JLabel();
 
     //special attributes
     JPanel panel5 = new JPanel();
     JPanel panel6 = new JPanel(); //OK button panel
+    panel4.setBorder(BorderFactory.createTitledBorder("Attributes"));
+    panel5.setBorder(BorderFactory.createTitledBorder("Drum Material"));
+    panel5.setVisible(false);
     panel6.setLayout(new BoxLayout(panel6, BoxLayout.PAGE_AXIS));
     panel6.add(Box.createVerticalGlue());
     JButton okButton = new JButton("OK");
@@ -456,7 +467,7 @@ public class MainApp {
     JComboBox <String> drumAttributes = new JComboBox<>(drumStrings);
     drumAttributes.setPreferredSize(new Dimension(100, 25));
 
-    JLabel drumText = new JLabel();
+    JLabel drumText = new JLabel("Choose a material for the drum");
     JLabel p5Label1 = new JLabel();
     JLabel p5Label2 = new JLabel();
 
@@ -510,6 +521,7 @@ public class MainApp {
     //manage appearance based on what radio button is selected
     envelope.addActionListener(new ActionListener () {
       public void actionPerformed(ActionEvent e) {
+        panel5.setVisible(false);
         p5Label1.setText("Height:");
         p5Label2.setText("Width:");
         p5Label1.setVisible(true);
@@ -524,6 +536,7 @@ public class MainApp {
 
     box.addActionListener(new ActionListener () {
       public void actionPerformed(ActionEvent e) {
+        panel5.setVisible(false);
         p5Label1.setText("Dimension:");
         p5Label2.setText("Volume:");
         p5Label1.setVisible(true);
@@ -538,6 +551,7 @@ public class MainApp {
 
     crate.addActionListener(new ActionListener () {
       public void actionPerformed(ActionEvent e) {
+        panel5.setVisible(false);
         p5Label1.setText("Weight:");
         p5Label2.setText("Content:");
         p5Label1.setVisible(true);
@@ -552,6 +566,7 @@ public class MainApp {
 
     drum.addActionListener(new ActionListener () {
       public void actionPerformed(ActionEvent e) {
+        panel5.setVisible(true);
         p5Label2.setText("Diameter: ");
         p5Label1.setVisible(false);
         p5Label2.setVisible(true);

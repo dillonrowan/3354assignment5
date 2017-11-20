@@ -68,20 +68,20 @@ public class Customer extends User {
     public void setAddress(String address) {
         this.address = address;
     }
-    
+
     /**
      * Returns the attributes of the customer, in a formatted text fashion.
      * @return Formated Text.
      */
     public String getFormattedText() {
-        return String.format("| %10s | %9d | %12s | %12s | Ph#: %12s, Add: %30s | %n",
+        return String.format("| %10s | %8d | %12s | %12s | Ph#: %12s, Add: %30s | %n",
                 "Customer", id, firstName, lastName, phoneNumber, address);
     }
 
     @Override
     public String toString() {
-        return "Customer{" + "id=" + id + ", firstName=" + firstName 
-                + ", lastName=" + lastName + ", phoneNumber=" + phoneNumber 
+        return "Customer{" + "id=" + id + ", firstName=" + firstName
+                + ", lastName=" + lastName + ", phoneNumber=" + phoneNumber
                 + ", address=" + address + '}';
     }
 }

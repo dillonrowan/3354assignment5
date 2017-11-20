@@ -33,7 +33,7 @@ public class Employee extends User {
      * @param monthlySalary
      * @param bankAccountNumber
      */
-    public Employee(int id, String firstName, String lastName, int socialSecurityNumber, 
+    public Employee(int id, String firstName, String lastName, int socialSecurityNumber,
             float monthlySalary, int bankAccountNumber) {
         super(id, firstName, lastName);
         this.socialSecurityNumber = socialSecurityNumber;
@@ -95,7 +95,7 @@ public class Employee extends User {
      */
     @Override
     public String getFormattedText() {
-        return String.format("| %10s | %9d | %12s | %12s | SSN: %9d, Salary: %10s, Bank#: %11d | %n",
+        return String.format("| %10s | %8d | %12s | %12s | SSN: %9d, Salary: %10s, Bank#: %11d |%n",
                 "Employee", id, firstName, lastName, socialSecurityNumber, monthlySalary, bankAccountNumber);
     }
 

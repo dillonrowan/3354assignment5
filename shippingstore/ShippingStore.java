@@ -152,28 +152,18 @@ public class ShippingStore {
      * manner.
      */
     private String getFormattedPackageList(List<Package> packages) {
-
-
-        String text = "<html>---------------------------------------------------"
-                + "----------------------------------------------------------<br>";
-        // text += String.format("| %12s | %12s | %13s | %13s | %22s                       |%n",
-        //         "PACKAGE TYPE", "TRACKING #", "SPECIFICATION", "MAILING CLASS", "OTHER DETAILS");
-        text += String.format("| %12s | %12s | %13s | %13s | %22s                       |<br>",
+        String separator = new String(new char[83]).replace("\0", "=");
+        String text = "";
+        text += separator + "\n";
+        text += String.format("| %12s | %12s | %13s | %13s | %44s |%n",
                 "PACKAGE TYPE", "TRACKING #", "SPECIFICATION", "MAILING CLASS", "OTHER DETAILS");
-
-
-        text +=  "---------------------------------------------------"
-                + "----------------------------------------------------------<br>";
+        text += separator + "\n";
         for (Package p : packages) {
             text += p.getFormattedText();
         }
-        text += "---------------------------------------------------"
-                + "----------------------------------------------------------<br></html>";
-
+        text += separator + "\n";
         return text;
     }
-
-
 
     /**
      * This method return all the packages currently in the inventory, in a
@@ -221,28 +211,21 @@ public class ShippingStore {
 
 
 
-
-
     /**
      * Auxiliary private method to return a list of users in a formatted
      * manner.
      */
     private String getFormattedUserList(List<User> users) {
-        String text ="<html>---------------------------------------------------"
-                + "------------------------------------------------"
-                + "---------------<br>";
-        text += String.format("| %10s | %9s | %12s | %12s | %35s                    | <br>",
+        String separator = new String(new char[80]).replace("\0", "=");
+        String text = "";
+        text += separator + "\n";
+        text += String.format("| %10s | %8s | %12s | %12s | %54s |%n",
                 "USER TYPE", "USER ID", "FIST NAME", "LAST NAME", "OTHER DETAILS");
-        text += "---------------------------------------------------"
-                + "-----------------------------------------------"
-                + "---------------<br>";
+        text += separator + "\n";
         for (User u : users) {
             text += u.getFormattedText();
         }
-        text += "---------------------------------------------------"
-                + "-----------------------------------------------"
-                + "---------------<br><html>";
-
+        text += separator + "\n";
         return text;
     }
 
