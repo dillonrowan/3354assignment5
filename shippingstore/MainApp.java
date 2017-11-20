@@ -660,7 +660,7 @@ public class MainApp {
         }
         if(envelope.isSelected() && isOK){
           if(!Validate.isPosInt(getAtt1) || !Validate.isPosInt(getAtt2)) {
-            JOptionPane.showMessageDialog(null,"Height and Widtht must be a positive integer.",
+            JOptionPane.showMessageDialog(null,"Height and width must be a positive integer.",
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
           } else {
             ss.addEnvelope(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
