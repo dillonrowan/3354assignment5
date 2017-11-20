@@ -23,6 +23,10 @@ public class MainApp {
   JPanel panelFirst = new JPanel();
   JPanel panelSecond = new JPanel();
   JPanel panelThird = new JPanel();
+  JPanel panelFourth = new JPanel();
+  JPanel panelFifth = new JPanel();
+  JPanel panelSixth = new JPanel();
+  JPanel panelSeventh = new JPanel();
 
   JButton buttonBack = new JButton("Back");
   CardLayout cl = new CardLayout();
@@ -59,14 +63,22 @@ public class MainApp {
     JButton button10 = new JButton ("Exit program.");
     panelFirst.add(button10);
 
-    //panelSecond.add(buttonBack);
-    //panelThird.add(buttonBack);
+    panelSecond.add(buttonBack);
+    panelThird.add(buttonBack);
+    panelFourth.add(buttonBack);
+    panelFifth.add(buttonBack);
+    panelSixth.add(buttonBack);
+    panelSeventh.add(buttonBack);
 
     //panelFirst.setBackground(Color.blue);
 
-    panelCont.add(panelFirst, "1");
-    panelCont.add(panelSecond, "2");
-    panelCont.add(panelThird, "3");
+    panelCont.add(panelFirst, "1");  //Main menu
+    panelCont.add(panelSecond, "2"); //Show all existing packages
+    panelCont.add(panelThird, "3");  //Add a new package to the Database
+    panelCont.add(panelFourth, "4"); //Delete a package from the database
+    panelCont.add(panelFifth, "5");  //Search for package given its tracking number
+    panelCont.add(panelSixth, "6");  //Show a list of users in the database
+    panelCont.add(panelSeventh, "7");//add a new user to the database
 
     cl.show(panelCont, "1");
 
@@ -86,10 +98,49 @@ public class MainApp {
     button2.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent arg0) {
+        panelThird.removeAll();
         cl.show(panelCont, "3");
         addNewPackage(panelThird);
       }
     });
+
+    //action for deleting a package
+    button3.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent arg0) {
+        cl.show(panelCont, "4");
+        deletePackage(panelFourth);
+      }
+    });
+
+    //action for searching a package
+    button4.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent arg0) {
+        cl.show(panelCont, "5");
+        searchPackage(panelFifth);
+      }
+    });
+
+    //action for showing a list of users
+    button5.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent arg0) {
+        cl.show(panelCont, "6");
+        String text = ss.getFormattedUserList();
+        JLabel gapLabel = new JLabel(text);
+        panelSixth.add(gapLabel);
+      }
+    });
+
+    button6.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent arg0) {
+        cl.show(panelCont, "7");
+      }
+    });
+
+
 
     //action to exit
     button10.addActionListener(new ActionListener() {
@@ -121,6 +172,149 @@ public class MainApp {
          new MainApp();
       }
     });
+  }
+
+
+  public void addNewUser(JPanel masterPanel) {
+    masterPanel.setLayout(new BorderLayout());
+    JPanel panel1 = new JPanel(new GridBagLayout());
+    JPanel panel2 = new JPanel(new FlowLayout());
+    JPanel panelNorth = new JPanel();
+    JPanel panelEast = new JPanel();
+    JPanel panelSouth = new JPanel();
+    JPanel panelWest = new JPanel();
+
+    JLabel fn = new JLabel("First Name:");
+    JLabel ln = new JLabel("Last Name:");
+    JLabel phoneNo = new JLabel("PhoneNumber");
+    JLabel monSalary = new JLabel("Monthly Salary");
+    JLabel ssn = new JLabel("SSN (9-digit):");
+    JLabel bankNo = new JLabel("Bank Account Number:");
+    JTextField firstText = new JTextField(10);
+    JTextField lastText = new JTextField(10);
+    JTextField phoneText = new JTextField(10);
+    JTextField monText = new JTextField(10);
+    JTextField ssnText = new JTextField(10);
+    JTextField bankText = new JTextField(10);
+
+    JRadioButton cust = new JRadioButton("Customer");
+    JRadioButton emp = new JRadioButton("Employee");
+
+    ButtonGroup bg = new ButtonGroup();
+    bg.add(cust);
+    bg.add(emp);
+
+    panelNorth.setPreferredSize(new Dimension(600, 40));
+    panelEast.setPreferredSize(new Dimension(40, 400));
+    panelSouth.setPreferredSize(new Dimension(600, 40));
+    panelWest.setPreferredSize(new Dimension(40, 400));
+
+    JLabel title = new JLabel("Select User Type");
+    title.setFont(new Font("Serif", Font.BOLD, 17));
+    JTextField search = new JTextField(5);
+    GridBagConstraints c = new GridBagConstraints();
+    panel1.setBorder(BorderFactory.createLineBorder(Color.black));
+
+    // c.GridBagConstraints.PAGE_START;
+    // c.weightx = 0.1;
+    // c.weighty = 0.1;
+    // panel1.add(title);
+
+    c.gridx = 0;
+    c.gridy = 0;
+    panel1.add(fn);
+
+    c.gridx = 0;
+    c.gridy = 1;
+    panel1.add(firstText);
+
+    c.gridx = 0;
+    c.gridy = 2;
+    panel1.add(ln);
+
+    c.gridx = 0;
+    c.gridy = 3;
+    panel1.add(lastText);
+
+    masterPanel.add(panelNorth, BorderLayout.NORTH);
+    masterPanel.add(panelEast, BorderLayout.EAST);
+    masterPanel.add(panelSouth, BorderLayout.SOUTH);
+    masterPanel.add(panelWest, BorderLayout.WEST);
+    masterPanel.add(panel1);
+  }
+
+  public void searchPackage(JPanel masterPanel) {
+    masterPanel.setLayout(new BorderLayout());
+    JPanel panel1 = new JPanel(new FlowLayout());
+    JPanel panelNorth = new JPanel();
+    JPanel panelEast = new JPanel();
+    JPanel panelSouth = new JPanel();
+    JPanel panelWest = new JPanel();
+    JLabel dummy1 = new JLabel("     ");
+    JLabel dummy2 = new JLabel("     ");
+    JLabel dummy3 = new JLabel("     ");
+    JLabel dummy4 = new JLabel("     ");
+    JLabel result = new JLabel();
+
+    panelNorth.setPreferredSize(new Dimension(600, 40));
+    panelEast.setPreferredSize(new Dimension(40, 400));
+    panelSouth.setPreferredSize(new Dimension(600, 40));
+    panelWest.setPreferredSize(new Dimension(40, 400));
+
+    JLabel trackNo = new JLabel("Enter tracking number of package to search for (string):");
+    trackNo.setFont(new Font("Serif", Font.BOLD, 17));
+    JTextField search = new JTextField(5);
+    GridBagConstraints c = new GridBagConstraints();
+    panel1.setBorder(BorderFactory.createLineBorder(Color.black));
+
+
+    panel1.add(trackNo);
+    panel1.add(dummy1);
+    panel1.add(dummy2);
+    panel1.add(search);
+    panel1.add(dummy3);
+    panel1.add(dummy4);
+    panel1.add(result);
+
+    masterPanel.add(panelNorth, BorderLayout.NORTH);
+    masterPanel.add(panelEast, BorderLayout.EAST);
+    masterPanel.add(panelSouth, BorderLayout.SOUTH);
+    masterPanel.add(panelWest, BorderLayout.WEST);
+    masterPanel.add(panel1);
+  }
+
+  public void deletePackage(JPanel masterPanel) {
+    JPanel panel1 = new JPanel(new FlowLayout());
+
+    //FILL JTABLE WITH CONTENTS OF packageList, ROW BY ROW
+    //TRY MAKING getSimplePackageList() INTO ShippingStore.java
+
+    // ArrayList<Package> p = ss.getSimplePackageList();
+     JButton deleteButton = new JButton("Delete");
+     String[] columnNames = {"Package Type", "Tracking #", "Specification", "Mailing Class", "Other Details"};
+     Object[][] dummyData = {
+       {"TEST1", "AAA", "BBB", "CCC", "DDD"},
+       {"TEST2", "###", "^^^", "~~!!!", "@@@??", "**()$"},
+       {"TEST3", "111", "222.222", "333", "444", "555"},
+     };
+    // Object [] rowData = new Object[5];
+    //
+    //   for(int i = 0; i < p.size(); i++) {
+    //     rowData[0] = p.get(i).ptn;
+    //     rowData[0] = p.get(i).specification;
+    //     rowData[0] = p.get(i).mailingClass;
+    //     rowData[0] = p.get(i).ptn;
+    //     rowData[0] = p.get(i).ptn;
+    //   }
+    //
+    JTable table = new JTable(dummyData, columnNames);
+    table.setPreferredScrollableViewportSize(new Dimension(550, 50));
+    table.setFillsViewportHeight(true);
+
+    JScrollPane scrollPane = new JScrollPane(table);
+    panel1.add(scrollPane);
+    panel1.add(deleteButton);
+
   }
 
   public void addNewPackage(JPanel masterPanel) {

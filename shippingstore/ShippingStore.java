@@ -152,9 +152,7 @@ public class ShippingStore {
      * manner.
      */
     private String getFormattedPackageList(List<Package> packages) {
-      // .tab {
-      //   margin-left: 2.5em
-      //   }
+
 
         String text = "<html>---------------------------------------------------"
                 + "----------------------------------------------------------<br>";
@@ -223,25 +221,27 @@ public class ShippingStore {
 
 
 
+
+
     /**
      * Auxiliary private method to return a list of users in a formatted
      * manner.
      */
     private String getFormattedUserList(List<User> users) {
-        String text ="---------------------------------------------------"
+        String text ="<html>---------------------------------------------------"
                 + "------------------------------------------------"
-                + "---------------\n";
-        text += String.format("| %10s | %9s | %12s | %12s | %35s                    | %n",
+                + "---------------<br>";
+        text += String.format("| %10s | %9s | %12s | %12s | %35s                    | <br>",
                 "USER TYPE", "USER ID", "FIST NAME", "LAST NAME", "OTHER DETAILS");
         text += "---------------------------------------------------"
                 + "-----------------------------------------------"
-                + "---------------\n";
+                + "---------------<br>";
         for (User u : users) {
             text += u.getFormattedText();
         }
         text += "---------------------------------------------------"
                 + "-----------------------------------------------"
-                + "---------------\n";
+                + "---------------<br><html>";
 
         return text;
     }
