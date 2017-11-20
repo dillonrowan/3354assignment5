@@ -124,6 +124,7 @@ public class MainApp {
   }
 
   public void addNewPackage(JPanel masterPanel) {
+    masterPanel.removeAll();
     masterPanel.setLayout(new GridLayout(0,3));
     JPanel panel1 = new JPanel();
     panel1.setLayout(new GridBagLayout());
@@ -280,6 +281,7 @@ public class MainApp {
     p5textField1.setVisible(false);
     p5textField2.setVisible(false);
     panel6.add(okButton);  //put OK button in panel6
+    panel6.add(buttonBack);
 
 
     c.fill = GridBagConstraints.HORIZONTAL;
