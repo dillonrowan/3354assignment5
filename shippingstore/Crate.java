@@ -32,7 +32,7 @@ public class Crate extends Package {
      * @param loadWeight
      * @param content
      */
-    public Crate(String ptn, String specification, String mailingClass, 
+    public Crate(String ptn, String specification, String mailingClass,
             float loadWeight, String content) {
         super(ptn, specification, mailingClass);
         this.loadWeight = loadWeight;
@@ -77,8 +77,8 @@ public class Crate extends Package {
      */
     @Override
     public String getFormattedText() {
-        return String.format("| %12s | %12s | %13s | %13s | Load Weight: %10f, Content: %10s | %n",
-                "Crate", ptn, specification, mailingClass, loadWeight, content);
+      String data = "Crate " + ptn +" "+ specification +" "+ mailingClass +" "+ loadWeight +" "+ content;
+      return data;
     }
 
     @Override

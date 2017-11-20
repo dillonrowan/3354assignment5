@@ -151,18 +151,12 @@ public class ShippingStore {
      * Auxiliary private method to return a list of packages in a formatted
      * manner.
      */
-    private String getFormattedPackageList(List<Package> packages) {
-        String separator = new String(new char[83]).replace("\0", "=");
-        String text = "";
-        text += separator + "\n";
-        text += String.format("| %12s | %12s | %13s | %13s | %44s |%n",
-                "PACKAGE TYPE", "TRACKING #", "SPECIFICATION", "MAILING CLASS", "OTHER DETAILS");
-        text += separator + "\n";
+    private ArrayList<String> getFormattedPackageList(List<Package> packages) {
+        ArrayList<String> data = new ArrayList<String>();
         for (Package p : packages) {
-            text += p.getFormattedText();
+            data.add(p.getFormattedText());
         }
-        text += separator + "\n";
-        return text;
+        return data;
     }
 
     /**
@@ -170,7 +164,7 @@ public class ShippingStore {
      * formatted manner.
      * @return
      */
-    public String getAllPackagesFormatted() {
+    public ArrayList<String> getAllPackagesFormatted() {
         return getFormattedPackageList(packageList);
     }
 
@@ -179,7 +173,7 @@ public class ShippingStore {
      * @param ptn
      * @return
      */
-    public String getPackageFormatted(String ptn) {
+    public ArrayList<String> getPackageFormatted(String ptn) {
         ArrayList<Package> matchingPackage = new ArrayList<Package>(1);
         matchingPackage.add(findPackage(ptn));
 

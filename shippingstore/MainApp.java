@@ -30,9 +30,9 @@ public class MainApp {
 
   JButton buttonBack = new JButton("Back");
   CardLayout cl = new CardLayout();
+  ShippingStore ss;
 
   public MainApp() {
-    ShippingStore ss;
     ss = ShippingStore.readDatabase();
 
     frame.setResizable(false);
@@ -86,24 +86,35 @@ public class MainApp {
   //action for Show all existing packages in the database.
     button1.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent arg0) {
-        panelSecond.removeAll();
-        cl.show(panelCont, "2");
-        String text = ss.getAllPackagesFormatted();
-        JTextArea textArea = new JTextArea();
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        textArea.setEditable(false);
-        textArea.append(text);
-        panelSecond.add(textArea);
-        panelSecond.add(buttonBack);
+      public void actionPerformed(ActionEvent e) {
+        Object[] pColumnNames = {"Type", "Tracking #","Specification","Mailing Class","Other Detail 1", "Other Detail 2"};
+        ArrayList<String> pListData = ss.getAllPackagesFormatted();
+        if(!(pListData.isEmpty())){
+          Object[][] pRowData = new Object[pListData.size()][6];
+          panelSecond.removeAll();
+          cl.show(panelCont, "2");
+          for(int i = 0; i < pListData.size(); i++)
+          {
+            String[] parts = pListData.get(i).split(" ");
+            for(int j = 0; j < 6; j++)
+            {
+              pRowData[i][j] = parts[j];
+            }
+          }
+          JTable packageTable = new JTable(pRowData, pColumnNames);
+          JScrollPane scrollPane = new JScrollPane(packageTable);
+          panelSecond.add(scrollPane);
+          panelSecond.add(buttonBack);
+        }else{
+          JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.ERROR_MESSAGE);
+          }
       }
     });
 
     //action for adding a package
     button2.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent arg0) {
+      public void actionPerformed(ActionEvent e) {
         panelThird.removeAll();
         cl.show(panelCont, "3");
         addNewPackage(panelThird);
@@ -113,7 +124,7 @@ public class MainApp {
     //action for deleting a package
     button3.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent arg0) {
+      public void actionPerformed(ActionEvent e) {
         panelFourth.removeAll();
         cl.show(panelCont, "4");
         deletePackage(panelFourth);
@@ -123,7 +134,7 @@ public class MainApp {
     //action for searching a package
     button4.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent arg0) {
+      public void actionPerformed(ActionEvent e) {
         panelFifth.removeAll();
         cl.show(panelCont, "5");
         searchPackage(panelFifth);
@@ -133,7 +144,7 @@ public class MainApp {
     //action for showing a list of users
     button5.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent arg0) {
+      public void actionPerformed(ActionEvent e) {
         panelSixth.removeAll();
         cl.show(panelCont, "6");
         String text = ss.getAllUsersFormatted();
@@ -144,7 +155,7 @@ public class MainApp {
 
     button6.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent arg0) {
+      public void actionPerformed(ActionEvent e) {
         panelSeventh.removeAll();
         cl.show(panelCont, "7");
       }
@@ -153,7 +164,7 @@ public class MainApp {
     //action to exit
     button10.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent arg0) {
+      public void actionPerformed(ActionEvent e) {
         System.exit(0);
       }
     });
@@ -161,7 +172,7 @@ public class MainApp {
   //action for back button
     buttonBack.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent arg0) {
+      public void actionPerformed(ActionEvent e) {
         cl.show(panelCont, "1");
       }
     });
@@ -338,6 +349,11 @@ public class MainApp {
     JRadioButton crate = new JRadioButton("Crate");
     JRadioButton drum = new JRadioButton("Drum");
 
+    envelope.setActionCommand(envelope.getText());
+    box.setActionCommand(box.getText());
+    crate.setActionCommand(crate.getText());
+    drum.setActionCommand(drum.getText());
+
     ButtonGroup tbg = new ButtonGroup();
     tbg.add(envelope);
     tbg.add(box);
@@ -373,6 +389,12 @@ public class MainApp {
     JRadioButton catalogs = new JRadioButton("Catalogs");
     JRadioButton dnb = new JRadioButton("Do-not-bend");
     JRadioButton na = new JRadioButton("N/A");
+
+    fragile.setActionCommand(fragile.getText());
+    books.setActionCommand(books.getText());
+    catalogs.setActionCommand(catalogs.getText());
+    dnb.setActionCommand(dnb.getText());
+    na.setActionCommand(na.getText());
 
     ButtonGroup sbg = new ButtonGroup();
     sbg.add(fragile);
@@ -413,6 +435,12 @@ public class MainApp {
     JRadioButton retial = new JRadioButton("Retail");
     JRadioButton ground = new JRadioButton("Ground");
     JRadioButton metro = new JRadioButton("Metro");
+
+    firstClass.setActionCommand(firstClass.getText());
+    priority.setActionCommand(priority.getText());
+    retial.setActionCommand(retial.getText());
+    ground.setActionCommand(ground.getText());
+    metro.setActionCommand(metro.getText());
 
     ButtonGroup mbg = new ButtonGroup();
     mbg.add(firstClass);
@@ -580,8 +608,7 @@ public class MainApp {
 
     drumAttributes.addActionListener(new ActionListener () {
       public void actionPerformed(ActionEvent e) {
-        JComboBox cb = (JComboBox)e.getSource();
-        String msg = (String)cb.getSelectedItem();
+        String msg = (String)drumAttributes.getSelectedItem();
         switch(msg) {
           case "Plastic": drumText.setText("You selected Plastic.");
             break;
@@ -595,68 +622,89 @@ public class MainApp {
     //OK button listener, validates before adding
     okButton.addActionListener(new ActionListener()
     {
+      @Override
       public void actionPerformed(ActionEvent e)
       {
         String getAtt1 = p5textField1.getText();
         String getAtt2 = p5textField2.getText();
+        String material = (String)drumAttributes.getSelectedItem();
+        String type = "";
+        String mailingClass = "";
+        String specification = "";
         String getTn = tn.getText();
+        boolean isInDB = ss.packageExists(getTn);
+        boolean isOK = false;
 
         //check at least one thing in each buttongroup is selected
         if(tbg.getSelection() == null || mbg.getSelection() == null ||
-         sbg.getSelection() == null) {
+         sbg.getSelection() == null || getTn == null || getAtt1 == null){
            JOptionPane.showMessageDialog(null, "Please specify all package properties.", "Package Property Error",
             JOptionPane.ERROR_MESSAGE);
-         }
-
-        if(drum.isSelected() && getAtt2.isEmpty()) {
-          JOptionPane.showMessageDialog(null, "Please fill in all fields", "Empty Field Error",
+         } else if(drum.isSelected() && material == null) {
+          JOptionPane.showMessageDialog(null, "Please select a material type", "Empty Field Error",
            JOptionPane.ERROR_MESSAGE);
-        }
-
-        if((getTn.isEmpty() || getAtt1.isEmpty() || getAtt2.isEmpty()) && !drum.isSelected()) {
+        } else if (!(drum.isSelected()) && getAtt2.isEmpty()){
           JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Empty Field Error",
            JOptionPane.ERROR_MESSAGE);
-        }
-
-        if(getTn.length() > 5) {
-          JOptionPane.showMessageDialog(frame,"Tracking number must be 5 characters or less.",
+        } else if(getTn.length() != 5) {
+          JOptionPane.showMessageDialog(null,"Tracking number must be 5 characters.",
            "Character Limit Error", JOptionPane.ERROR_MESSAGE);
-          tn.setText("");
+        } else if (isInDB){
+          JOptionPane.showMessageDialog(null,"Tracking number already in database.",
+           "Duplicate Tracking Number Error", JOptionPane.ERROR_MESSAGE);
+         } else {
+          type = tbg.getSelection().getActionCommand();
+          mailingClass = mbg.getSelection().getActionCommand();
+          specification = sbg.getSelection().getActionCommand();
+          isOK = true;
         }
-
-        if(envelope.isSelected()){
+        if(envelope.isSelected() && isOK){
           if(!Validate.isPosInt(getAtt1) || !Validate.isPosInt(getAtt2)) {
-            JOptionPane.showMessageDialog(frame,"Height and Widtht must be a positive integer.",
+            JOptionPane.showMessageDialog(null,"Height and Widtht must be a positive integer.",
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+          } else {
+            ss.addEnvelope(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
+            JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+             JOptionPane.ERROR_MESSAGE);
           }
           //It has passed, add it and return to cl.show(panelCont, "1")
         }
 
-        if(box.isSelected()) {
+        if(box.isSelected() && isOK) {
           if(!Validate.isPosInt(getAtt1) || !Validate.isPosInt(getAtt2)) {
-            JOptionPane.showMessageDialog(frame,"Dimension and Volume must be a positive integer.",
+            JOptionPane.showMessageDialog(null,"Dimension and Volume must be a positive integer.",
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+          } else {
+            ss.addBox(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
+            JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+             JOptionPane.ERROR_MESSAGE);
           }
           //It has passed, add it and return to cl.show(panelCont, "1")
         }
 
-        if(crate.isSelected()) {
+        if(crate.isSelected() && isOK) {
           if(!Validate.isPositive(getAtt1)) {
-            JOptionPane.showMessageDialog(frame,"Weight must be a positive Number.",
+            JOptionPane.showMessageDialog(null,"Weight must be a positive Number.",
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+          } else {
+            ss.addCrate(getTn, specification, mailingClass, Float.parseFloat(getAtt1), getAtt2);
+            JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+             JOptionPane.ERROR_MESSAGE);
           }
           //It has passed, add it and return to cl.show(panelCont, "1")
         }
 
-        if(drum.isSelected()) {
+        if(drum.isSelected() && isOK) {
           if(!Validate.isPositive(getAtt2)) { //THIS VALIDATION IS NOT WORKING
-            JOptionPane.showMessageDialog(frame,"Weight must be a positive integer.",
+            JOptionPane.showMessageDialog(null,"Weight must be a positive integer.",
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+          } else {
+            ss.addDrum(getTn, specification, mailingClass, material, Float.parseFloat(getAtt2));
+            JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+             JOptionPane.ERROR_MESSAGE);
           }
           //It has passed, add it and return to cl.show(panelCont, "1")
         }
-
-
       }
     });
 

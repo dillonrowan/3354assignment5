@@ -74,11 +74,11 @@ public class Drum extends Package {
      * Get the attributes of the drum, in a formatted text fashion.
      * @return Formatted text
      */
-    @Override
-    public String getFormattedText() {
-        return String.format("| %12s | %12s | %13s | %13s | Material: %10s, Diameter: %10f   | %n",
-                "Drum", ptn, specification, mailingClass, material, diameter);
-    }
+     @Override
+     public String getFormattedText() {
+       String data = "Drum " + ptn +" "+ specification +" "+ mailingClass +" "+ material +" "+ diameter;
+       return data;
+     }
 
     @Override
     public String toString() {
