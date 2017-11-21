@@ -589,31 +589,51 @@ public class MainApp {
     JLabel dummy2 = new JLabel("     ");
     JLabel dummy3 = new JLabel("     ");
     JLabel dummy4 = new JLabel("     ");
-    JLabel result = new JLabel();
+    JLabel trackNo = new JLabel("Enter tracking number of package to search for (string):");
+    JTextField search = new JTextField(5);
+    JButton searchButton = new JButton("Search");
 
     panelNorth.setPreferredSize(new Dimension(600, 40));
     panelEast.setPreferredSize(new Dimension(40, 400));
     panelSouth.setPreferredSize(new Dimension(600, 40));
     panelWest.setPreferredSize(new Dimension(40, 400));
 
-    JLabel trackNo = new JLabel("Enter tracking number of package to search for (string):");
-    JTextField search = new JTextField(5);
-    GridBagConstraints c = new GridBagConstraints();
+    Object[] pColumnNames = {"Type", "Tracking #","Specification","Mailing Class","Other Detail 1", "Other Detail 2"};
+    ArrayList<String> pListData = ss.getAllPackagesFormatted();
+    if (!(pListData.isEmpty())){
+      Object[][] pRowData = new Object[pListData.size()][6];
+      for(int i = 0; i < pListData.size(); i++){
+        String[] parts = pListData.get(i).split(" ");
+        for(int j = 0; j < 6; j++){
+          pRowData[i][j] = parts[j];
+        }
+      }
+      JTable packageTable = new JTable(pRowData, pColumnNames);
+      JScrollPane scrollPane = new JScrollPane(packageTable);
+      panelNorth.add(buttonBack);
+      panelNorth.add(searchButton);
+      panelNorth.add(search);
+      panel1.add(trackNo);
+
+      panel1.add(scrollPane);
+
+    } else {
+      masterPanel.add(buttonBack);
+      JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.WARNING_MESSAGE);
+    }
+
+
+
+
+
     panel1.setBorder(BorderFactory.createLineBorder(Color.black));
 
 
-    panel1.add(trackNo);
-    panel1.add(dummy1);
-    panel1.add(dummy2);
-    panel1.add(search);
-    panel1.add(dummy3);
-    panel1.add(dummy4);
-    panel1.add(result);
-    panel1.add(buttonBack);
+
 
     masterPanel.add(panelNorth, BorderLayout.NORTH);
     masterPanel.add(panelEast, BorderLayout.EAST);
-    masterPanel.add(panelSouth, BorderLayout.SOUTH);
+    //masterPanel.add(panelSouth, BorderLayout.SOUTH);
     masterPanel.add(panelWest, BorderLayout.WEST);
     masterPanel.add(panel1);
   }
