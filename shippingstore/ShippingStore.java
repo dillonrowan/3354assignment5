@@ -175,9 +175,11 @@ public class ShippingStore {
      */
     public ArrayList<String> getPackageFormatted(String ptn) {
         ArrayList<Package> matchingPackage = new ArrayList<Package>(1);
-        matchingPackage.add(findPackage(ptn));
-
-        return getFormattedPackageList(matchingPackage);
+        if(findPackage(ptn) != null){
+          matchingPackage.add(findPackage(ptn));
+          return getFormattedPackageList(matchingPackage);
+        }
+        return null;
     }
 
     /**

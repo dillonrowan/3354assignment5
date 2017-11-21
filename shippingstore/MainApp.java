@@ -245,7 +245,8 @@ public class MainApp {
       masterPanel.add(scrollPane);
       masterPanel.add(buttonBack);
     } else {
-      JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.ERROR_MESSAGE);
+      masterPanel.add(buttonBack);
+      JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.WARNING_MESSAGE);
     }
   }
 
@@ -518,7 +519,7 @@ public class MainApp {
           } else {
             ss.addEnvelope(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
             JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
-             JOptionPane.ERROR_MESSAGE);
+             JOptionPane.INFORMATION_MESSAGE);
           }
         }
 
@@ -529,7 +530,7 @@ public class MainApp {
           } else {
             ss.addBox(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
             JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
-             JOptionPane.ERROR_MESSAGE);
+             JOptionPane.INFORMATION_MESSAGE);
           }
         }
 
@@ -540,7 +541,7 @@ public class MainApp {
           } else {
             ss.addCrate(getTn, specification, mailingClass, Float.parseFloat(getAtt1), getAtt2);
             JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
-             JOptionPane.ERROR_MESSAGE);
+             JOptionPane.INFORMATION_MESSAGE);
           }
         }
 
@@ -551,7 +552,7 @@ public class MainApp {
           } else {
             ss.addDrum(getTn, specification, mailingClass, material, Float.parseFloat(getAtt2));
             JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
-             JOptionPane.ERROR_MESSAGE);
+             JOptionPane.INFORMATION_MESSAGE);
           }
         }
       }
@@ -565,7 +566,6 @@ public class MainApp {
   }
 
   public void deletePackage(JPanel masterPanel) {
-
     JButton deleteButton = new JButton("Delete");
     deleteButton.setEnabled(false);
     masterPanel.add(deleteButton);
@@ -583,7 +583,7 @@ public class MainApp {
         }
       }
     } else {
-      JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.WARNING_MESSAGE);
     }
     DefaultTableModel model = new DefaultTableModel(pRowData, pColumnNames){
       public boolean isCellEditable(int row, int column){
@@ -658,7 +658,7 @@ public class MainApp {
     JLabel address = new JLabel("Address:           ");
     JLabel monSalary = new JLabel("Monthly Salary:");
     JLabel ssn = new JLabel("SSN (9):             ");
-    JLabel bank = new JLabel("Bank Account Number");
+    JLabel bank = new JLabel("Bank Account #:");
     JTextField firstText = new JTextField(17);
     JTextField lastText = new JTextField(17);
     JTextField phoneText = new JTextField(17);
@@ -721,18 +721,10 @@ public class MainApp {
     c.weightx = 0.1;
     c.weighty = 0.1;
     c.gridx = 0;
-    c.gridy = 1;
+    c.gridy = 0;
     panel1.add(customer, c);
-    c.gridy = 2;
+    c.gridy = 1;
     panel1.add(employee, c);
-
-    if(customer.isSelected()) {
-
-    }
-
-    if(employee.isSelected()) {
-
-    }
 
     //manage appearance based on what radio button is selected
     customer.addActionListener(new ActionListener () {
@@ -765,71 +757,54 @@ public class MainApp {
       }
     });
 
-
-
     //OK button listener, validates before adding
-    // okButton.addActionListener(new ActionListener()
-    // {
-    //   @Override
-    //   public void actionPerformed(ActionEvent e)
-    //   {
-    //     String getAtt1 = p5textField1.getText();
-    //     String getAtt2 = p5textField2.getText();
-    //     String material = (String)drumAttributes.getSelectedItem();
-    //     String type = "";
-    //     String mailingClass = "";
-    //     String specification = "";
-    //     String getTn = tn.getText();
-    //     boolean isInDB = ss.packageExists(getTn);
-    //     boolean isOK = false;
-
+     okButton.addActionListener(new ActionListener(){
+      @Override
+      public void actionPerformed(ActionEvent e){
+        boolean isOK = false;
         //check at least one thing in each buttongroup is selected
-        // if (tbg.getSelection() == null || getTn == null || getAtt1 == null){
-        //    JOptionPane.showMessageDialog(null, "Please specify all user properties.", "User Property Error",
-        //     JOptionPane.ERROR_MESSAGE);
-        // } else if (drum.isSelected() && material == null) {
-        //   JOptionPane.showMessageDialog(null, "Please select a material type", "Empty Field Error",
-        //    JOptionPane.ERROR_MESSAGE);
-        // } else if (!(drum.isSelected()) && getAtt2.isEmpty()){
-        //   JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Empty Field Error",
-        //    JOptionPane.ERROR_MESSAGE);
-        // } else if (getTn.length() != 5) {
-        //   JOptionPane.showMessageDialog(null,"Tracking number must be 5 characters.",
-        //    "Character Limit Error", JOptionPane.ERROR_MESSAGE);
-        // } else if (isInDB){
-        //   JOptionPane.showMessageDialog(null,"Tracking number already in database.",
-        //    "Duplicate Tracking Number Error", JOptionPane.ERROR_MESSAGE);
-        //  } else {
-        //   type = tbg.getSelection().getActionCommand();
-        //   mailingClass = mbg.getSelection().getActionCommand();
-        //   specification = sbg.getSelection().getActionCommand();
-        //   isOK = true;
-        // }
-        //
-        // if (customer.isSelected() && isOK){
-        //   if (!Validate.isPosInt(getAtt1) || !Validate.isPosInt(getAtt2)) {
-        //     JOptionPane.showMessageDialog(null,"Height and width must be a positive integer.",
-        //      "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
-        //   } else {
-        //     ss.addEnvelope(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
-        //     JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
-        //      JOptionPane.ERROR_MESSAGE);
-        //   }
-        // }
-        //
-        // if (employee.isSelected() && isOK) {
-        //   if (!Validate.isPosInt(getAtt1) || !Validate.isPosInt(getAtt2)) {
-        //     JOptionPane.showMessageDialog(null,"Dimension and Volume must be a positive integer.",
-        //      "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
-        //   } else {
-        //     ss.addBox(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
-        //     JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
-        //      JOptionPane.ERROR_MESSAGE);
-        //   }
-        // }
+        if (tbg.getSelection() == null || firstText.getText() == null || lastText.getText() == null){
+           JOptionPane.showMessageDialog(null, "Input all user details.", "User Property Error",
+            JOptionPane.ERROR_MESSAGE);
+        } else if (customer.isSelected() && (phoneText.getText() == null || addText.getText() == null)) {
+          JOptionPane.showMessageDialog(null, "Enter valid customer information", "Empty Customer Fields Error",
+           JOptionPane.ERROR_MESSAGE);
+        } else if (employee.isSelected() && (monText.getText() == null || ssnText.getText() == null || bankText.getText() == null)) {
+          JOptionPane.showMessageDialog(null, "Enter valid employee information", "Empty Employee Fields Error",
+           JOptionPane.ERROR_MESSAGE);
+        } else if (employee.isSelected() && ssnText.getText().length() != 9) {
+          JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.",
+           "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+          isOK = true;
+        }
 
+        if (customer.isSelected() && isOK){
+          ss.addCustomer(firstText.getText(), lastText.getText(), phoneText.getText(), addText.getText());
+          JOptionPane.showMessageDialog(null, "Customer successfully added!", "Custoer Input Successful",
+           JOptionPane.INFORMATION_MESSAGE);
+        }
 
-  //  });
+        if (employee.isSelected() && isOK) {
+          if (!Validate.isPosInt(ssnText.getText()) || !Validate.isPositive(monText.getText()) || !Validate.isPosInt(bankText.getText())) {
+            JOptionPane.showMessageDialog(null,"Social Security Number, Bank Account Number and Salary must be positive numbers.",
+             "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+          } else {
+            int social = Integer.parseInt(ssnText.getText());
+            int bankNo = Integer.parseInt(ssnText.getText());
+            float salary = Float.parseFloat(monText.getText());
+            if (social < 10000000 || social > 999999999){
+              JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.",
+               "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+              ss.addEmployee(firstText.getText(), lastText.getText(), social, salary, bankNo);
+              JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+               JOptionPane.INFORMATION_MESSAGE);
+            }
+          }
+        }
+      }
+   });
     masterPanel.add(panel1);
     masterPanel.add(panel2);
     masterPanel.add(panel3);
