@@ -106,4 +106,13 @@ public class Employee extends User {
                 + ", monthlySalary=" + monthlySalary
                 + ", bankAccountNumber=" + bankAccountNumber + '}';
     }
+
+    /**
+     * Returns the user type.
+     * @return User type.
+     */
+    @Override
+    public String getType() {
+      return "Employee";
+    }
 }

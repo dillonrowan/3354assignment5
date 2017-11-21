@@ -100,7 +100,8 @@ public abstract class User implements Serializable {
 
     /**
      * Abstract print method, to be implemented by subclasses of class User.
-     * @return 
+     * @return
      */
     public abstract String getFormattedText();
+    public abstract String getType();
 }
