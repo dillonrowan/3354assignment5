@@ -74,8 +74,8 @@ public class Customer extends User {
      * @return Formated Text.
      */
     public String getFormattedText() {
-        return String.format("| %10s | %8d | %12s | %12s | Ph#: %12s, Add: %30s | %n",
-                "Customer", id, firstName, lastName, phoneNumber, address);
+      String data = "Customer " + id +" "+ firstName +" "+ lastName +" "+ phoneNumber +" "+ address + "NULL";
+      return data;
     }
 
     @Override

@@ -95,8 +95,8 @@ public class Employee extends User {
      */
     @Override
     public String getFormattedText() {
-        return String.format("| %10s | %8d | %12s | %12s | SSN: %9d, Salary: %10s, Bank#: %11d |%n",
-                "Employee", id, firstName, lastName, socialSecurityNumber, monthlySalary, bankAccountNumber);
+      String data = "Employee " + id +" "+ firstName +" "+ lastName +" "+ socialSecurityNumber +" "+ monthlySalary + " " + bankAccountNumber;
+      return data;
     }
 
     @Override
