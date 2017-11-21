@@ -28,6 +28,7 @@ public class MainApp {
   JPanel panelFifth = new JPanel();
   JPanel panelSixth = new JPanel();
   JPanel panelSeventh = new JPanel();
+  JPanel panelNinth = new JPanel();
 
   JButton buttonBack = new JButton("Back");
   CardLayout cl = new CardLayout();
@@ -69,6 +70,7 @@ public class MainApp {
     panelFifth.add(buttonBack);
     panelSixth.add(buttonBack);
     panelSeventh.add(buttonBack);
+    panelNinth.add(buttonBack);
 
     panelCont.add(panelFirst, "1");  //Main menu
     panelCont.add(panelSecond, "2"); //Show all existing packages
@@ -77,6 +79,7 @@ public class MainApp {
     panelCont.add(panelFifth, "5");  //Search for package given its tracking number
     panelCont.add(panelSixth, "6");  //Show a list of users in the database
     panelCont.add(panelSeventh, "7");//add a new user to the database
+    panelCont.add(panelNinth, "9");  //Deliver a package
 
     cl.show(panelCont, "1");
 
@@ -142,7 +145,14 @@ public class MainApp {
       }
     });
 
-
+    button8.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        panelThird.removeAll();
+        cl.show(panelCont, "9");
+        deliverPackage(panelNinth);
+      }
+    });
 
     //action to exit
     button10.addActionListener(new ActionListener() {
@@ -173,6 +183,50 @@ public class MainApp {
          new MainApp();
       }
     });
+  }
+
+  public void deliverPackage(JPanel masterPanel) {
+    masterPanel.setLayout(new BorderLayout());
+    JPanel panel1 = new JPanel(new FlowLayout());
+    JPanel panelNorth = new JPanel();
+    JPanel panelEast = new JPanel();
+    JPanel panelSouth = new JPanel();
+    JPanel panelWest = new JPanel();
+    JLabel dummy = new JLabel(" %50s ");
+    JLabel custId = new JLabel("Customer ID:");
+    JLabel empId = new JLabel("Employee ID:");
+    JLabel trackNo = new JLabel("Enter Tracking Number:");
+    JLabel price = new JLabel("Enter Price:   ");
+    JButton ship = new JButton("Deliver Package");
+    JTextField custIdText = new JTextField(15);
+    JTextField empIdText = new JTextField(15);
+    JTextField trackNoText = new JTextField(9);
+    JTextField priceText = new JTextField(15);
+
+    panelNorth.setPreferredSize(new Dimension(600, 60));
+    panelEast.setPreferredSize(new Dimension(40, 400));
+    panelSouth.setPreferredSize(new Dimension(600, 60));
+    panelWest.setPreferredSize(new Dimension(40, 400));
+    panel1.setBorder(BorderFactory.createLineBorder(Color.black));
+
+
+    panel1.add(custId);
+    panel1.add(custIdText);
+    panel1.add(empId);
+    panel1.add(empIdText);
+    panel1.add(trackNo);
+    panel1.add(trackNoText);
+    panel1.add(price);
+    panel1.add(priceText);
+    panel1.setLayout(new FlowLayout(FlowLayout.CENTER));
+    panel1.add(ship);
+
+    masterPanel.add(panelNorth, BorderLayout.NORTH);
+    masterPanel.add(panelEast, BorderLayout.EAST);
+    masterPanel.add(panelSouth, BorderLayout.SOUTH);
+    masterPanel.add(panelWest, BorderLayout.WEST);
+    masterPanel.add(panel1);
+
   }
 
   public void showPackage(JPanel masterPanel){
