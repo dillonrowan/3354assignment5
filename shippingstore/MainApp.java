@@ -207,12 +207,40 @@ public class MainApp {
     JLabel custId = new JLabel("Customer ID:");
     JLabel empId = new JLabel("Employee ID:");
     JLabel trackNo = new JLabel("Enter Tracking Number:");
-    JLabel price = new JLabel("Enter Price:   ");
+    JLabel price = new JLabel("Enter Price: ");
     JButton ship = new JButton("Deliver Package");
     JTextField custIdText = new JTextField(15);
     JTextField empIdText = new JTextField(15);
     JTextField trackNoText = new JTextField(9);
     JTextField priceText = new JTextField(15);
+
+    //String[] dummyVals1 = {"Plastic", "Fiber","Uranium"};
+    // String[] dummyVals2 = {"Glass", "Silicon","Stone"};
+    // String[] dummyVals3 = {"Metal", "Wood", "Concrete"};
+    // String[] dummyVals3 = {"Soap", "Sponge", "water"};
+
+    //JComboBox <String> trackNo = new JComboBox<>(dummyVals1);
+    // JComboBox <String> custId = new JComboBox<>(dummyVals2);
+    // JComboBox <String> empId = new JComboBox<>(dummyVals3);
+    // JComboBox <String> price = new JComboBox<>(dummyVals4);
+    //drumAttributes.setPreferredSize(new Dimension(100, 25));
+
+    String[] dummyVals1 = {"Plastic", "Fiber","Uranium"};
+    JComboBox <String> trackNoBox = new JComboBox<>(dummyVals1);
+
+    String[] dummyVals2 = {"Glass", "Silicon","Stone"};
+    JComboBox <String> custIdBox = new JComboBox<>(dummyVals2);
+
+    String[] dummyVals3 = {"Metal", "Wood", "Concrete"};
+    JComboBox <String> empIdBox = new JComboBox<>(dummyVals3);
+
+    String[] dummyVals4 = {"Soap", "Sponge", "water"};
+    JComboBox <String> priceBox = new JComboBox<>(dummyVals4);
+
+    custIdBox.setPreferredSize(new Dimension(150, 25));
+    empIdBox.setPreferredSize(new Dimension(150, 25));
+    trackNoBox.setPreferredSize(new Dimension(85, 25));
+    priceBox.setPreferredSize(new Dimension(150, 25));
 
     panelNorth.setPreferredSize(new Dimension(600, 60));
     panelEast.setPreferredSize(new Dimension(40, 400));
@@ -222,13 +250,13 @@ public class MainApp {
 
 
     panel1.add(custId);
-    panel1.add(custIdText);
+    panel1.add(custIdBox);//panel1.add(custIdText);
     panel1.add(empId);
-    panel1.add(empIdText);
+    panel1.add(empIdBox);//panel1.add(empIdText);
     panel1.add(trackNo);
-    panel1.add(trackNoText);
+    panel1.add(trackNoBox);//panel1.add(trackNoText);
     panel1.add(price);
-    panel1.add(priceText);
+    panel1.add(priceBox);//panel1.add(priceText);
     panel1.add(buttonBack);
     panel1.add(ship);
 
