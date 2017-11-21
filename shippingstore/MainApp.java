@@ -78,7 +78,7 @@ public class MainApp {
     panelCont.add(panelSeventh, "7");//add a new user to the database
     panelCont.add(panelEighth, "8"); //update user
     panelCont.add(panelNinth, "9");  //Deliver a package
-    panelCont.add(panelTenth, "10");  //Show a list of transactions
+    panelCont.add(panelTenth, "10"); //Show a list of transactions
 
     cl.show(panelCont, "1");
 
@@ -170,7 +170,6 @@ public class MainApp {
         panelTenth.removeAll();
         showTransactions(panelTenth);
         cl.show(panelCont, "10");
-
       }
     });
 
@@ -590,10 +589,6 @@ public class MainApp {
     JPanel panelEast = new JPanel();
     JPanel panelSouth = new JPanel();
     JPanel panelWest = new JPanel();
-    JLabel dummy1 = new JLabel("     ");
-    JLabel dummy2 = new JLabel("     ");
-    JLabel dummy3 = new JLabel("     ");
-    JLabel dummy4 = new JLabel("     ");
     JLabel trackNo = new JLabel("Enter tracking number of package to search for (string):");
     JTextField search = new JTextField(5);
     JButton searchButton = new JButton("Search");
@@ -602,6 +597,10 @@ public class MainApp {
     panelEast.setPreferredSize(new Dimension(40, 400));
     panelSouth.setPreferredSize(new Dimension(600, 40));
     panelWest.setPreferredSize(new Dimension(40, 400));
+
+    masterPanel.add(panelNorth, BorderLayout.NORTH);
+    masterPanel.add(panelEast, BorderLayout.EAST);
+    masterPanel.add(panelWest, BorderLayout.WEST);
 
     Object[] pColumnNames = {"Type", "Tracking #","Specification","Mailing Class","Other Detail 1", "Other Detail 2"};
     ArrayList<String> pListData = ss.getAllPackagesFormatted();
@@ -619,27 +618,14 @@ public class MainApp {
       panelNorth.add(searchButton);
       panelNorth.add(search);
       panel1.add(trackNo);
-
       panel1.add(scrollPane);
 
     } else {
-      masterPanel.add(buttonBack);
+      panelNorth.add(buttonBack);
       JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.WARNING_MESSAGE);
     }
 
-
-
-
-
     panel1.setBorder(BorderFactory.createLineBorder(Color.black));
-
-
-
-
-    masterPanel.add(panelNorth, BorderLayout.NORTH);
-    masterPanel.add(panelEast, BorderLayout.EAST);
-    //masterPanel.add(panelSouth, BorderLayout.SOUTH);
-    masterPanel.add(panelWest, BorderLayout.WEST);
     masterPanel.add(panel1);
   }
 
