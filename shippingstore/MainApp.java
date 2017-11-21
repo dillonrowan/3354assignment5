@@ -7,6 +7,9 @@ import java.awt.CardLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingUtilities;
 import java.awt.Color;
@@ -140,6 +143,7 @@ public class MainApp {
       }
     });
 
+    //action to update user
     button7.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -149,7 +153,7 @@ public class MainApp {
       }
     });
 
-    //action to add new user
+    //action to deliver package
     button8.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -159,6 +163,7 @@ public class MainApp {
       }
     });
 
+    //action to show transactions
     button9.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -717,7 +722,10 @@ public class MainApp {
     //radio buttons
     panel1.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
-    panel1.setBorder(BorderFactory.createTitledBorder("User Type"));
+    LineBorder border1 = new LineBorder(Color.blue);
+    TitledBorder border2 = new TitledBorder("Users");
+    Border newBorder = BorderFactory.createCompoundBorder(border1, border2);
+    panel1.setBorder(newBorder);
 
     JRadioButton customer = new JRadioButton("Customer");
     JRadioButton employee = new JRadioButton("Employee");
@@ -825,7 +833,157 @@ public class MainApp {
   }
 
   public void updateUser(JPanel masterPanel){
-    masterPanel.add(buttonBack);
+    masterPanel.setLayout(new GridLayout(2,2));
+    JPanel panel1 = new JPanel(new FlowLayout());
+    JPanel panel2 = new JPanel(new FlowLayout());
+    JPanel panel3 = new JPanel(new FlowLayout());
+    JPanel panel4 = new JPanel(new FlowLayout());
+    JLabel firstName = new JLabel("First Name:");
+    JLabel lastName = new JLabel("Last Name:");
+    JLabel phoneNo = new JLabel("Phone Number:");
+    JLabel address = new JLabel("Address:           ");
+    JLabel monSalary = new JLabel("Monthly Salary:");
+    JLabel ssn = new JLabel("SSN (9):             ");
+    JLabel bank = new JLabel("Bank Account #:");
+    JTextField firstText = new JTextField(17);
+    JTextField lastText = new JTextField(17);
+    JTextField phoneText = new JTextField(17);
+    JTextField addText = new JTextField(17);
+    JTextField monText = new JTextField(17);
+    JTextField ssnText = new JTextField(17);
+    JTextField bankText = new JTextField(17);
+    JButton okButton = new JButton("OK");
+
+    //customer attributes
+    panel3.add(phoneNo);
+    panel3.add(phoneText);
+    panel3.add(address);
+    panel3.add(addText);
+
+    phoneNo.setVisible(false);
+    phoneText.setVisible(false);
+    address.setVisible(false);
+    addText.setVisible(false);
+
+    //employee attributes
+    panel3.add(monSalary);
+    panel3.add(monText);
+    panel3.add(ssn);
+    panel3.add(ssnText);
+    panel3.add(bank);
+    panel3.add(bankText);
+
+    monSalary.setVisible(false);
+    monText.setVisible(false);
+    ssn.setVisible(false);
+    ssnText.setVisible(false);
+    bank.setVisible(false);
+    bankText.setVisible(false);
+
+
+
+    panel2.add(firstName);
+    panel2.add(firstText);
+    panel2.add(lastName);
+    panel2.add(lastText);
+    panel4.add(okButton);  //put OK button in panel6
+    panel4.add(buttonBack);
+
+    //user combobox. populate with all users. differentiate emp and cust
+    panel1.setLayout(new GridBagLayout());
+    LineBorder border1 = new LineBorder(Color.red);
+    TitledBorder border2 = new TitledBorder("Users");
+    Border newBorder = BorderFactory.createCompoundBorder(border1, border2);
+    panel1.setBorder(newBorder);
+    String[] userStrings = {"Plastic", "Fiber"};
+    JComboBox <String> userBox = new JComboBox<>(userStrings);
+    userBox.setPreferredSize(new Dimension(100, 25));
+    userBox.setSelectedItem(null);
+    panel1.add(userBox);
+
+
+    //manage appearance based on what radio button is selected
+   //  if(emp is selected) {
+   //      monSalary.setVisible(false);
+   //      monText.setVisible(false);
+   //      ssn.setVisible(false);
+   //      ssnText.setVisible(false);
+   //      bank.setVisible(false);
+   //      bankText.setVisible(false);
+   //      phoneNo.setVisible(true);
+   //      phoneText.setVisible(true);
+   //      address.setVisible(true);
+   //      addText.setVisible(true);
+   //    }
+   //
+   //    else { //emp is selected
+   //      phoneNo.setVisible(false);
+   //      phoneText.setVisible(false);
+   //      address.setVisible(false);
+   //      addText.setVisible(false);
+   //      monSalary.setVisible(true);
+   //      monText.setVisible(true);
+   //      ssn.setVisible(true);
+   //      ssnText.setVisible(true);
+   //      bank.setVisible(true);
+   //      bankText.setVisible(true);
+   //    }
+   //
+   //  //OK button listener, validates before adding
+   //   okButton.addActionListener(new ActionListener(){
+   //    @Override
+   //    public void actionPerformed(ActionEvent e){
+   //      boolean isOK = false;
+   //      //check at least one thing in each buttongroup is selected
+   //      if (userIdText.getText() == null || firstText.getText() == null || lastText.getText() == null){
+   //         JOptionPane.showMessageDialog(null, "Input all user details.", "User Property Error",
+   //          JOptionPane.ERROR_MESSAGE);
+   //      } else if (customer.isSelected() && (phoneText.getText() == null || addText.getText() == null)) {
+   //        JOptionPane.showMessageDialog(null, "Enter valid customer information", "Empty Customer Fields Error",
+   //         JOptionPane.ERROR_MESSAGE);
+   //      } else if (!ss.isCustomer(userIdText) && (monText.getText() == null || ssnText.getText() == null || bankText.getText() == null)) {
+   //        JOptionPane.showMessageDialog(null, "Enter valid employee information", "Empty Employee Fields Error",
+   //         JOptionPane.ERROR_MESSAGE);
+   //      } else if (!ss.isCustomer(userIdText) && ssnText.getText().length() != 9) {
+   //        JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.",
+   //         "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
+   //      } else {
+   //        isOK = true;
+   //      }
+   //
+   //      if (ss.isCustomer(userIdText) && isOK){
+   //        ss.addCustomer(firstText.getText(), lastText.getText(), phoneText.getText(), addText.getText());
+   //        JOptionPane.showMessageDialog(null, "Customer successfully updated!", "Customer Input Successful",
+   //         JOptionPane.INFORMATION_MESSAGE);
+   //      }
+   //
+   //      if (!ss.isCustomer(userIdText) && isOK) {
+   //        if (!Validate.isPosInt(ssnText.getText()) || !Validate.isPositive(monText.getText()) || !Validate.isPosInt(bankText.getText())) {
+   //          JOptionPane.showMessageDialog(null,"Social Security Number, Bank Account Number and Salary must be positive numbers.",
+   //           "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+   //        } else {
+   //          int social = Integer.parseInt(ssnText.getText());
+   //          int bankNo = Integer.parseInt(bankText.getText());
+   //          float salary = Float.parseFloat(monText.getText());
+   //          if (social < 10000000 || social > 999999999){
+   //            JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.",
+   //             "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
+   //          } else {
+   //            ss.addEmployee(firstText.getText(), lastText.getText(), social, salary, bankNo);
+   //            JOptionPane.showMessageDialog(null, "Employee successfully added!", "Employee Unput Successful",
+   //             JOptionPane.INFORMATION_MESSAGE);
+   //          }
+   //        }
+   //      }
+   //    }
+   // });
+    masterPanel.add(panel1);
+    masterPanel.add(panel2);
+    masterPanel.add(panel3);
+    masterPanel.add(panel4);
+
+
+
   }
 
   public void deliverPackage(JPanel masterPanel) {
