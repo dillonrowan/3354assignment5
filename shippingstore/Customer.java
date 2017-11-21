@@ -84,4 +84,13 @@ public class Customer extends User {
                 + ", lastName=" + lastName + ", phoneNumber=" + phoneNumber
                 + ", address=" + address + '}';
     }
+
+    /**
+     * Returns the user type.
+     * @return User type.
+     */
+    @Override
+    public String getType() {
+      return "Customer";
+    }
 }

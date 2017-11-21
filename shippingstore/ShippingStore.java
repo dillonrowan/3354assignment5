@@ -169,6 +169,44 @@ public class ShippingStore {
     }
 
     /**
+     * This method return the tracking number for all packages in the inventory.
+     * @return
+     */
+    public ArrayList<String> getAllTracking() {
+      ArrayList<String> data = new ArrayList<String>();
+      for (Package p : packageList) {
+          data.add(p.getPtn());
+      }
+      return data;
+    }
+
+    /**
+     * This method return the IDs for all customers in the inventory.
+     * @return
+     */
+     public ArrayList<Integer> getAllCID() {
+       ArrayList<Integer> data = new ArrayList<Integer>();
+       for (User u : users) {
+         if(u.getType() == "Customer")
+           data.add(u.getId());
+       }
+       return data;
+     }
+
+    /**
+     * This method return the IDs for all employees in the inventory.
+     * @return
+     */
+     public ArrayList<Integer> getAllEID() {
+       ArrayList<Integer> data = new ArrayList<Integer>();
+       for (User u : users) {
+         if(u.getType() == "Customer")
+           data.add(u.getId());
+       }
+       return data;
+     }
+
+    /**
      *
      * @param ptn
      * @return
