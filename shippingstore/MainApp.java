@@ -72,6 +72,7 @@ public class MainApp {
     panelSixth.add(buttonBack);
     panelSeventh.add(buttonBack);
     panelNinth.add(buttonBack);
+    panelTenth.add(buttonBack);
 
     panelCont.add(panelFirst, "1");  //Main menu
     panelCont.add(panelSecond, "2"); //Show all existing packages
@@ -81,6 +82,7 @@ public class MainApp {
     panelCont.add(panelSixth, "6");  //Show a list of users in the database
     panelCont.add(panelSeventh, "7");//add a new user to the database
     panelCont.add(panelNinth, "9");  //Deliver a package
+    panelCont.add(panelTenth, "10");  //Show a list of transactions
 
     cl.show(panelCont, "1");
 
@@ -137,10 +139,11 @@ public class MainApp {
       }
     });
 
+    //action to add new user
     button6.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        //panelSeventh.removeAll();
+        panelSeventh.removeAll();
         cl.show(panelCont, "7");
         addNewUser(panelSeventh);
       }
@@ -149,9 +152,18 @@ public class MainApp {
     button8.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        panelThird.removeAll();
+        panelNinth.removeAll();
         cl.show(panelCont, "9");
         deliverPackage(panelNinth);
+      }
+    });
+
+    button9.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        panelThird.removeAll();
+        cl.show(panelCont, "10");
+
       }
     });
 
@@ -193,7 +205,6 @@ public class MainApp {
     JPanel panelEast = new JPanel();
     JPanel panelSouth = new JPanel();
     JPanel panelWest = new JPanel();
-    JLabel dummy = new JLabel(" %50s ");
     JLabel custId = new JLabel("Customer ID:");
     JLabel empId = new JLabel("Employee ID:");
     JLabel trackNo = new JLabel("Enter Tracking Number:");
@@ -219,7 +230,7 @@ public class MainApp {
     panel1.add(trackNoText);
     panel1.add(price);
     panel1.add(priceText);
-    panel1.setLayout(new FlowLayout(FlowLayout.CENTER));
+    panel1.add(buttonBack);
     panel1.add(ship);
 
     masterPanel.add(panelNorth, BorderLayout.NORTH);
@@ -639,6 +650,7 @@ public class MainApp {
     panel1.add(dummy3);
     panel1.add(dummy4);
     panel1.add(result);
+    panel1.add(buttonBack);
 
     masterPanel.add(panelNorth, BorderLayout.NORTH);
     masterPanel.add(panelEast, BorderLayout.EAST);
