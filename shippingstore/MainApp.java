@@ -1,6 +1,6 @@
 package shippingstore;
 
-import shippingstore.Validate;
+
 import java.util.*;
 import java.awt.*;
 import java.awt.CardLayout;
@@ -8,6 +8,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import java.awt.Color;
 import java.awt.event.*;
 import javax.swing.*;
@@ -137,6 +140,7 @@ public class MainApp {
       public void actionPerformed(ActionEvent e) {
         panelSeventh.removeAll();
         cl.show(panelCont, "7");
+        addNewUser(panelSeventh);
       }
     });
 
@@ -184,11 +188,13 @@ public class MainApp {
       }
       JTable packageTable = new JTable(pRowData, pColumnNames);
       JScrollPane scrollPane = new JScrollPane(packageTable);
+      packageTable.setEnabled(false);
       masterPanel.add(scrollPane);
       masterPanel.add(buttonBack);
     } else {
       JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.ERROR_MESSAGE);
     }
+    masterPanel.add(buttonBack);
   }
 
   public void addNewPackage(JPanel masterPanel) {
@@ -509,6 +515,8 @@ public class MainApp {
   public void deletePackage(JPanel masterPanel) {
     Object[] pColumnNames = {"Type", "Tracking #","Specification","Mailing Class","Other Detail 1", "Other Detail 2"};
     ArrayList<String> pListData = ss.getAllPackagesFormatted();
+    JButton deleteButton = new JButton("Delete");
+
     if (!(pListData.isEmpty())){
       Object[][] pRowData = new Object[pListData.size()][6];
       for(int i = 0; i < pListData.size(); i++){
@@ -517,19 +525,35 @@ public class MainApp {
           pRowData[i][j] = parts[j];
         }
       }
-      JTable packageTable = new JTable(pRowData, pColumnNames);
+      DefaultTableModel tableModel = new DefaultTableModel(pRowData, pColumnNames){
+        public boolean isCellEditable(int rowIndex, int mColIndex) {
+          return false;
+        }
+      };
+      JTable packageTable = new JTable();
+      packageTable.setModel(tableModel);
       JScrollPane scrollPane = new JScrollPane(packageTable);
       masterPanel.add(scrollPane);
+      deleteButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          int col = 1;
+          int row = packageTable.getSelectedRow();
+          String selected = tableModel.getValueAt(row, col).toString();
+          boolean deleted = false;
+          ss.deletePackage(selected);
+          if (deleted)
+          {
+            masterPanel.revalidate();
+            deletePackage(masterPanel);
+          }
+        }
+      });
     } else {
+      deleteButton.setEnabled(false);
       JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.ERROR_MESSAGE);
     }
-
-    JButton deleteButton = new JButton("Delete");
-    deleteButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-      }
-    });
+    masterPanel.add(deleteButton);
     masterPanel.add(buttonBack);
   }
 
