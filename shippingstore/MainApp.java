@@ -593,61 +593,192 @@ public class MainApp {
   }
 
   public void addNewUser(JPanel masterPanel) {
-    masterPanel.setLayout(new FlowLayout());
-    JPanel panel1 = new JPanel();
-    JPanel panel2 = new JPanel();
-    JPanel panel3 = new JPanel();
-    JPanel panel4 = new JPanel();
-    JPanel panel5 = new JPanel();
-    JPanel panel6 = new JPanel();
+    masterPanel.setLayout(new GridLayout(2,2));
+    JPanel panel1 = new JPanel(new FlowLayout());
+    JPanel panel2 = new JPanel(new FlowLayout());
+    JPanel panel3 = new JPanel(new FlowLayout());
+    JPanel panel4 = new JPanel(new FlowLayout());
+    JLabel firstName = new JLabel("First Name:");
+    JLabel lastName = new JLabel("Last Name:");
+    JLabel phoneNo = new JLabel("Phone Number:");
+    JLabel address = new JLabel("Address:           ");
+    JLabel monSalary = new JLabel("Monthly Salary:");
+    JLabel ssn = new JLabel("SSN (9):             ");
+    JLabel bank = new JLabel("Bank Account Number");
+    JTextField firstText = new JTextField(17);
+    JTextField lastText = new JTextField(17);
+    JTextField phoneText = new JTextField(17);
+    JTextField addText = new JTextField(17);
+    JTextField monText = new JTextField(17);
+    JTextField ssnText = new JTextField(17);
+    JTextField bankText = new JTextField(17);
+    JButton okButton = new JButton("OK");
 
-    JLabel fn = new JLabel("First Name:");
-    JLabel ln = new JLabel("Last Name:");
-    JLabel phoneNo = new JLabel("PhoneNumber");
-    JLabel monSalary = new JLabel("Monthly Salary");
-    JLabel ssn = new JLabel("SSN (9-digit):");
-    JLabel bankNo = new JLabel("Bank Account Number:");
-    JTextField firstText = new JTextField(10);
-    JTextField lastText = new JTextField(10);
-    JTextField phoneText = new JTextField(10);
-    JTextField monText = new JTextField(10);
-    JTextField ssnText = new JTextField(10);
-    JTextField bankText = new JTextField(10);
-    JButton add = new JButton("Add User");
+    //customer attributes
+    panel3.add(phoneNo);
+    panel3.add(phoneText);
+    panel3.add(address);
+    panel3.add(addText);
 
-    JRadioButton cust = new JRadioButton("Customer");
-    JRadioButton emp = new JRadioButton("Employee");
+    phoneNo.setVisible(false);
+    phoneText.setVisible(false);
+    address.setVisible(false);
+    addText.setVisible(false);
 
-    ButtonGroup bg = new ButtonGroup();
-    bg.add(cust);
-    bg.add(emp);
+    //employee attributes
+    panel3.add(monSalary);
+    panel3.add(monText);
+    panel3.add(ssn);
+    panel3.add(ssnText);
+    panel3.add(bank);
+    panel3.add(bankText);
 
+    monSalary.setVisible(false);
+    monText.setVisible(false);
+    ssn.setVisible(false);
+    ssnText.setVisible(false);
+    bank.setVisible(false);
+    bankText.setVisible(false);
 
-    JLabel title = new JLabel("Select User Type");
-    JTextField search = new JTextField(5);
+    panel2.add(firstName);
+    panel2.add(firstText);
+    panel2.add(lastName);
+    panel2.add(lastText);
+    panel4.add(okButton);  //put OK button in panel6
+    panel4.add(buttonBack);
+
+    //radio buttons
+    panel1.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
-    panel1.setBorder(BorderFactory.createLineBorder(Color.black));
+    panel1.setBorder(BorderFactory.createTitledBorder("User Type"));
 
-    panel1.setBackground(Color.red);
-    panel2.setBackground(Color.blue);
-    panel3.setBackground(Color.yellow);
-    panel4.setBackground(Color.black);
-    panel5.setBackground(Color.green);
-    panel6.setBackground(Color.pink);
+    JRadioButton customer = new JRadioButton("Customer");
+    JRadioButton employee = new JRadioButton("Employee");
 
-    masterPanel.add(fn);
+    customer.setActionCommand(customer.getText());
+    employee.setActionCommand(employee.getText());
 
-    masterPanel.add(firstText);
+    ButtonGroup tbg = new ButtonGroup();
+    tbg.add(customer);
+    tbg.add(employee);
 
-    masterPanel.add(ln);
 
-    masterPanel.add(lastText);
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.weightx = 0.1;
+    c.weighty = 0.1;
+    c.gridx = 0;
+    c.gridy = 1;
+    panel1.add(customer, c);
+    c.gridy = 2;
+    panel1.add(employee, c);
 
-    // masterPanel.add(panel1);
-    // masterPanel.add(panel2);
-    // masterPanel.add(panel3);
-    // masterPanel.add(panel4);
-    // masterPanel.add(panel5);
-    // masterPanel.add(panel6);
+    if(customer.isSelected()) {
+
+    }
+
+    if(employee.isSelected()) {
+
+    }
+
+    //manage appearance based on what radio button is selected
+    customer.addActionListener(new ActionListener () {
+      public void actionPerformed(ActionEvent e) {
+        monSalary.setVisible(false);
+        monText.setVisible(false);
+        ssn.setVisible(false);
+        ssnText.setVisible(false);
+        bank.setVisible(false);
+        bankText.setVisible(false);
+        phoneNo.setVisible(true);
+        phoneText.setVisible(true);
+        address.setVisible(true);
+        addText.setVisible(true);
+      }
+    });
+    //
+    employee.addActionListener(new ActionListener () {
+      public void actionPerformed(ActionEvent e) {
+        phoneNo.setVisible(false);
+        phoneText.setVisible(false);
+        address.setVisible(false);
+        addText.setVisible(false);
+        monSalary.setVisible(true);
+        monText.setVisible(true);
+        ssn.setVisible(true);
+        ssnText.setVisible(true);
+        bank.setVisible(true);
+        bankText.setVisible(true);
+      }
+    });
+
+
+
+    //OK button listener, validates before adding
+    // okButton.addActionListener(new ActionListener()
+    // {
+    //   @Override
+    //   public void actionPerformed(ActionEvent e)
+    //   {
+    //     String getAtt1 = p5textField1.getText();
+    //     String getAtt2 = p5textField2.getText();
+    //     String material = (String)drumAttributes.getSelectedItem();
+    //     String type = "";
+    //     String mailingClass = "";
+    //     String specification = "";
+    //     String getTn = tn.getText();
+    //     boolean isInDB = ss.packageExists(getTn);
+    //     boolean isOK = false;
+
+        //check at least one thing in each buttongroup is selected
+        // if (tbg.getSelection() == null || getTn == null || getAtt1 == null){
+        //    JOptionPane.showMessageDialog(null, "Please specify all user properties.", "User Property Error",
+        //     JOptionPane.ERROR_MESSAGE);
+        // } else if (drum.isSelected() && material == null) {
+        //   JOptionPane.showMessageDialog(null, "Please select a material type", "Empty Field Error",
+        //    JOptionPane.ERROR_MESSAGE);
+        // } else if (!(drum.isSelected()) && getAtt2.isEmpty()){
+        //   JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Empty Field Error",
+        //    JOptionPane.ERROR_MESSAGE);
+        // } else if (getTn.length() != 5) {
+        //   JOptionPane.showMessageDialog(null,"Tracking number must be 5 characters.",
+        //    "Character Limit Error", JOptionPane.ERROR_MESSAGE);
+        // } else if (isInDB){
+        //   JOptionPane.showMessageDialog(null,"Tracking number already in database.",
+        //    "Duplicate Tracking Number Error", JOptionPane.ERROR_MESSAGE);
+        //  } else {
+        //   type = tbg.getSelection().getActionCommand();
+        //   mailingClass = mbg.getSelection().getActionCommand();
+        //   specification = sbg.getSelection().getActionCommand();
+        //   isOK = true;
+        // }
+        //
+        // if (customer.isSelected() && isOK){
+        //   if (!Validate.isPosInt(getAtt1) || !Validate.isPosInt(getAtt2)) {
+        //     JOptionPane.showMessageDialog(null,"Height and width must be a positive integer.",
+        //      "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+        //   } else {
+        //     ss.addEnvelope(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
+        //     JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+        //      JOptionPane.ERROR_MESSAGE);
+        //   }
+        // }
+        //
+        // if (employee.isSelected() && isOK) {
+        //   if (!Validate.isPosInt(getAtt1) || !Validate.isPosInt(getAtt2)) {
+        //     JOptionPane.showMessageDialog(null,"Dimension and Volume must be a positive integer.",
+        //      "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+        //   } else {
+        //     ss.addBox(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
+        //     JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+        //      JOptionPane.ERROR_MESSAGE);
+        //   }
+        // }
+
+
+  //  });
+    masterPanel.add(panel1);
+    masterPanel.add(panel2);
+    masterPanel.add(panel3);
+    masterPanel.add(panel4);
   }
 }
