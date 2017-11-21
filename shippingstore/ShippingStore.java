@@ -405,12 +405,12 @@ public class ShippingStore {
      *
      * @return transactions
      */
-    public String getAllTransactionsText() {
-        String transText = "";
+    public ArrayList<String> getAllTransactionsText() {
+        ArrayList<String> data = new ArrayList<String>();
         for (Transaction trans : transactions) {
-            transText += trans.toString();
+            data.add(trans.getFormattedText());
         }
-        return transText;
+        return data;
     }
 
 

@@ -66,15 +66,6 @@ public class MainApp {
     JButton button10 = new JButton ("Exit program.");
     panelFirst.add(button10);
 
-    panelSecond.add(buttonBack);
-    panelThird.add(buttonBack);
-    panelFourth.add(buttonBack);
-    panelFifth.add(buttonBack);
-    panelSixth.add(buttonBack);
-    panelSeventh.add(buttonBack);
-    panelNinth.add(buttonBack);
-    panelTenth.add(buttonBack);
-
     panelCont.add(panelFirst, "1");  //Main menu
     panelCont.add(panelSecond, "2"); //Show all existing packages
     panelCont.add(panelThird, "3");  //Add a new package to the Database
@@ -82,6 +73,7 @@ public class MainApp {
     panelCont.add(panelFifth, "5");  //Search for package given its tracking number
     panelCont.add(panelSixth, "6");  //Show a list of users in the database
     panelCont.add(panelSeventh, "7");//add a new user to the database
+    panelCont.add(panelEighth, "8"); //update user
     panelCont.add(panelNinth, "9");  //Deliver a package
     panelCont.add(panelTenth, "10");  //Show a list of transactions
 
@@ -148,6 +140,16 @@ public class MainApp {
       }
     });
 
+    button7.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        panelEighth.removeAll();
+        cl.show(panelCont, "8");
+        updateUser(panelEighth);
+      }
+    });
+
+    //action to add new user
     button8.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -196,89 +198,6 @@ public class MainApp {
          new MainApp();
       }
     });
-  }
-
-public void showTransactions(JPanel masterPanel) {
-  JPanel panel1 = new JPanel(new FlowLayout());
-  JButton search = new JButton("Search");
-  String[] dummyVals1 = {"Plastic", "Fiber","Uranium"};
-  JComboBox <String> trackNoBox = new JComboBox<>(dummyVals1);
-  trackNoBox.setSelectedItem(null);
-  panel1.add(buttonBack);
-  panel1.add(search);
-  panel1.add(trackNoBox);
-  masterPanel.add(panel1);
-}
-
-  public void deliverPackage(JPanel masterPanel) {
-    masterPanel.setLayout(new BorderLayout());
-    JPanel panel1 = new JPanel(new FlowLayout());
-    JPanel panelNorth = new JPanel();
-    JPanel panelEast = new JPanel();
-    JPanel panelSouth = new JPanel();
-    JPanel panelWest = new JPanel();
-    JLabel custId = new JLabel("Customer ID:");
-    JLabel empId = new JLabel("Employee ID:");
-    JLabel trackNo = new JLabel("Enter Tracking Number:");
-    JLabel price = new JLabel("Enter Price: ");
-    JButton ship = new JButton("Deliver Package");
-    JTextField custIdText = new JTextField(15);
-    JTextField empIdText = new JTextField(15);
-    JTextField trackNoText = new JTextField(9);
-    JTextField priceText = new JTextField(15);
-
-    //String[] dummyVals1 = {"Plastic", "Fiber","Uranium"};
-    // String[] dummyVals2 = {"Glass", "Silicon","Stone"};
-    // String[] dummyVals3 = {"Metal", "Wood", "Concrete"};
-    // String[] dummyVals3 = {"Soap", "Sponge", "water"};
-
-    //JComboBox <String> trackNo = new JComboBox<>(dummyVals1);
-    // JComboBox <String> custId = new JComboBox<>(dummyVals2);
-    // JComboBox <String> empId = new JComboBox<>(dummyVals3);
-    // JComboBox <String> price = new JComboBox<>(dummyVals4);
-    //drumAttributes.setPreferredSize(new Dimension(100, 25));
-
-    String[] dummyVals1 = {"Plastic", "Fiber","Uranium"};
-    JComboBox <String> trackNoBox = new JComboBox<>(dummyVals1);
-
-    String[] dummyVals2 = {"Glass", "Silicon","Stone"};
-    JComboBox <String> custIdBox = new JComboBox<>(dummyVals2);
-
-    String[] dummyVals3 = {"Metal", "Wood", "Concrete"};
-    JComboBox <String> empIdBox = new JComboBox<>(dummyVals3);
-
-    String[] dummyVals4 = {"Soap", "Sponge", "water"};
-    JComboBox <String> priceBox = new JComboBox<>(dummyVals4);
-
-    custIdBox.setPreferredSize(new Dimension(150, 25));
-    empIdBox.setPreferredSize(new Dimension(150, 25));
-    trackNoBox.setPreferredSize(new Dimension(85, 25));
-    priceBox.setPreferredSize(new Dimension(150, 25));
-
-    panelNorth.setPreferredSize(new Dimension(600, 60));
-    panelEast.setPreferredSize(new Dimension(40, 400));
-    panelSouth.setPreferredSize(new Dimension(600, 60));
-    panelWest.setPreferredSize(new Dimension(40, 400));
-    panel1.setBorder(BorderFactory.createLineBorder(Color.black));
-
-
-    panel1.add(custId);
-    panel1.add(custIdBox);//panel1.add(custIdText);
-    panel1.add(empId);
-    panel1.add(empIdBox);//panel1.add(empIdText);
-    panel1.add(trackNo);
-    panel1.add(trackNoBox);//panel1.add(trackNoText);
-    panel1.add(price);
-    panel1.add(priceBox);//panel1.add(priceText);
-    panel1.add(buttonBack);
-    panel1.add(ship);
-
-    masterPanel.add(panelNorth, BorderLayout.NORTH);
-    masterPanel.add(panelEast, BorderLayout.EAST);
-    masterPanel.add(panelSouth, BorderLayout.SOUTH);
-    masterPanel.add(panelWest, BorderLayout.WEST);
-    masterPanel.add(panel1);
-
   }
 
   public void showPackage(JPanel masterPanel){
@@ -570,7 +489,7 @@ public void showTransactions(JPanel masterPanel) {
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
           } else {
             ss.addEnvelope(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
-            JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+            JOptionPane.showMessageDialog(null, "Envelope successfully added!", "Package input successful",
              JOptionPane.INFORMATION_MESSAGE);
           }
         }
@@ -581,7 +500,7 @@ public void showTransactions(JPanel masterPanel) {
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
           } else {
             ss.addBox(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
-            JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+            JOptionPane.showMessageDialog(null, "Box successfully added!", "Package input successful",
              JOptionPane.INFORMATION_MESSAGE);
           }
         }
@@ -592,7 +511,7 @@ public void showTransactions(JPanel masterPanel) {
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
           } else {
             ss.addCrate(getTn, specification, mailingClass, Float.parseFloat(getAtt1), getAtt2);
-            JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+            JOptionPane.showMessageDialog(null, "Crate successfully added!", "Package input successful",
              JOptionPane.INFORMATION_MESSAGE);
           }
         }
@@ -603,7 +522,7 @@ public void showTransactions(JPanel masterPanel) {
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
           } else {
             ss.addDrum(getTn, specification, mailingClass, material, Float.parseFloat(getAtt2));
-            JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+            JOptionPane.showMessageDialog(null, "Drum successfully added!", "Package input successful",
              JOptionPane.INFORMATION_MESSAGE);
           }
         }
@@ -872,7 +791,7 @@ public void showTransactions(JPanel masterPanel) {
                "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
             } else {
               ss.addEmployee(firstText.getText(), lastText.getText(), social, salary, bankNo);
-              JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+              JOptionPane.showMessageDialog(null, "Employee successfully added!", "Employee Unput Successful",
                JOptionPane.INFORMATION_MESSAGE);
             }
           }
@@ -883,5 +802,138 @@ public void showTransactions(JPanel masterPanel) {
     masterPanel.add(panel2);
     masterPanel.add(panel3);
     masterPanel.add(panel4);
+  }
+
+  public void updateUser(JPanel masterPanel){
+    masterPanel.add(buttonBack);
+  }
+
+  public void deliverPackage(JPanel masterPanel) {
+    if (ss.hasPackages() && ss.hasEmployees() && ss.hasCustomers()) {
+      masterPanel.setLayout(new BorderLayout());
+      JPanel panel1 = new JPanel(new FlowLayout());
+      JPanel panelNorth = new JPanel();
+      JPanel panelEast = new JPanel();
+      JPanel panelSouth = new JPanel();
+      JPanel panelWest = new JPanel();
+      JLabel custId = new JLabel("Customer ID:");
+      JLabel empId = new JLabel("Employee ID:");
+      JLabel trackNo = new JLabel("Tracking Number:");
+      JLabel price = new JLabel("Enter Price: ");
+      JLabel delDate = new JLabel("Enter delivery date: ");
+      JLabel shipDate = new JLabel("Enter shipping date: ");
+      JButton ship = new JButton("Deliver Package");
+
+      ArrayList<String> allPack = ss.getAllTracking();
+      ArrayList<Integer> allCust = ss.getAllCID();
+      ArrayList<Integer> allEmp = ss.getAllEID();
+      String[] packages = allPack.toArray(new String[allPack.size()]);
+      Integer[] customers = allCust.toArray(new Integer[allCust.size()]);
+      Integer[] employees = allEmp.toArray(new Integer[allEmp.size()]);
+
+      JComboBox <Integer> custIdBox = new JComboBox<>(customers);
+      JComboBox <Integer> empIdBox = new JComboBox<>(employees);
+      JComboBox <String> trackNoBox = new JComboBox<>(packages);
+      JTextField priceText = new JTextField(15);
+      JTextField delText = new JTextField(15);
+      JTextField shipText = new JTextField(15);
+
+      custIdBox.setPreferredSize(new Dimension(150, 25));
+      empIdBox.setPreferredSize(new Dimension(150, 25));
+      trackNoBox.setPreferredSize(new Dimension(85, 25));
+
+      panelNorth.setPreferredSize(new Dimension(600, 60));
+      panelEast.setPreferredSize(new Dimension(40, 400));
+      panelSouth.setPreferredSize(new Dimension(600, 60));
+      panelWest.setPreferredSize(new Dimension(40, 400));
+      panel1.setBorder(BorderFactory.createLineBorder(Color.black));
+
+
+      panel1.add(custId);
+      panel1.add(custIdBox);//panel1.add(custIdText);
+      panel1.add(empId);
+      panel1.add(empIdBox);//panel1.add(empIdText);
+      panel1.add(trackNo);
+      panel1.add(trackNoBox);//panel1.add(trackNoText);
+      panel1.add(shipDate);
+      panel1.add(shipText);
+      panel1.add(delDate);
+      panel1.add(delText);
+      panel1.add(price);
+      panel1.add(priceText);//panel1.add(priceText);
+      panel1.add(buttonBack);
+      panel1.add(ship);
+
+      masterPanel.add(panelNorth, BorderLayout.NORTH);
+      masterPanel.add(panelEast, BorderLayout.EAST);
+      masterPanel.add(panelSouth, BorderLayout.SOUTH);
+      masterPanel.add(panelWest, BorderLayout.WEST);
+      masterPanel.add(panel1);
+
+      ship.addActionListener(new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e){
+          String cost = priceText.getText();
+          String deliveryDate = delText.getText();
+          String shippingDate = shipText.getText();
+          String trackingNo = (String)trackNoBox.getSelectedItem();
+          Integer employee = (Integer)empIdBox.getSelectedItem();
+          Integer customer = (Integer)custIdBox.getSelectedItem();
+          if (!Validate.isPositive(cost)) {
+            JOptionPane.showMessageDialog(null,"Price must be a positive Number.", "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+          } else if (Validate.parseDate(deliveryDate) == null || Validate.parseDate(shippingDate) == null) {
+            JOptionPane.showMessageDialog(null,"Dates must be in the MM/DD/YYYY format.", "Invalid Date Error", JOptionPane.ERROR_MESSAGE);
+          } else if (!ss.packageExists(trackingNo)) {
+            JOptionPane.showMessageDialog(null,"Package not in database.", "Package not found.", JOptionPane.ERROR_MESSAGE);
+          } else {
+            Date dDate = Validate.parseDate(deliveryDate);
+            Date sDate = Validate.parseDate(shippingDate);
+            ss.addShppingTransaction(customer, employee, trackingNo, sDate, dDate, Float.parseFloat(cost));
+            if (ss.deletePackage(trackingNo)){
+            JOptionPane.showMessageDialog(null,"Package successfully delivered!.",
+             "Package Delivery Success", JOptionPane.INFORMATION_MESSAGE);
+            cl.show(panelCont, "1");
+           }
+          }
+        }
+      });
+    } else if (!ss.hasPackages()) {
+      masterPanel.add(buttonBack);
+      JOptionPane.showMessageDialog(null,"Database has no packages, cannot complete transaction without packages.",
+       "Missing Packages Error", JOptionPane.WARNING_MESSAGE);
+    } else if (!ss.hasEmployees()){
+      masterPanel.add(buttonBack);
+      JOptionPane.showMessageDialog(null,"Database has no employees, cannot complete transaction without employees.",
+       "Missing Employees Error", JOptionPane.WARNING_MESSAGE);
+    } else if (!ss.hasCustomers()){
+      masterPanel.add(buttonBack);
+      JOptionPane.showMessageDialog(null,"Database has no customers, cannot complete transaction without customers.",
+       "Missing Customers Error", JOptionPane.WARNING_MESSAGE);
+    } else {
+      masterPanel.add(buttonBack);
+      JOptionPane.showMessageDialog(null,"Unknown error occurred, this should not be seen.",
+       "Unknown Error", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  public void showTransactions(JPanel masterPanel){
+    Object[] pColumnNames = {"Customer ID", "Employee ID","Tracking Number","Shipping Date","Delivery Date", "Price"};
+    ArrayList<String> uListData = ss.getAllTransactionsText();
+    if (!(uListData.isEmpty())){
+      Object[][] uRowData = new Object[uListData.size()][6];
+      for(int i = 0; i < uListData.size(); i++){
+        String[] parts = uListData.get(i).split(" ");
+        for(int j = 0; j < 6; j++){
+          uRowData[i][j] = parts[j];
+        }
+      }
+      JTable packageTable = new JTable(uRowData, pColumnNames);
+      JScrollPane scrollPane = new JScrollPane(packageTable);
+      masterPanel.add(scrollPane);
+      masterPanel.add(buttonBack);
+    } else {
+      masterPanel.add(buttonBack);
+      JOptionPane.showMessageDialog(null, "Database has no completed transaction.", "No transactions to display ", JOptionPane.WARNING_MESSAGE);
+    }
   }
 }

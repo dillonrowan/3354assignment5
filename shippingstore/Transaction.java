@@ -142,4 +142,13 @@ public class Transaction implements Serializable {
                 + employeeId + ", ptn=" + ptn + ", shippingDate=" + shippingDate
                 + ", deliveryDate=" + deliveryDate + ", price=" + price + '}';
     }
+
+    /**
+     * Returns the attributes of the transaction, in a formatted text fashion.
+     * @return Formated Text.
+     */
+    public String getFormattedText() {
+      String data = customerId +" "+ employeeId +" "+ ptn +" "+ shippingDate +" "+ deliveryDate + " " + price;
+      return data;
+    }
 }
