@@ -135,10 +135,13 @@ public class MainApp {
     button6.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        panelSeventh.removeAll();
+        //panelSeventh.removeAll();
         cl.show(panelCont, "7");
+        addNewUser(panelSeventh);
       }
     });
+
+
 
     //action to exit
     button10.addActionListener(new ActionListener() {
@@ -579,13 +582,13 @@ public class MainApp {
   }
 
   public void addNewUser(JPanel masterPanel) {
-    masterPanel.setLayout(new BorderLayout());
-    JPanel panel1 = new JPanel(new GridBagLayout());
-    JPanel panel2 = new JPanel(new FlowLayout());
-    JPanel panelNorth = new JPanel();
-    JPanel panelEast = new JPanel();
-    JPanel panelSouth = new JPanel();
-    JPanel panelWest = new JPanel();
+    masterPanel.setLayout(new FlowLayout());
+    JPanel panel1 = new JPanel();
+    JPanel panel2 = new JPanel();
+    JPanel panel3 = new JPanel();
+    JPanel panel4 = new JPanel();
+    JPanel panel5 = new JPanel();
+    JPanel panel6 = new JPanel();
 
     JLabel fn = new JLabel("First Name:");
     JLabel ln = new JLabel("Last Name:");
@@ -599,6 +602,7 @@ public class MainApp {
     JTextField monText = new JTextField(10);
     JTextField ssnText = new JTextField(10);
     JTextField bankText = new JTextField(10);
+    JButton add = new JButton("Add User");
 
     JRadioButton cust = new JRadioButton("Customer");
     JRadioButton emp = new JRadioButton("Employee");
@@ -607,36 +611,32 @@ public class MainApp {
     bg.add(cust);
     bg.add(emp);
 
-    panelNorth.setPreferredSize(new Dimension(600, 40));
-    panelEast.setPreferredSize(new Dimension(40, 400));
-    panelSouth.setPreferredSize(new Dimension(600, 40));
-    panelWest.setPreferredSize(new Dimension(40, 400));
 
     JLabel title = new JLabel("Select User Type");
     JTextField search = new JTextField(5);
     GridBagConstraints c = new GridBagConstraints();
     panel1.setBorder(BorderFactory.createLineBorder(Color.black));
 
-    c.gridx = 0;
-    c.gridy = 0;
-    panel1.add(fn);
+    panel1.setBackground(Color.red);
+    panel2.setBackground(Color.blue);
+    panel3.setBackground(Color.yellow);
+    panel4.setBackground(Color.black);
+    panel5.setBackground(Color.green);
+    panel6.setBackground(Color.pink);
 
-    c.gridx = 0;
-    c.gridy = 1;
-    panel1.add(firstText);
+    masterPanel.add(fn);
 
-    c.gridx = 0;
-    c.gridy = 2;
-    panel1.add(ln);
+    masterPanel.add(firstText);
 
-    c.gridx = 0;
-    c.gridy = 3;
-    panel1.add(lastText);
+    masterPanel.add(ln);
 
-    masterPanel.add(panelNorth, BorderLayout.NORTH);
-    masterPanel.add(panelEast, BorderLayout.EAST);
-    masterPanel.add(panelSouth, BorderLayout.SOUTH);
-    masterPanel.add(panelWest, BorderLayout.WEST);
-    masterPanel.add(panel1);
+    masterPanel.add(lastText);
+
+    // masterPanel.add(panel1);
+    // masterPanel.add(panel2);
+    // masterPanel.add(panel3);
+    // masterPanel.add(panel4);
+    // masterPanel.add(panel5);
+    // masterPanel.add(panel6);
   }
 }
