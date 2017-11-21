@@ -25,11 +25,7 @@ public class Validate {
   }
 
   public static boolean isPositive(String s) {
-    Double number = Double.parseDouble(s);
-    if(number < 0)
-      return false;
-
-    return true;
+    return s.matches("\\d+(\\.\\d+)?");
   }
 
   public static Date parseDate(String maybeDate) {

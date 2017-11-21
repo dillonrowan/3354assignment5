@@ -523,7 +523,7 @@ public class MainApp {
 
         if (drum.isSelected() && isOK) {
           if (!Validate.isPositive(getAtt2)) {
-            JOptionPane.showMessageDialog(null,"Weight must be a positive integer.",
+            JOptionPane.showMessageDialog(null,"Diameter must be a positive integer.",
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
           } else {
             ss.addDrum(getTn, specification, mailingClass, material, Float.parseFloat(getAtt2));
@@ -802,7 +802,7 @@ public class MainApp {
 
         if (customer.isSelected() && isOK){
           ss.addCustomer(firstText.getText(), lastText.getText(), phoneText.getText(), addText.getText());
-          JOptionPane.showMessageDialog(null, "Customer successfully added!", "Custoer Input Successful",
+          JOptionPane.showMessageDialog(null, "Customer successfully added!", "Customer Input Successful",
            JOptionPane.INFORMATION_MESSAGE);
         }
 
