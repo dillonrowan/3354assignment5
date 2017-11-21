@@ -29,6 +29,7 @@ public class MainApp {
   JPanel panelSixth = new JPanel();
   JPanel panelSeventh = new JPanel();
   JPanel panelNinth = new JPanel();
+  JPanel panelTenth = new JPanel();
 
   JButton buttonBack = new JButton("Back");
   CardLayout cl = new CardLayout();
