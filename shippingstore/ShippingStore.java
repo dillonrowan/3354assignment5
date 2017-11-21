@@ -169,6 +169,30 @@ public class ShippingStore {
     }
 
     /**
+     * This method determines if the database has packages.
+     * @return True/False depending on if database has packages.
+     */
+    public boolean hasPackages() {
+      return !packageList.isEmpty();
+    }
+
+    /**
+     * This method determines if the database has employees.
+     * @return True/False depending on if database has employees.
+     */
+    public boolean hasEmployees() {
+      return !this.getAllEID().isEmpty();
+    }
+
+    /**
+     * This method determines if the database has customers.
+     * @return True/False depending on if database has customers.
+     */
+    public boolean hasCustomers() {
+      return !this.getAllCID().isEmpty();
+    }
+
+    /**
      * This method return the tracking number for all packages in the inventory.
      * @return
      */
@@ -242,8 +266,6 @@ public class ShippingStore {
     public void addEmployee(String firstName, String lastName, int ssn, float monthlySalary, int bankAccNumber) {
         users.add(new Employee(userIdCounter++, firstName, lastName, ssn, monthlySalary, bankAccNumber));
     }
-
-
 
     /**
      * Auxiliary private method to return a list of users in a formatted
