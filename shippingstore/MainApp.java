@@ -1,6 +1,7 @@
 package shippingstore;
 
-import shippingstore.Validate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.*;
 import java.awt.*;
 import java.awt.CardLayout;
@@ -20,6 +21,11 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import static java.awt.GridBagConstraints.*;
 
 public class MainApp {
+
+  ConsoleHandler handler = new ConsoleHandler();
+  handler.setFormatter(new SimpleFormatter());
+  final static Logger logger = Logger.getLogger(MainApp.class.getName());
+  logger.addHandler(new FileHandler("MainApp.%u.%g.txt"));
 
   JFrame frame = new JFrame("Shipping Store Database");
   JLabel label = new JLabel("Welcome! Please choose menu option.");
@@ -196,6 +202,7 @@ public class MainApp {
   }
 
   public static void main(String[] args) {
+    logger.setLevel(level.FINE);
     SwingUtilities.invokeLater(new Runnable () {
       @Override
       public void run() {
@@ -222,6 +229,7 @@ public class MainApp {
     } else {
       masterPanel.add(buttonBack);
       JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.WARNING_MESSAGE);
+      logger.log(Level.WARNING, "User attempted to show package but no packages have been added.");
     }
   }
 
@@ -466,20 +474,20 @@ public class MainApp {
         //check at least one thing in each buttongroup is selected
         if (tbg.getSelection() == null || mbg.getSelection() == null ||
          sbg.getSelection() == null || getTn == null || getAtt1 == null){
-           JOptionPane.showMessageDialog(null, "Please specify all package properties.", "Package Property Error",
-            JOptionPane.ERROR_MESSAGE);
+           JOptionPane.showMessageDialog(null, "Please specify all package properties.", "Package Property Error", JOptionPane.ERROR_MESSAGE);
+           logger.log(Level.WARNING, "User attempted to add package with blank fields.");
         } else if (drum.isSelected() && material == null) {
-          JOptionPane.showMessageDialog(null, "Please select a material type", "Empty Field Error",
-           JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null, "Please select a material type", "Empty Field Error", JOptionPane.ERROR_MESSAGE);
+          logger.log(Level.WARNING, "User attempted to add drum without selecting material type.");
         } else if (!(drum.isSelected()) && getAtt2.isEmpty()){
-          JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Empty Field Error",
-           JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Empty Field Error", JOptionPane.ERROR_MESSAGE);
+          logger.log(Level.WARNING, "User attempted to add package with blank fields.");
         } else if (getTn.length() != 5) {
-          JOptionPane.showMessageDialog(null,"Tracking number must be 5 characters.",
-           "Character Limit Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null,"Tracking number must be 5 characters.", "Character Limit Error", JOptionPane.ERROR_MESSAGE);
+          logger.log(Level.WARNING, "User attempted to add package with incorrectly sized tracking number.");
         } else if (isInDB){
-          JOptionPane.showMessageDialog(null,"Tracking number already in database.",
-           "Duplicate Tracking Number Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null,"Tracking number already in database.", "Duplicate Tracking Number Error", JOptionPane.ERROR_MESSAGE);
+          logger.log(Level.WARNING, "User attempted to add package with duplicate tracking number present in database.");
          } else {
           type = tbg.getSelection().getActionCommand();
           mailingClass = mbg.getSelection().getActionCommand();
@@ -489,45 +497,45 @@ public class MainApp {
 
         if (envelope.isSelected() && isOK){
           if (!Validate.isPosInt(getAtt1) || !Validate.isPosInt(getAtt2)) {
-            JOptionPane.showMessageDialog(null,"Height and width must be a positive integer.",
-             "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Height and width must be a positive integer.", "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "User attempted to use invalid values for envelope height or width.");
           } else {
             ss.addEnvelope(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
-            JOptionPane.showMessageDialog(null, "Envelope successfully added!", "Package input successful",
-             JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Envelope successfully added!", "Package input successful", JOptionPane.INFORMATION_MESSAGE);
+            logger.log(Level.INFO, "User successfully added envelope to database.");
           }
         }
 
         if (box.isSelected() && isOK) {
           if (!Validate.isPosInt(getAtt1) || !Validate.isPosInt(getAtt2)) {
-            JOptionPane.showMessageDialog(null,"Dimension and Volume must be a positive integer.",
-             "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Dimension and Volume must be a positive integer.", "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "User attempted to use invalid values for box dimension or volume.");
           } else {
             ss.addBox(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
-            JOptionPane.showMessageDialog(null, "Box successfully added!", "Package input successful",
-             JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Box successfully added!", "Package input successful", JOptionPane.INFORMATION_MESSAGE);
+            logger.log(Level.INFO, "User successfully added box to database.");
           }
         }
 
         if (crate.isSelected() && isOK) {
           if (!Validate.isPositive(getAtt1)) {
-            JOptionPane.showMessageDialog(null,"Weight must be a positive Number.",
-             "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Weight must be a positive Number.", "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "User attempted to use invalid value for crate weight.");
           } else {
             ss.addCrate(getTn, specification, mailingClass, Float.parseFloat(getAtt1), getAtt2);
-            JOptionPane.showMessageDialog(null, "Crate successfully added!", "Package input successful",
-             JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Crate successfully added!", "Package input successful", JOptionPane.INFORMATION_MESSAGE);
+            logger.log(Level.INFO, "User successfully added crate to database.");
           }
         }
 
         if (drum.isSelected() && isOK) {
           if (!Validate.isPositive(getAtt2)) {
-            JOptionPane.showMessageDialog(null,"Diameter must be a positive integer.",
-             "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Diameter must be a positive integer.", "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "User attempted to use invalid value for drum diameter.");
           } else {
             ss.addDrum(getTn, specification, mailingClass, material, Float.parseFloat(getAtt2));
-            JOptionPane.showMessageDialog(null, "Drum successfully added!", "Package input successful",
-             JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Drum successfully added!", "Package input successful", JOptionPane.INFORMATION_MESSAGE);
+            logger.log(Level.INFO, "User successfully added drum to database.");
           }
         }
       }
@@ -559,6 +567,7 @@ public class MainApp {
       }
     } else {
       JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.WARNING_MESSAGE);
+      logger.log(Level.WARNING, "User attempted to delete package but database was empty.");
     }
     DefaultTableModel model = new DefaultTableModel(pRowData, pColumnNames){
       public boolean isCellEditable(int row, int column){
@@ -623,6 +632,7 @@ public class MainApp {
     } else {
       panelNorth.add(buttonBack);
       JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.WARNING_MESSAGE);
+      logger.log(Level.WARNING, "User attempted to search for package, no packages have been added to database.");
     }
 
     panel1.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -647,6 +657,7 @@ public class MainApp {
     } else {
       masterPanel.add(buttonBack);
       JOptionPane.showMessageDialog(null, "Database has no users.", "No users to display ", JOptionPane.WARNING_MESSAGE);
+      logger.log(Level.WARNING, "User attempted to show users, but no users have been added to database.");
     }
   }
 
@@ -771,42 +782,42 @@ public class MainApp {
         boolean isOK = false;
         //check at least one thing in each buttongroup is selected
         if (tbg.getSelection() == null || firstText.getText() == null || lastText.getText() == null){
-           JOptionPane.showMessageDialog(null, "Input all user details.", "User Property Error",
-            JOptionPane.ERROR_MESSAGE);
+           JOptionPane.showMessageDialog(null, "Input all user details.", "User Property Error", JOptionPane.ERROR_MESSAGE);
+           logger.log(Level.SEVERE, "User attempted to add user with blank fields.");
         } else if (customer.isSelected() && (phoneText.getText() == null || addText.getText() == null)) {
-          JOptionPane.showMessageDialog(null, "Enter valid customer information", "Empty Customer Fields Error",
-           JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null, "Enter valid customer information", "Empty Customer Fields Error", JOptionPane.ERROR_MESSAGE);
+          logger.log(Level.SEVERE, "User attempted to add customer with blank phone or address fields.");
         } else if (employee.isSelected() && (monText.getText() == null || ssnText.getText() == null || bankText.getText() == null)) {
-          JOptionPane.showMessageDialog(null, "Enter valid employee information", "Empty Employee Fields Error",
-           JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null, "Enter valid employee information", "Empty Employee Fields Error", JOptionPane.ERROR_MESSAGE);
+          logger.log(Level.SEVERE, "User attempted to add employee with blank salary, social security number, or bank account number fields.");
         } else if (employee.isSelected() && ssnText.getText().length() != 9) {
-          JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.",
-           "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.", "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
+          logger.log(Level.WARNING, "User attempted to add employee with ssn of incorrect length.");
         } else {
           isOK = true;
         }
 
         if (customer.isSelected() && isOK){
           ss.addCustomer(firstText.getText(), lastText.getText(), phoneText.getText(), addText.getText());
-          JOptionPane.showMessageDialog(null, "Customer successfully added!", "Customer Input Successful",
-           JOptionPane.INFORMATION_MESSAGE);
+          JOptionPane.showMessageDialog(null, "Customer successfully added!", "Customer Input Successful", JOptionPane.INFORMATION_MESSAGE);
+          logger.log(Level.INFO, "User successfully added customer to database.");
         }
 
         if (employee.isSelected() && isOK) {
           if (!Validate.isPosInt(ssnText.getText()) || !Validate.isPositive(monText.getText()) || !Validate.isPosInt(bankText.getText())) {
-            JOptionPane.showMessageDialog(null,"Social Security Number, Bank Account Number and Salary must be positive numbers.",
-             "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Social Security Number, Bank Account Number and Salary must be positive numbers.", "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "User attempted to add employee with invalid value for social security number, salary, or bank account number.");
           } else {
             int social = Integer.parseInt(ssnText.getText());
             int bankNo = Integer.parseInt(bankText.getText());
             float salary = Float.parseFloat(monText.getText());
             if (social < 10000000 || social > 999999999){
-              JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.",
-               "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
+              JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.", "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
+              logger.log(Level.WARNING, "User attempted to add employee with incorrect size social security number.");
             } else {
               ss.addEmployee(firstText.getText(), lastText.getText(), social, salary, bankNo);
-              JOptionPane.showMessageDialog(null, "Employee successfully added!", "Employee Unput Successful",
-               JOptionPane.INFORMATION_MESSAGE);
+              JOptionPane.showMessageDialog(null, "Employee successfully added!", "Employee Unput Successful", JOptionPane.INFORMATION_MESSAGE);
+              logger.log(Level.INFO, "User successfully added employee to database.");
             }
           }
         }
@@ -1045,17 +1056,20 @@ public class MainApp {
           Integer customer = (Integer)custIdBox.getSelectedItem();
           if (!Validate.isPositive(cost)) {
             JOptionPane.showMessageDialog(null,"Price must be a positive Number.", "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "User attempted to enter invalid value for cost when delivering package.");
           } else if (Validate.parseDate(deliveryDate) == null || Validate.parseDate(shippingDate) == null) {
             JOptionPane.showMessageDialog(null,"Dates must be in the MM/DD/YYYY format.", "Invalid Date Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "User attempted to add date in incorrect format when delivering package.");
           } else if (!ss.packageExists(trackingNo)) {
             JOptionPane.showMessageDialog(null,"Package not in database.", "Package not found.", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "User attempted to deliver package not in database.");
           } else {
             Date dDate = Validate.parseDate(deliveryDate);
             Date sDate = Validate.parseDate(shippingDate);
             ss.addShppingTransaction(customer, employee, trackingNo, sDate, dDate, Float.parseFloat(cost));
             if (ss.deletePackage(trackingNo)){
-            JOptionPane.showMessageDialog(null,"Package successfully delivered!.",
-             "Package Delivery Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Package successfully delivered!.", "Package Delivery Success", JOptionPane.INFORMATION_MESSAGE);
+            logger.log(Level.INFO, "Package delivered successfully.");
             cl.show(panelCont, "1");
            }
           }
@@ -1063,20 +1077,20 @@ public class MainApp {
       });
     } else if (!ss.hasPackages()) {
       masterPanel.add(buttonBack);
-      JOptionPane.showMessageDialog(null,"Database has no packages, cannot complete transaction without packages.",
-       "Missing Packages Error", JOptionPane.WARNING_MESSAGE);
+      JOptionPane.showMessageDialog(null,"Database has no packages, cannot complete transaction without packages.", "Missing Packages Error", JOptionPane.WARNING_MESSAGE);
+      logger.log(Level.WARNING, "User attempted deliver package when database had no packages.");
     } else if (!ss.hasEmployees()){
       masterPanel.add(buttonBack);
-      JOptionPane.showMessageDialog(null,"Database has no employees, cannot complete transaction without employees.",
-       "Missing Employees Error", JOptionPane.WARNING_MESSAGE);
+      JOptionPane.showMessageDialog(null,"Database has no employees, cannot complete transaction without employees.", "Missing Employees Error", JOptionPane.WARNING_MESSAGE);
+      logger.log(Level.WARNING, "User attempted deliver package when database had no employees.");
     } else if (!ss.hasCustomers()){
       masterPanel.add(buttonBack);
-      JOptionPane.showMessageDialog(null,"Database has no customers, cannot complete transaction without customers.",
-       "Missing Customers Error", JOptionPane.WARNING_MESSAGE);
+      JOptionPane.showMessageDialog(null,"Database has no customers, cannot complete transaction without customers.", "Missing Customers Error", JOptionPane.WARNING_MESSAGE);
+      logger.log(Level.WARNING, "User attempted deliver package when database had no customers.");
     } else {
       masterPanel.add(buttonBack);
-      JOptionPane.showMessageDialog(null,"Unknown error occurred, this should not be seen.",
-       "Unknown Error", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null,"Unknown error occurred, this should not be seen.", "Unknown Error", JOptionPane.ERROR_MESSAGE);
+      logger.log(Level.SEVERE, "Unknown error, if you are receiving this, please note the process for debugging.");
     }
   }
 
@@ -1098,6 +1112,7 @@ public class MainApp {
     } else {
       masterPanel.add(buttonBack);
       JOptionPane.showMessageDialog(null, "Database has no completed transaction.", "No transactions to display ", JOptionPane.WARNING_MESSAGE);
+      logger.log(Level.WARNING, "User attempted show transactions but there are no completed transaction in database.");
     }
   }
 }
