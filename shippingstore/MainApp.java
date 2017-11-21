@@ -197,77 +197,6 @@ public class MainApp {
     });
   }
 
-  public void deliverPackage(JPanel masterPanel) {
-    masterPanel.setLayout(new BorderLayout());
-    JPanel panel1 = new JPanel(new FlowLayout());
-    JPanel panelNorth = new JPanel();
-    JPanel panelEast = new JPanel();
-    JPanel panelSouth = new JPanel();
-    JPanel panelWest = new JPanel();
-    JLabel custId = new JLabel("Customer ID:");
-    JLabel empId = new JLabel("Employee ID:");
-    JLabel trackNo = new JLabel("Enter Tracking Number:");
-    JLabel price = new JLabel("Enter Price: ");
-    JButton ship = new JButton("Deliver Package");
-    JTextField custIdText = new JTextField(15);
-    JTextField empIdText = new JTextField(15);
-    JTextField trackNoText = new JTextField(9);
-    JTextField priceText = new JTextField(15);
-
-    //String[] dummyVals1 = {"Plastic", "Fiber","Uranium"};
-    // String[] dummyVals2 = {"Glass", "Silicon","Stone"};
-    // String[] dummyVals3 = {"Metal", "Wood", "Concrete"};
-    // String[] dummyVals3 = {"Soap", "Sponge", "water"};
-
-    //JComboBox <String> trackNo = new JComboBox<>(dummyVals1);
-    // JComboBox <String> custId = new JComboBox<>(dummyVals2);
-    // JComboBox <String> empId = new JComboBox<>(dummyVals3);
-    // JComboBox <String> price = new JComboBox<>(dummyVals4);
-    //drumAttributes.setPreferredSize(new Dimension(100, 25));
-
-    String[] dummyVals1 = {"Plastic", "Fiber","Uranium"};
-    JComboBox <String> trackNoBox = new JComboBox<>(dummyVals1);
-
-    String[] dummyVals2 = {"Glass", "Silicon","Stone"};
-    JComboBox <String> custIdBox = new JComboBox<>(dummyVals2);
-
-    String[] dummyVals3 = {"Metal", "Wood", "Concrete"};
-    JComboBox <String> empIdBox = new JComboBox<>(dummyVals3);
-
-    String[] dummyVals4 = {"Soap", "Sponge", "water"};
-    JComboBox <String> priceBox = new JComboBox<>(dummyVals4);
-
-    custIdBox.setPreferredSize(new Dimension(150, 25));
-    empIdBox.setPreferredSize(new Dimension(150, 25));
-    trackNoBox.setPreferredSize(new Dimension(85, 25));
-    priceBox.setPreferredSize(new Dimension(150, 25));
-
-    panelNorth.setPreferredSize(new Dimension(600, 60));
-    panelEast.setPreferredSize(new Dimension(40, 400));
-    panelSouth.setPreferredSize(new Dimension(600, 60));
-    panelWest.setPreferredSize(new Dimension(40, 400));
-    panel1.setBorder(BorderFactory.createLineBorder(Color.black));
-
-
-    panel1.add(custId);
-    panel1.add(custIdBox);//panel1.add(custIdText);
-    panel1.add(empId);
-    panel1.add(empIdBox);//panel1.add(empIdText);
-    panel1.add(trackNo);
-    panel1.add(trackNoBox);//panel1.add(trackNoText);
-    panel1.add(price);
-    panel1.add(priceBox);//panel1.add(priceText);
-    panel1.add(buttonBack);
-    panel1.add(ship);
-
-    masterPanel.add(panelNorth, BorderLayout.NORTH);
-    masterPanel.add(panelEast, BorderLayout.EAST);
-    masterPanel.add(panelSouth, BorderLayout.SOUTH);
-    masterPanel.add(panelWest, BorderLayout.WEST);
-    masterPanel.add(panel1);
-
-  }
-
   public void showPackage(JPanel masterPanel){
     Object[] pColumnNames = {"Type", "Tracking #","Specification","Mailing Class","Other Detail 1", "Other Detail 2"};
     ArrayList<String> pListData = ss.getAllPackagesFormatted();
@@ -557,7 +486,7 @@ public class MainApp {
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
           } else {
             ss.addEnvelope(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
-            JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+            JOptionPane.showMessageDialog(null, "Envelope successfully added!", "Envelope input successful",
              JOptionPane.INFORMATION_MESSAGE);
           }
         }
@@ -568,7 +497,7 @@ public class MainApp {
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
           } else {
             ss.addBox(getTn, specification, mailingClass, Integer.parseInt(getAtt1), Integer.parseInt(getAtt2));
-            JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+            JOptionPane.showMessageDialog(null, "Box successfully added!", "Box input successful",
              JOptionPane.INFORMATION_MESSAGE);
           }
         }
@@ -579,7 +508,7 @@ public class MainApp {
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
           } else {
             ss.addCrate(getTn, specification, mailingClass, Float.parseFloat(getAtt1), getAtt2);
-            JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+            JOptionPane.showMessageDialog(null, "Crate successfully added!", "Crate input successful",
              JOptionPane.INFORMATION_MESSAGE);
           }
         }
@@ -590,7 +519,7 @@ public class MainApp {
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
           } else {
             ss.addDrum(getTn, specification, mailingClass, material, Float.parseFloat(getAtt2));
-            JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+            JOptionPane.showMessageDialog(null, "Drum successfully added!", "Drum input successful",
              JOptionPane.INFORMATION_MESSAGE);
           }
         }
@@ -842,7 +771,7 @@ public class MainApp {
 
         if (customer.isSelected() && isOK){
           ss.addCustomer(firstText.getText(), lastText.getText(), phoneText.getText(), addText.getText());
-          JOptionPane.showMessageDialog(null, "Customer successfully added!", "Custoer Input Successful",
+          JOptionPane.showMessageDialog(null, "Customer successfully added!", "Customer Input Successful!",
            JOptionPane.INFORMATION_MESSAGE);
         }
 
@@ -859,7 +788,7 @@ public class MainApp {
                "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
             } else {
               ss.addEmployee(firstText.getText(), lastText.getText(), social, salary, bankNo);
-              JOptionPane.showMessageDialog(null, "Package successfully added!", "Package input successful",
+              JOptionPane.showMessageDialog(null, "Employee successfully added!", "Employee input successful!",
                JOptionPane.INFORMATION_MESSAGE);
             }
           }
@@ -870,5 +799,77 @@ public class MainApp {
     masterPanel.add(panel2);
     masterPanel.add(panel3);
     masterPanel.add(panel4);
+  }
+
+  public void deliverPackage(JPanel masterPanel) {
+    if (ss.hasPackages() && ss.hasEmployees() && ss.hasCustomers()) {
+      masterPanel.setLayout(new BorderLayout());
+      JPanel panel1 = new JPanel(new FlowLayout());
+      JPanel panelNorth = new JPanel();
+      JPanel panelEast = new JPanel();
+      JPanel panelSouth = new JPanel();
+      JPanel panelWest = new JPanel();
+      JLabel custId = new JLabel("Customer ID:");
+      JLabel empId = new JLabel("Employee ID:");
+      JLabel trackNo = new JLabel("Tracking Number:");
+      JLabel price = new JLabel("Enter Price: ");
+      JButton ship = new JButton("Deliver Package");
+
+      ArrayList<String> allPack = ss.getAllTracking();
+      ArrayList<Integer> allCust = ss.getAllCID();
+      ArrayList<Integer> allEmp = ss.getAllEID();
+      String[] packages = allPack.toArray(new String[allPack.size()]);
+      Integer[] customers = allCust.toArray(new Integer[allCust.size()]);
+      Integer[] employees = allEmp.toArray(new Integer[allEmp.size()]);
+
+      JComboBox <Integer> custIdBox = new JComboBox<>(customers);
+      JComboBox <Integer> empIdBox = new JComboBox<>(employees);
+      JComboBox <String> trackNoBox = new JComboBox<>(packages);
+      JTextField priceText = new JTextField(15);
+
+      custIdBox.setPreferredSize(new Dimension(150, 25));
+      empIdBox.setPreferredSize(new Dimension(150, 25));
+      trackNoBox.setPreferredSize(new Dimension(85, 25));
+
+      panelNorth.setPreferredSize(new Dimension(600, 60));
+      panelEast.setPreferredSize(new Dimension(40, 400));
+      panelSouth.setPreferredSize(new Dimension(600, 60));
+      panelWest.setPreferredSize(new Dimension(40, 400));
+      panel1.setBorder(BorderFactory.createLineBorder(Color.black));
+
+
+      panel1.add(custId);
+      panel1.add(custIdBox);//panel1.add(custIdText);
+      panel1.add(empId);
+      panel1.add(empIdBox);//panel1.add(empIdText);
+      panel1.add(trackNo);
+      panel1.add(trackNoBox);//panel1.add(trackNoText);
+      panel1.add(price);
+      panel1.add(priceText);//panel1.add(priceText);
+      panel1.add(buttonBack);
+      panel1.add(ship);
+
+      masterPanel.add(panelNorth, BorderLayout.NORTH);
+      masterPanel.add(panelEast, BorderLayout.EAST);
+      masterPanel.add(panelSouth, BorderLayout.SOUTH);
+      masterPanel.add(panelWest, BorderLayout.WEST);
+      masterPanel.add(panel1);
+    } else if (!ss.hasPackages()) {
+      masterPanel.add(buttonBack);
+      JOptionPane.showMessageDialog(null,"Database has no packages, cannot complete transaction without packages.",
+       "Missing Packages Error", JOptionPane.ERROR_MESSAGE);
+    } else if (!ss.hasEmployees()){
+      masterPanel.add(buttonBack);
+      JOptionPane.showMessageDialog(null,"Database has no employees, cannot complete transaction without employees.",
+       "Missing Employees Error", JOptionPane.ERROR_MESSAGE);
+    } else if (!ss.hasCustomers()){
+      masterPanel.add(buttonBack);
+      JOptionPane.showMessageDialog(null,"Database has no customers, cannot complete transaction without customers.",
+       "Missing Customers Error", JOptionPane.ERROR_MESSAGE);
+    } else {
+      masterPanel.add(buttonBack);
+      JOptionPane.showMessageDialog(null,"Unknown error occurred.",
+       "Unknown Error", JOptionPane.ERROR_MESSAGE);
+    }
   }
 }
