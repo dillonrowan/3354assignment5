@@ -28,6 +28,7 @@ public class MainApp {
   JPanel panelFifth = new JPanel();
   JPanel panelSixth = new JPanel();
   JPanel panelSeventh = new JPanel();
+  JPanel panelEighth = new JPanel();
   JPanel panelNinth = new JPanel();
   JPanel panelTenth = new JPanel();
 
@@ -133,9 +134,7 @@ public class MainApp {
       public void actionPerformed(ActionEvent e) {
         panelSixth.removeAll();
         cl.show(panelCont, "6");
-        String text = ss.getAllUsersFormatted();
-        JLabel gapLabel = new JLabel(text);
-        panelSixth.add(gapLabel);
+        showUsers(panelSixth);
       }
     });
 
@@ -659,6 +658,27 @@ public class MainApp {
     masterPanel.add(panel1);
   }
 
+  public void showUsers(JPanel masterPanel){
+    Object[] pColumnNames = {"Type", "ID #","First Name","Last Name","Other Detail 1", "Other Detail 2", "Other Detail 3"};
+    ArrayList<String> uListData = ss.getAllUsersFormatted();
+    if (!(uListData.isEmpty())){
+      Object[][] uRowData = new Object[uListData.size()][7];
+      for(int i = 0; i < uListData.size(); i++){
+        String[] parts = uListData.get(i).split(" ");
+        for(int j = 0; j < 7; j++){
+          uRowData[i][j] = parts[j];
+        }
+      }
+      JTable packageTable = new JTable(uRowData, pColumnNames);
+      JScrollPane scrollPane = new JScrollPane(packageTable);
+      masterPanel.add(scrollPane);
+      masterPanel.add(buttonBack);
+    } else {
+      masterPanel.add(buttonBack);
+      JOptionPane.showMessageDialog(null, "Database has no users.", "No users to display ", JOptionPane.WARNING_MESSAGE);
+    }
+  }
+
   public void addNewUser(JPanel masterPanel) {
     masterPanel.setLayout(new GridLayout(2,2));
     JPanel panel1 = new JPanel(new FlowLayout());
@@ -804,7 +824,7 @@ public class MainApp {
              "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
           } else {
             int social = Integer.parseInt(ssnText.getText());
-            int bankNo = Integer.parseInt(ssnText.getText());
+            int bankNo = Integer.parseInt(bankText.getText());
             float salary = Float.parseFloat(monText.getText());
             if (social < 10000000 || social > 999999999){
               JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.",

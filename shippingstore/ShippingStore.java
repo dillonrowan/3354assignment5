@@ -211,25 +211,19 @@ public class ShippingStore {
      * Auxiliary private method to return a list of users in a formatted
      * manner.
      */
-    private String getFormattedUserList(List<User> users) {
-        String separator = new String(new char[80]).replace("\0", "=");
-        String text = "";
-        text += separator + "\n";
-        text += String.format("| %10s | %8s | %12s | %12s | %54s |%n",
-                "USER TYPE", "USER ID", "FIST NAME", "LAST NAME", "OTHER DETAILS");
-        text += separator + "\n";
-        for (User u : users) {
-            text += u.getFormattedText();
-        }
-        text += separator + "\n";
-        return text;
+    private ArrayList<String> getFormattedUserList(List<User> users) {
+      ArrayList<String> data = new ArrayList<String>();
+      for (User u : users) {
+          data.add(u.getFormattedText());
+      }
+      return data;
     }
 
     /**
      * Returns a string list of all users in the database in a formatted manner.
      * @return a formatted string of all the users in the database.
      */
-    public String getAllUsersFormatted() {
+    public ArrayList<String> getAllUsersFormatted() {
         return getFormattedUserList(users);
     }
 
