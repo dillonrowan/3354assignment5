@@ -7,6 +7,7 @@ import java.awt.CardLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingUtilities;
 import java.awt.Color;
 import java.awt.event.*;
@@ -509,34 +510,44 @@ public class MainApp {
   public void deletePackage(JPanel masterPanel) {
 
     JButton deleteButton = new JButton("Delete");
+    deleteButton.setEnabled(false);
     masterPanel.add(deleteButton);
-    deleteButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-      }
-    });
     masterPanel.add(buttonBack);
-
     masterPanel.setLayout(new FlowLayout());
-    Object[] pColumnNames = {"Type", "Tracking #","Specification","Mailing Class","Other Detail 1", "Other Detail 2"};
     ArrayList<String> pListData = ss.getAllPackagesFormatted();
+    Object[] pColumnNames = {"Type", "Tracking #","Specification","Mailing Class","Other Detail 1", "Other Detail 2"};
+    Object[][] pRowData = new Object[pListData.size()][6];
     if (!(pListData.isEmpty())){
-      Object[][] pRowData = new Object[pListData.size()][6];
+      deleteButton.setEnabled(true);
       for(int i = 0; i < pListData.size(); i++){
         String[] parts = pListData.get(i).split(" ");
         for(int j = 0; j < 6; j++){
           pRowData[i][j] = parts[j];
         }
       }
-      JTable packageTable = new JTable(pRowData, pColumnNames);
-      JScrollPane scrollPane = new JScrollPane(packageTable);
-      masterPanel.add(scrollPane);
     } else {
       JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.ERROR_MESSAGE);
     }
-
-
-
+    DefaultTableModel model = new DefaultTableModel(pRowData, pColumnNames){
+      public boolean isCellEditable(int row, int column){
+        return false;
+      }
+    };
+    JTable packageTable = new JTable();
+    packageTable.setModel(model);
+    JScrollPane scrollPane = new JScrollPane(packageTable);
+    masterPanel.add(scrollPane);
+    deleteButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        int col = 1;
+        int row = packageTable.getSelectedRow();
+        String value = model.getValueAt(row, col).toString();
+        model.removeRow(row);
+        model.fireTableDataChanged();
+        ss.deletePackage(value);
+      }
+    });
   }
 
   public void searchPackage(JPanel masterPanel) {
