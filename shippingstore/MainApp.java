@@ -2,6 +2,8 @@ package shippingstore;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.FileHandler;
 import java.util.*;
 import java.awt.*;
 import java.awt.CardLayout;
@@ -22,10 +24,7 @@ import static java.awt.GridBagConstraints.*;
 
 public class MainApp {
 
-  ConsoleHandler handler = new ConsoleHandler();
-  handler.setFormatter(new SimpleFormatter());
-  final static Logger logger = Logger.getLogger(MainApp.class.getName());
-  logger.addHandler(new FileHandler("MainApp.%u.%g.txt"));
+  private static Logger logger = Logger.getLogger("MainApp");
 
   JFrame frame = new JFrame("Shipping Store Database");
   JLabel label = new JLabel("Welcome! Please choose menu option.");
@@ -201,8 +200,13 @@ public class MainApp {
     frame.setVisible(true);
   }
 
-  public static void main(String[] args) {
-    logger.setLevel(level.FINE);
+  public static void main(String[] args) throws Exception {
+    FileHandler handler = new FileHandler("MainApp.%u.%g.txt");
+    SimpleFormatter formatter = new SimpleFormatter();
+    handler.setFormatter(formatter);
+    logger.addHandler(handler);
+    logger.setLevel(Level.FINE);
+
     SwingUtilities.invokeLater(new Runnable () {
       @Override
       public void run() {
@@ -456,11 +460,9 @@ public class MainApp {
     });
 
     //OK button listener, validates before adding
-    okButton.addActionListener(new ActionListener()
-    {
+    okButton.addActionListener(new ActionListener(){
       @Override
-      public void actionPerformed(ActionEvent e)
-      {
+      public void actionPerformed(ActionEvent e) {
         String getAtt1 = p5textField1.getText();
         String getAtt2 = p5textField2.getText();
         String material = (String)drumAttributes.getSelectedItem();
@@ -584,9 +586,13 @@ public class MainApp {
         int col = 1;
         int row = packageTable.getSelectedRow();
         String value = model.getValueAt(row, col).toString();
+        ss.deletePackage(value);
         model.removeRow(row);
         model.fireTableDataChanged();
-        ss.deletePackage(value);
+        if (!ss.hasPackages()) {
+          deleteButton.setEnabled(false);
+          masterPanel.revalidate();
+        }
       }
     });
   }
@@ -611,28 +617,44 @@ public class MainApp {
     masterPanel.add(panelEast, BorderLayout.EAST);
     masterPanel.add(panelWest, BorderLayout.WEST);
 
-    Object[] pColumnNames = {"Type", "Tracking #","Specification","Mailing Class","Other Detail 1", "Other Detail 2"};
-    ArrayList<String> pListData = ss.getAllPackagesFormatted();
-    if (!(pListData.isEmpty())){
-      Object[][] pRowData = new Object[pListData.size()][6];
-      for(int i = 0; i < pListData.size(); i++){
-        String[] parts = pListData.get(i).split(" ");
-        for(int j = 0; j < 6; j++){
-          pRowData[i][j] = parts[j];
-        }
-      }
-      JTable packageTable = new JTable(pRowData, pColumnNames);
-      JScrollPane scrollPane = new JScrollPane(packageTable);
-      panelNorth.add(buttonBack);
-      panelNorth.add(searchButton);
-      panelNorth.add(search);
-      panel1.add(trackNo);
-      panel1.add(scrollPane);
-
-    } else {
+    if (!ss.hasPackages()){
       panelNorth.add(buttonBack);
       JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.WARNING_MESSAGE);
       logger.log(Level.WARNING, "User attempted to search for package, no packages have been added to database.");
+    } else {
+      Object[] pColumnNames = {"Type", "Tracking #","Specification","Mailing Class","Other Detail 1", "Other Detail 2"};
+
+      searchButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          if(search.getText() == null) {
+            JOptionPane.showMessageDialog(null, "Tracking number field is empty.", "Empty field", JOptionPane.WARNING_MESSAGE);
+            logger.log(Level.WARNING, "User did not input tracking number when attempting to search.");
+          } else if (ss.getPackageFormatted(search.getText()) == null) {
+            JOptionPane.showMessageDialog(null, "Tracking number not in database.", "No package found", JOptionPane.WARNING_MESSAGE);
+            logger.log(Level.WARNING, "User searched for tracking number not found in database.");
+          } else if (search.getText().length() != 5) {
+            JOptionPane.showMessageDialog(null, "Tracking number must be 5 characters.", "Invalid Tracking Number", JOptionPane.WARNING_MESSAGE);
+            logger.log(Level.WARNING, "User attempted to search for an invalid tracking number.");
+          } else {
+            ArrayList<String> pListData = ss.getPackageFormatted(search.getText());
+            Object[][] pRowData = new Object[1][6];
+            String[] parts = pListData.get(0).split(" ");
+            for(int j = 0; j < 6; j++){
+              pRowData[0][j] = parts[j];
+            }
+            JTable packageTable = new JTable(pRowData, pColumnNames);
+            JScrollPane scrollPane = new JScrollPane(packageTable);
+            panel1.add(scrollPane);
+            masterPanel.revalidate();
+            logger.log(Level.INFO, "User successfully found package via tracking number.");
+          }
+        }
+      });
+        panelNorth.add(buttonBack);
+        panelNorth.add(searchButton);
+        panelNorth.add(search);
+        panel1.add(trackNo);
     }
 
     panel1.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -812,7 +834,7 @@ public class MainApp {
             int bankNo = Integer.parseInt(bankText.getText());
             float salary = Float.parseFloat(monText.getText());
             if (social < 10000000 || social > 999999999){
-              JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.", "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
+              JOptionPane.showMessageDialog(null,"Social Security Number must be between 10000000 and 999999999.", "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
               logger.log(Level.WARNING, "User attempted to add employee with incorrect size social security number.");
             } else {
               ss.addEmployee(firstText.getText(), lastText.getText(), social, salary, bankNo);
@@ -831,156 +853,172 @@ public class MainApp {
 
   public void updateUser(JPanel masterPanel){
     masterPanel.setLayout(new GridLayout(2,2));
-    JPanel panel1 = new JPanel(new FlowLayout());
-    JPanel panel2 = new JPanel(new FlowLayout());
-    JPanel panel3 = new JPanel(new FlowLayout());
-    JPanel panel4 = new JPanel(new FlowLayout());
-    JLabel firstName = new JLabel("First Name:");
-    JLabel lastName = new JLabel("Last Name:");
-    JLabel phoneNo = new JLabel("Phone Number:");
-    JLabel address = new JLabel("Address:           ");
-    JLabel monSalary = new JLabel("Monthly Salary:");
-    JLabel ssn = new JLabel("SSN (9):             ");
-    JLabel bank = new JLabel("Bank Account #:");
-    JTextField firstText = new JTextField(17);
-    JTextField lastText = new JTextField(17);
-    JTextField phoneText = new JTextField(17);
-    JTextField addText = new JTextField(17);
-    JTextField monText = new JTextField(17);
-    JTextField ssnText = new JTextField(17);
-    JTextField bankText = new JTextField(17);
-    JButton okButton = new JButton("OK");
+    System.out.println(ss.hasEmployees());
+    System.out.println(ss.hasCustomers());
+    if (ss.hasEmployees() || ss.hasCustomers()){
+      JPanel panel1 = new JPanel(new FlowLayout());
+      JPanel panel2 = new JPanel(new FlowLayout());
+      JPanel panel3 = new JPanel(new FlowLayout());
+      JPanel panel4 = new JPanel(new FlowLayout());
+      JLabel firstName = new JLabel("First Name:");
+      JLabel lastName = new JLabel("Last Name:");
+      JLabel phoneNo = new JLabel("Phone Number:");
+      JLabel address = new JLabel("Address:           ");
+      JLabel monSalary = new JLabel("Monthly Salary:");
+      JLabel ssn = new JLabel("SSN (9):             ");
+      JLabel bank = new JLabel("Bank Account #:");
+      JTextField firstText = new JTextField(17);
+      JTextField lastText = new JTextField(17);
+      JTextField phoneText = new JTextField(17);
+      JTextField addText = new JTextField(17);
+      JTextField monText = new JTextField(17);
+      JTextField ssnText = new JTextField(17);
+      JTextField bankText = new JTextField(17);
+      JButton okButton = new JButton("OK");
 
-    //customer attributes
-    panel3.add(phoneNo);
-    panel3.add(phoneText);
-    panel3.add(address);
-    panel3.add(addText);
+      //customer attributes
+      panel3.add(phoneNo);
+      panel3.add(phoneText);
+      panel3.add(address);
+      panel3.add(addText);
 
-    phoneNo.setVisible(false);
-    phoneText.setVisible(false);
-    address.setVisible(false);
-    addText.setVisible(false);
+      phoneNo.setVisible(false);
+      phoneText.setVisible(false);
+      address.setVisible(false);
+      addText.setVisible(false);
 
-    //employee attributes
-    panel3.add(monSalary);
-    panel3.add(monText);
-    panel3.add(ssn);
-    panel3.add(ssnText);
-    panel3.add(bank);
-    panel3.add(bankText);
+      //employee attributes
+      panel3.add(monSalary);
+      panel3.add(monText);
+      panel3.add(ssn);
+      panel3.add(ssnText);
+      panel3.add(bank);
+      panel3.add(bankText);
 
-    monSalary.setVisible(false);
-    monText.setVisible(false);
-    ssn.setVisible(false);
-    ssnText.setVisible(false);
-    bank.setVisible(false);
-    bankText.setVisible(false);
-
-
-
-    panel2.add(firstName);
-    panel2.add(firstText);
-    panel2.add(lastName);
-    panel2.add(lastText);
-    panel4.add(okButton);  //put OK button in panel6
-    panel4.add(buttonBack);
-
-    //user combobox. populate with all users. differentiate emp and cust
-    panel1.setLayout(new GridBagLayout());
-    LineBorder border1 = new LineBorder(Color.red);
-    TitledBorder border2 = new TitledBorder("Users");
-    Border newBorder = BorderFactory.createCompoundBorder(border1, border2);
-    panel1.setBorder(newBorder);
-    String[] userStrings = {"Plastic", "Fiber"};
-    JComboBox <String> userBox = new JComboBox<>(userStrings);
-    userBox.setPreferredSize(new Dimension(100, 25));
-    userBox.setSelectedItem(null);
-    panel1.add(userBox);
-
-
-    //manage appearance based on what radio button is selected
-   //  if(emp is selected) {
-   //      monSalary.setVisible(false);
-   //      monText.setVisible(false);
-   //      ssn.setVisible(false);
-   //      ssnText.setVisible(false);
-   //      bank.setVisible(false);
-   //      bankText.setVisible(false);
-   //      phoneNo.setVisible(true);
-   //      phoneText.setVisible(true);
-   //      address.setVisible(true);
-   //      addText.setVisible(true);
-   //    }
-   //
-   //    else { //emp is selected
-   //      phoneNo.setVisible(false);
-   //      phoneText.setVisible(false);
-   //      address.setVisible(false);
-   //      addText.setVisible(false);
-   //      monSalary.setVisible(true);
-   //      monText.setVisible(true);
-   //      ssn.setVisible(true);
-   //      ssnText.setVisible(true);
-   //      bank.setVisible(true);
-   //      bankText.setVisible(true);
-   //    }
-   //
-   //  //OK button listener, validates before adding
-   //   okButton.addActionListener(new ActionListener(){
-   //    @Override
-   //    public void actionPerformed(ActionEvent e){
-   //      boolean isOK = false;
-   //      //check at least one thing in each buttongroup is selected
-   //      if (userIdText.getText() == null || firstText.getText() == null || lastText.getText() == null){
-   //         JOptionPane.showMessageDialog(null, "Input all user details.", "User Property Error",
-   //          JOptionPane.ERROR_MESSAGE);
-   //      } else if (customer.isSelected() && (phoneText.getText() == null || addText.getText() == null)) {
-   //        JOptionPane.showMessageDialog(null, "Enter valid customer information", "Empty Customer Fields Error",
-   //         JOptionPane.ERROR_MESSAGE);
-   //      } else if (!ss.isCustomer(userIdText) && (monText.getText() == null || ssnText.getText() == null || bankText.getText() == null)) {
-   //        JOptionPane.showMessageDialog(null, "Enter valid employee information", "Empty Employee Fields Error",
-   //         JOptionPane.ERROR_MESSAGE);
-   //      } else if (!ss.isCustomer(userIdText) && ssnText.getText().length() != 9) {
-   //        JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.",
-   //         "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
-   //      } else {
-   //        isOK = true;
-   //      }
-   //
-   //      if (ss.isCustomer(userIdText) && isOK){
-   //        ss.addCustomer(firstText.getText(), lastText.getText(), phoneText.getText(), addText.getText());
-   //        JOptionPane.showMessageDialog(null, "Customer successfully updated!", "Customer Input Successful",
-   //         JOptionPane.INFORMATION_MESSAGE);
-   //      }
-   //
-   //      if (!ss.isCustomer(userIdText) && isOK) {
-   //        if (!Validate.isPosInt(ssnText.getText()) || !Validate.isPositive(monText.getText()) || !Validate.isPosInt(bankText.getText())) {
-   //          JOptionPane.showMessageDialog(null,"Social Security Number, Bank Account Number and Salary must be positive numbers.",
-   //           "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
-   //        } else {
-   //          int social = Integer.parseInt(ssnText.getText());
-   //          int bankNo = Integer.parseInt(bankText.getText());
-   //          float salary = Float.parseFloat(monText.getText());
-   //          if (social < 10000000 || social > 999999999){
-   //            JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.",
-   //             "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
-   //          } else {
-   //            ss.addEmployee(firstText.getText(), lastText.getText(), social, salary, bankNo);
-   //            JOptionPane.showMessageDialog(null, "Employee successfully added!", "Employee Unput Successful",
-   //             JOptionPane.INFORMATION_MESSAGE);
-   //          }
-   //        }
-   //      }
-   //    }
-   // });
-    masterPanel.add(panel1);
-    masterPanel.add(panel2);
-    masterPanel.add(panel3);
-    masterPanel.add(panel4);
+      monSalary.setVisible(false);
+      monText.setVisible(false);
+      ssn.setVisible(false);
+      ssnText.setVisible(false);
+      bank.setVisible(false);
+      bankText.setVisible(false);
 
 
 
+      panel2.add(firstName);
+      panel2.add(firstText);
+      panel2.add(lastName);
+      panel2.add(lastText);
+      panel4.add(okButton);  //put OK button in panel6
+      panel4.add(buttonBack);
+
+      //user combobox. populate with all users. differentiate emp and cust
+      panel1.setLayout(new GridBagLayout());
+      LineBorder border1 = new LineBorder(Color.red);
+      TitledBorder border2 = new TitledBorder("Users");
+      Border newBorder = BorderFactory.createCompoundBorder(border1, border2);
+      panel1.setBorder(newBorder);
+      ArrayList<Integer> allUsers = ss.getAllUserID();
+      Integer[] customers = allUsers.toArray(new Integer[allUsers.size()]);
+      JComboBox <Integer> userBox = new JComboBox<>(customers);
+      userBox.setPreferredSize(new Dimension(100, 25));
+      userBox.setSelectedItem(null);
+      panel1.add(userBox);
+      masterPanel.add(panel1);
+      masterPanel.add(panel2);
+      masterPanel.add(panel3);
+      masterPanel.add(panel4);
+
+      userBox.addActionListener(new ActionListener () {
+        public void actionPerformed(ActionEvent e) {
+          if(userBox.getSelectedItem() == null){
+            phoneNo.setVisible(false);
+            phoneText.setVisible(false);
+            address.setVisible(false);
+            addText.setVisible(false);
+
+            monSalary.setVisible(false);
+            monText.setVisible(false);
+            ssn.setVisible(false);
+            ssnText.setVisible(false);
+            bank.setVisible(false);
+            bankText.setVisible(false);
+
+            masterPanel.revalidate();
+          } else if (ss.isCustomer((Integer) userBox.getSelectedItem())) {
+            phoneNo.setVisible(true);
+            phoneText.setVisible(true);
+            address.setVisible(true);
+            addText.setVisible(true);
+
+            monSalary.setVisible(false);
+            monText.setVisible(false);
+            ssn.setVisible(false);
+            ssnText.setVisible(false);
+            bank.setVisible(false);
+            bankText.setVisible(false);
+
+            masterPanel.revalidate();
+          }else if (ss.isEmployee((Integer) userBox.getSelectedItem())) {
+            phoneNo.setVisible(false);
+            phoneText.setVisible(false);
+            address.setVisible(false);
+            addText.setVisible(false);
+
+            monSalary.setVisible(true);
+            monText.setVisible(true);
+            ssn.setVisible(true);
+            ssnText.setVisible(true);
+            bank.setVisible(true);
+            bankText.setVisible(true);
+
+            masterPanel.revalidate();
+          }
+        }
+      });
+      okButton.addActionListener(new ActionListener () {
+        public void actionPerformed(ActionEvent e) {
+          if(userBox.getSelectedItem() == null){
+            JOptionPane.showMessageDialog(null, "Please select a user ID to edit.", "Missing User ID Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "User did not choose a user ID to edit.");
+          } else if (firstText.getText() == null || lastText.getText() == null) {
+            JOptionPane.showMessageDialog(null, "Please enter user's name.", "Missing Name Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "User did not enter a new name for user.");
+          } else if (ss.isCustomer((Integer) userBox.getSelectedItem()) && (phoneText.getText() == null || addText.getText() == null)) {
+            JOptionPane.showMessageDialog(null, "Please fill all customer properties.", "Customer Empty Field Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "User did not complete all customer fields.");
+          }else if (ss.isEmployee((Integer) userBox.getSelectedItem()) && (bankText.getText() == null || monText.getText() == null || ssnText.getText() == null)) {
+            JOptionPane.showMessageDialog(null, "Please fill all employee properties.", "Employee Empty Field Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "User did not complete all employee fields.");
+          } else if (ss.isCustomer((Integer) userBox.getSelectedItem())) {
+            ss.updateCustomer((Integer) userBox.getSelectedItem(), firstText.getText(), lastText.getText(), phoneText.getText(),addText.getText());
+            JOptionPane.showMessageDialog(null, "Customer successfully updated.", "Customer Update Successful", JOptionPane.INFORMATION_MESSAGE);
+            logger.log(Level.INFO, "User successfully updated customer record.");
+        } else if (ss.isEmployee((Integer) userBox.getSelectedItem()) && ssnText.getText().length() != 9) {
+          JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.", "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
+          logger.log(Level.WARNING, "User attempted to add employee with ssn of incorrect length.");
+        } else if (ss.isEmployee((Integer) userBox.getSelectedItem()) && (!Validate.isPosInt(ssnText.getText()) || !Validate.isPositive(monText.getText()) || !Validate.isPosInt(bankText.getText()))) {
+          JOptionPane.showMessageDialog(null,"Social Security Number, Bank Account Number and Salary must be positive numbers.", "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+          logger.log(Level.SEVERE, "User attempted to edit employee with invalid value for social security number, salary, or bank account number.");
+        } else {
+          int social = Integer.parseInt(ssnText.getText());
+          int bankNo = Integer.parseInt(bankText.getText());
+          float salary = Float.parseFloat(monText.getText());
+          if (social < 10000000 || social > 999999999){
+            JOptionPane.showMessageDialog(null,"Social Security Number must be 9 digits.", "Digit Limit Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "User attempted to edit employee with incorrect size social security number.");
+          } else {
+            ss.updateEmployee((Integer) userBox.getSelectedItem(), firstText.getText(), lastText.getText(), social, salary, bankNo);
+            JOptionPane.showMessageDialog(null, "Employee successfully updated.", "Employee Update Successful", JOptionPane.INFORMATION_MESSAGE);
+            logger.log(Level.INFO, "User successfully updated Employee record.");
+          }
+        }
+      }
+    });
+    } else {
+      masterPanel.add(buttonBack);
+      JOptionPane.showMessageDialog(null,"Database has no users, please add user before attempting to edit.", "Missing Users Error", JOptionPane.WARNING_MESSAGE);
+      logger.log(Level.WARNING, "User attempted to edit user without users in database.");
+    }
   }
 
   public void deliverPackage(JPanel masterPanel) {

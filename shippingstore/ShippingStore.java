@@ -205,7 +205,19 @@ public class ShippingStore {
     }
 
     /**
-     * This method return the IDs for all customers in the inventory.
+     * This method return the IDs for all users in the database.
+     * @return
+     */
+     public ArrayList<Integer> getAllUserID() {
+       ArrayList<Integer> data = new ArrayList<Integer>();
+       for (User u : users) {
+           data.add(u.getId());
+       }
+       return data;
+     }
+
+    /**
+     * This method return the IDs for all customers in the database.
      * @return
      */
      public ArrayList<Integer> getAllCID() {
@@ -218,7 +230,7 @@ public class ShippingStore {
      }
 
     /**
-     * This method return the IDs for all employees in the inventory.
+     * This method return the IDs for all employees in the database.
      * @return
      */
      public ArrayList<Integer> getAllEID() {
