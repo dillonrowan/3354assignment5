@@ -236,7 +236,7 @@ public class ShippingStore {
      public ArrayList<Integer> getAllEID() {
        ArrayList<Integer> data = new ArrayList<Integer>();
        for (User u : users) {
-         if(u.getType() == "Customer")
+         if(u.getType() == "Employee")
            data.add(u.getId());
        }
        return data;

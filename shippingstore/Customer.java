@@ -74,7 +74,7 @@ public class Customer extends User {
      * @return Formated Text.
      */
     public String getFormattedText() {
-      String data = "Customer " + id +" "+ firstName +" "+ lastName +" "+ phoneNumber +" "+ address + " " + "NULL";
+      String data = "Customer " + id +" "+ firstName +" "+ lastName +" "+ phoneNumber +" "+ address + " NULL";
       return data;
     }
 

@@ -226,7 +226,13 @@ public class MainApp {
           pRowData[i][j] = parts[j];
         }
       }
-      JTable packageTable = new JTable(pRowData, pColumnNames);
+      DefaultTableModel model = new DefaultTableModel(pRowData, pColumnNames){
+        public boolean isCellEditable(int row, int column){
+          return false;
+        }
+      };
+      JTable packageTable = new JTable();
+      packageTable.setModel(model);
       JScrollPane scrollPane = new JScrollPane(packageTable);
       masterPanel.add(scrollPane);
       masterPanel.add(buttonBack);
@@ -618,7 +624,7 @@ public class MainApp {
     masterPanel.add(panelWest, BorderLayout.WEST);
 
     if (!ss.hasPackages()){
-      panelNorth.add(buttonBack);
+      masterPanel.add(buttonBack);
       JOptionPane.showMessageDialog(null, "Database has no packages.", "No packages to display ", JOptionPane.WARNING_MESSAGE);
       logger.log(Level.WARNING, "User attempted to search for package, no packages have been added to database.");
     } else {
@@ -643,7 +649,13 @@ public class MainApp {
             for(int j = 0; j < 6; j++){
               pRowData[0][j] = parts[j];
             }
-            JTable packageTable = new JTable(pRowData, pColumnNames);
+            DefaultTableModel model = new DefaultTableModel(pRowData, pColumnNames){
+              public boolean isCellEditable(int row, int column){
+                return false;
+              }
+            };
+            JTable packageTable = new JTable();
+            packageTable.setModel(model);
             JScrollPane scrollPane = new JScrollPane(packageTable);
             panel1.add(scrollPane);
             masterPanel.revalidate();
@@ -665,14 +677,20 @@ public class MainApp {
     Object[] pColumnNames = {"Type", "ID #","First Name","Last Name","Other Detail 1", "Other Detail 2", "Other Detail 3"};
     ArrayList<String> uListData = ss.getAllUsersFormatted();
     if (!(uListData.isEmpty())){
-      Object[][] uRowData = new Object[uListData.size()][7];
+      Object[][] pRowData = new Object[uListData.size()][7];
       for(int i = 0; i < uListData.size(); i++){
         String[] parts = uListData.get(i).split(" ");
         for(int j = 0; j < 7; j++){
-          uRowData[i][j] = parts[j];
+          pRowData[i][j] = parts[j];
         }
       }
-      JTable packageTable = new JTable(uRowData, pColumnNames);
+      DefaultTableModel model = new DefaultTableModel(pRowData, pColumnNames){
+        public boolean isCellEditable(int row, int column){
+          return false;
+        }
+      };
+      JTable packageTable = new JTable();
+      packageTable.setModel(model);
       JScrollPane scrollPane = new JScrollPane(packageTable);
       masterPanel.add(scrollPane);
       masterPanel.add(buttonBack);
@@ -852,10 +870,8 @@ public class MainApp {
   }
 
   public void updateUser(JPanel masterPanel){
-    masterPanel.setLayout(new GridLayout(2,2));
-    System.out.println(ss.hasEmployees());
-    System.out.println(ss.hasCustomers());
     if (ss.hasEmployees() || ss.hasCustomers()){
+      masterPanel.setLayout(new GridLayout(2,2));
       JPanel panel1 = new JPanel(new FlowLayout());
       JPanel panel2 = new JPanel(new FlowLayout());
       JPanel panel3 = new JPanel(new FlowLayout());
@@ -1136,14 +1152,20 @@ public class MainApp {
     Object[] pColumnNames = {"Customer ID", "Employee ID","Tracking Number","Shipping Date","Delivery Date", "Price"};
     ArrayList<String> uListData = ss.getAllTransactionsText();
     if (!(uListData.isEmpty())){
-      Object[][] uRowData = new Object[uListData.size()][6];
+      Object[][] pRowData = new Object[uListData.size()][6];
       for(int i = 0; i < uListData.size(); i++){
         String[] parts = uListData.get(i).split(" ");
         for(int j = 0; j < 6; j++){
-          uRowData[i][j] = parts[j];
+          pRowData[i][j] = parts[j];
         }
       }
-      JTable packageTable = new JTable(uRowData, pColumnNames);
+      DefaultTableModel model = new DefaultTableModel(pRowData, pColumnNames){
+        public boolean isCellEditable(int row, int column){
+          return false;
+        }
+      };
+      JTable packageTable = new JTable();
+      packageTable.setModel(model);
       JScrollPane scrollPane = new JScrollPane(packageTable);
       masterPanel.add(scrollPane);
       masterPanel.add(buttonBack);
