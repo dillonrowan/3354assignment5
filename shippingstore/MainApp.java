@@ -45,6 +45,18 @@ public class MainApp {
   ShippingStore ss;
 
   public MainApp() {
+
+    try {
+      FileHandler handler = new FileHandler("MainApp.%u.%g.txt", true);
+      SimpleFormatter formatter = new SimpleFormatter();
+      handler.setFormatter(formatter);
+      logger.setUseParentHandlers(false);
+      logger.addHandler(handler);
+    } catch (Exception e){
+      e.printStackTrace();
+    }
+
+    logger.setLevel(Level.FINE);
     ss = ShippingStore.readDatabase();
 
     frame.setResizable(false);
@@ -200,13 +212,7 @@ public class MainApp {
     frame.setVisible(true);
   }
 
-  public static void main(String[] args) throws Exception {
-    FileHandler handler = new FileHandler("MainApp.%u.%g.txt");
-    SimpleFormatter formatter = new SimpleFormatter();
-    handler.setFormatter(formatter);
-    logger.addHandler(handler);
-    logger.setLevel(Level.FINE);
-
+  public static void main(String[] args){
     SwingUtilities.invokeLater(new Runnable () {
       @Override
       public void run() {
@@ -799,7 +805,7 @@ public class MainApp {
         addText.setVisible(true);
       }
     });
-    //
+
     employee.addActionListener(new ActionListener () {
       public void actionPerformed(ActionEvent e) {
         phoneNo.setVisible(false);
