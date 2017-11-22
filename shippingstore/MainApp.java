@@ -47,7 +47,7 @@ public class MainApp {
   public MainApp() {
 
     try {
-      FileHandler handler = new FileHandler("MainApp.%u.%g.txt", true);
+      FileHandler handler = new FileHandler("BBB78.DHR14.%u.%g.txt", true);
       SimpleFormatter formatter = new SimpleFormatter();
       handler.setFormatter(formatter);
       logger.setUseParentHandlers(false);
