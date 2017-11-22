@@ -212,7 +212,18 @@ public class MainApp {
     frame.setVisible(true);
   }
 
+<<<<<<< HEAD
   public static void main(String[] args){
+=======
+  public static void main(String[] args) throws Exception {
+    FileHandler handler = new FileHandler("MainApp.%u.%g.txt");
+    SimpleFormatter formatter = new SimpleFormatter();
+    handler.setFormatter(formatter);
+    logger.setUseParentHandlers(false);
+    logger.addHandler(handler);
+    logger.setLevel(Level.FINE);
+
+>>>>>>> 59773181cee72c37caa5d9fd04a9a2df04864170
     SwingUtilities.invokeLater(new Runnable () {
       @Override
       public void run() {
