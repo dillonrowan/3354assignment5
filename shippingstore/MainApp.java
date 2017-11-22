@@ -204,6 +204,7 @@ public class MainApp {
     FileHandler handler = new FileHandler("MainApp.%u.%g.txt");
     SimpleFormatter formatter = new SimpleFormatter();
     handler.setFormatter(formatter);
+    logger.setUseParentHandlers(false);
     logger.addHandler(handler);
     logger.setLevel(Level.FINE);
 
